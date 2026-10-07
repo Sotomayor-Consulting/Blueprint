@@ -37,59 +37,176 @@ const steps: StepperStep[] = [
 
 <Layout>
   <div class="mx-auto w-full max-w-7xl px-4 py-10">
-    <Stepper
-      steps={steps}
-      defaultValue="Correo"
-      label="Alta de cuenta"
-      orientation="horizontal"
-      nextLabel="Siguiente"
-      finishLabel="Finalizar"
+    <Form
+      data-llc-form
+      validationTiming="manual"
+      revalidationTiming="manual"
+      errorVisibility="manual"
     >
-      <StepOne slot="Correo"/>
-      <StepTwo slot="Modelo"/>
-      <StepTree slot="Operacion" />
-      <StepFour slot="Confidencialidad" />
-      <StepFive slot="Estado" />
-
-      <Form
-        slot="review"
-        validationTiming="manual"
-        revalidationTiming="manual"
-        errorVisibility="manual"
+      <Stepper
+        steps={steps}
+        defaultValue="Correo"
+        label="Alta de cuenta"
+        orientation="horizontal"
+        nextLabel="Siguiente"
+        finishLabel="Finalizar"
       >
-        <FieldGroup>
-          <div class="text-muted-foreground space-y-2 text-sm">
-            <p class="text-foreground font-medium">Listo para confirmar.</p>
-            <p>
-              Revisa los pasos anteriores y acepta las condiciones para
-              finalizar.
-            </p>
-          </div>
+        <StepOne slot="Correo"/>
+        <StepTwo slot="Modelo"/>
+        <StepTree slot="Operacion" />
+        <StepFour slot="Confidencialidad" />
+        <StepFive slot="Estado" />
 
-          <Field name="terms" orientation="horizontal">
-            <FieldItem>
-              <Checkbox
-                id="terms"
-                name="terms"
-                value="accepted"
-                aria-label="Aceptar los términos y condiciones"
-                required
-              />
-              <FieldContent>
-                <FieldLabel for="terms"
-                  >Acepto los términos y condiciones</FieldLabel
-                >
-                <FieldDescription>
-                  Este checkbox es obligatorio para completar el stepper.
-                </FieldDescription>
-              </FieldContent>
-            </FieldItem>
-            <FieldError match="valueMissing">
-              Debes aceptar los términos para continuar.
-            </FieldError>
-          </Field>
-        </FieldGroup>
-      </Form>
-    </Stepper>
+        <div slot="review">
+          <FieldGroup>
+            <div class="text-muted-foreground space-y-2 text-sm">
+              <p class="text-foreground font-medium">Listo para confirmar.</p>
+              <p>
+                Revisa los pasos anteriores y acepta las condiciones para
+                finalizar.
+              </p>
+            </div>
+
+            <Field name="terms" orientation="horizontal">
+              <FieldItem>
+                <Checkbox
+                  id="terms"
+                  name="terms"
+                  value="accepted"
+                  aria-label="Aceptar los términos y condiciones"
+                  required
+                />
+                <FieldContent>
+                  <FieldLabel for="terms"
+                    >Acepto los términos y condiciones</FieldLabel
+                  >
+                  <FieldDescription>
+                    Este checkbox es obligatorio para completar el stepper.
+                  </FieldDescription>
+                </FieldContent>
+              </FieldItem>
+              <FieldError match="valueMissing">
+                Debes aceptar los términos para continuar.
+              </FieldError>
+            </Field>
+          </FieldGroup>
+        </div>
+      </Stepper>
+    </Form>
+
+    <script>
+      import { createForm } from "@starwind-ui/astro/form";
+
+      const form = document.querySelector<HTMLFormElement>("[data-llc-form]");
+      const formApi = form
+        ? createForm(form, {
+            fieldValidators: {
+              clientMarkets: (_value, { field }) => {
+                const hasSelection = Boolean(
+                  field.root.querySelector("[data-sw-checkbox][data-checked]"),
+                );
+
+                return hasSelection
+                  ? null
+                  : {
+                      key: "customError",
+                      message:
+                        "Selecciona al menos un mercado donde tendrás clientes.",
+                      source: "custom",
+                    };
+              },
+              formationState: () => {
+                const root = document.querySelector<HTMLElement>(
+                  "[data-formation-state-combobox]",
+                );
+                const selected = root?.dataset.value;
+                const label = root
+                  ?.querySelector<HTMLInputElement>(
+                    '[data-slot="combobox-input"]',
+                  )
+                  ?.value.trim();
+
+                return selected && label === selected
+                  ? null
+                  : {
+                      key: "customError",
+                      message:
+                        "Selecciona un estado disponible para continuar.",
+                      source: "custom",
+                    };
+              },
+            },
+          })
+        : null;
+
+      const stepFields: Record<string, string[]> = {
+        Correo: ["email"],
+        Modelo: ["businessModel"],
+        Operacion: [
+          "operationDescription",
+          "projectedAnnualRevenue",
+          "clientMarkets",
+        ],
+        Confidencialidad: ["confidentialityLevel"],
+        Estado: ["formationState", "operaciones"],
+        review: ["terms"],
+      };
+
+      const stepperRoot = document.querySelector<HTMLElement>("[data-stepper]");
+      const nextButton = stepperRoot?.querySelector<HTMLButtonElement>(
+        "[data-stepper-next]",
+      );
+
+      const currentStepId = () =>
+        stepperRoot
+          ?.querySelector<HTMLButtonElement>(
+            '[data-slot="tabs-trigger"][data-state="active"]',
+          )
+          ?.getAttribute("value") ?? "Correo";
+
+      const requestStepValidation = async (target?: HTMLButtonElement) => {
+        if (!formApi) return true;
+
+        const activeStep = currentStepId();
+        const names = stepFields[activeStep] ?? [];
+
+        const outcome = await formApi.validate({
+          names,
+          reveal: true,
+          focus: true,
+        });
+
+        if (outcome.status !== "complete" || !outcome.valid) return false;
+
+        if (target) {
+          target.dataset.skipStepValidation = "true";
+          target.click();
+          queueMicrotask(() => {
+            delete target.dataset.skipStepValidation;
+          });
+        }
+
+        return true;
+      };
+
+      const guardClick = (
+        target: HTMLButtonElement | undefined,
+        event: MouseEvent,
+      ) => {
+        if (!target || target.dataset.skipStepValidation === "true") return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        void requestStepValidation(target);
+      };
+
+      stepperRoot
+        ?.querySelectorAll<HTMLButtonElement>('[data-slot="tabs-trigger"]')
+        .forEach((trigger) => {
+          trigger.addEventListener("click", (event) => guardClick(trigger, event), true);
+        });
+
+      nextButton?.addEventListener("click", (event) => guardClick(nextButton, event), true);
+    </script>
   </div>
 </Layout>

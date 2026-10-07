@@ -24,9 +24,9 @@ import {
   FieldDescription,
   FieldError,
   FieldGroup,
-  FieldLabel,
+  FieldLegend,
+  FieldSet,
 } from "@/components/starwind/field";
-import { Form } from "@/components/starwind/form";
 
 const totalStates = ["Delaware", "Wyoming", "Nuevo México", "Nevada"];
 
@@ -123,12 +123,7 @@ const defaultLevel = confidencialidad[0];
     </CardDescription>
   </CardHeader>
 
-  <Form
-    validationTiming="manual"
-    revalidationTiming="manual"
-    errorVisibility="manual"
-  >
-    <CardContent class="mt-5">
+  <CardContent class="mt-5">
       <FieldGroup>
         <Field name="formationState">
           <Card
@@ -244,10 +239,9 @@ const defaultLevel = confidencialidad[0];
             Selecciona un estado disponible para continuar.
           </FieldError>
         </Field>
-        <Field name="operaciones">
-          <FieldLabel
-            >¿La LLC tendrá presencia operativa en un estado específico?</FieldLabel
-          >
+        <FieldSet>
+          <FieldLegend>¿La LLC tendrá presencia operativa en un estado específico?</FieldLegend>
+
           <RadioGroup
             id="operaciones-group"
             name="operaciones"
@@ -261,7 +255,7 @@ const defaultLevel = confidencialidad[0];
                 return (
                   <label
                     for={model.id}
-                    data-confidentiality-option
+                    data-operations-option
                     data-value={model.value}
                     data-label={model.name}
                     class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
@@ -270,7 +264,6 @@ const defaultLevel = confidencialidad[0];
                       <RadioGroupItem
                         id={model.id}
                         value={model.value}
-                        aria-label={model.name}
                         variant="primary"
                       />
                     </span>
@@ -292,16 +285,14 @@ const defaultLevel = confidencialidad[0];
           </RadioGroup>
 
           <FieldError match="valueMissing">
-            Selecciona un modelo de negocio para continuar.
+            Selecciona si existe presencia operativa para continuar.
           </FieldError>
-        </Field>
+        </FieldSet>
       </FieldGroup>
-    </CardContent>
-  </Form>
+  </CardContent>
 </Card>
 
 <script>
-  import { createForm } from "@starwind-ui/astro/form";
   import stateInfoData from "./state-info.json";
   import {
     readFormDraft,
@@ -339,7 +330,6 @@ const defaultLevel = confidencialidad[0];
     const input = root?.querySelector<HTMLInputElement>(
       '[data-slot="combobox-input"]',
     );
-    const form = container.querySelector<HTMLFormElement>("form[data-sw-form]");
     const infoEyebrow = container.querySelector<HTMLElement>(
       "[data-state-info-eyebrow]",
     );
@@ -367,7 +357,6 @@ const defaultLevel = confidencialidad[0];
     if (
       !root ||
       !input ||
-      !form ||
       !optionsParent ||
       !infoEyebrow ||
       !infoTitle ||
@@ -410,30 +399,6 @@ const defaultLevel = confidencialidad[0];
       infoDetails.hidden = false;
     };
 
-    createForm(form, {
-      fieldValidators: {
-        formationState: (value) => {
-          const selected = Array.isArray(value)
-            ? String(value[0] ?? "")
-            : String(value ?? "");
-
-          if (!selected) return null;
-
-          const selectedOption = options.find(
-            (option) => option.dataset.value === selected && option.isConnected,
-          );
-
-          if (selectedOption && input.value.trim() === selected) return null;
-
-          return {
-            key: "customError",
-            message: "Selecciona un estado disponible para continuar.",
-            source: "custom",
-          };
-        },
-      },
-    });
-
     const setValue = (value: string | null) => {
       root.dispatchEvent(
         new CustomEvent("starwind:set-value", {
@@ -458,10 +423,11 @@ const defaultLevel = confidencialidad[0];
           option.hidden = false;
           option.removeAttribute("data-disabled");
           option.setAttribute("aria-disabled", "false");
-          if (!option.isConnected) optionsParent.append(option);
           availableCount += 1;
         } else {
-          option.remove();
+          option.hidden = true;
+          option.setAttribute("data-disabled", "true");
+          option.setAttribute("aria-disabled", "true");
         }
       });
 
@@ -470,7 +436,7 @@ const defaultLevel = confidencialidad[0];
       const currentOption = options.find(
         (option) => option.dataset.value === root.dataset.value,
       );
-      if (currentOption && !currentOption.isConnected) {
+      if (currentOption && currentOption.hidden) {
         setValue(null);
         updateFormDraft({ formationState: undefined });
       }
@@ -479,7 +445,7 @@ const defaultLevel = confidencialidad[0];
         const storedState = readFormDraft().answers.formationState;
         const storedOption = options.find(
           (option) =>
-            option.dataset.value === storedState && option.isConnected,
+            option.dataset.value === storedState && !option.hidden,
         );
         if (storedOption?.dataset.value) setValue(storedOption.dataset.value);
       }

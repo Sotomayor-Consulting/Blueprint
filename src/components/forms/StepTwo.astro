@@ -19,13 +19,12 @@ import {
   CardTitle,
 } from "@/components/starwind/card";
 import {
-  Field,
   FieldDescription,
   FieldError,
   FieldGroup,
-  FieldLabel,
+  FieldLegend,
+  FieldSet,
 } from "@/components/starwind/field";
-import { Form } from "@/components/starwind/form";
 import { RadioGroup, RadioGroupItem } from "@/components/starwind/radio-group";
 
 const businessModels = [
@@ -110,15 +109,10 @@ const defaultModel = businessModels[0];
     </CardDescription>
   </CardHeader>
 
-  <Form
-    validationTiming="manual"
-    revalidationTiming="manual"
-    errorVisibility="manual"
-  >
-    <CardContent class="mt-5">
+  <CardContent class="mt-5">
       <FieldGroup>
-        <Field name="businessModel">
-          <FieldLabel>Modelo principal</FieldLabel>
+        <FieldSet>
+          <FieldLegend>Modelo principal</FieldLegend>
           <FieldDescription>
             Podrás reemplazar estas opciones provisionales por los modelos
             definitivos.
@@ -148,7 +142,6 @@ const defaultModel = businessModels[0];
                       <RadioGroupItem
                         id={model.id}
                         value={model.value}
-                        aria-label={model.name}
                         variant="primary"
                       />
                     </span>
@@ -176,7 +169,7 @@ const defaultModel = businessModels[0];
           <FieldError match="valueMissing">
             Selecciona un modelo de negocio para continuar.
           </FieldError>
-        </Field>
+        </FieldSet>
 
         <Card
           class="bg-primary-accent/5 ring-primary-accent/20"
@@ -200,8 +193,7 @@ const defaultModel = businessModels[0];
           </CardContent>
         </Card>
       </FieldGroup>
-    </CardContent>
-  </Form>
+  </CardContent>
 </Card>
 
 <script>

@@ -1,5 +1,4 @@
 ---
-import { Form } from "@/components/starwind/form";
 import { Badge } from "@/components/starwind/badge";
 import { Icon } from "astro-icon/components";
 import {
@@ -77,12 +76,7 @@ const clientMarkets = [
       >Define actividad, ingresos y mercados de la LLC</CardDescription
     >
   </CardHeader>
-  <Form
-    validationTiming="manual"
-    revalidationTiming="manual"
-    errorVisibility="manual"
-  >
-    <CardContent class="flex gap-4 mt-5">
+  <CardContent class="flex gap-4 mt-5">
       <div class="w-full flex h-full flex-col gap-y-4">
         <FieldGroup class="w-full">
           <Field name="operationDescription">
@@ -147,12 +141,12 @@ const clientMarkets = [
             <FieldDescription>
               Puedes seleccionar una o varias regiones.
             </FieldDescription>
-            <CheckboxGroup
+            <!-- <CheckboxGroup
               id="client-markets-group"
               aria-label="Mercados donde tendrá clientes"
               class="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-2 lg:grid-cols-4"
-            >
-              {
+            > -->
+              <!-- {
                 clientMarkets.map((market) => (
                   <FieldItem
                     data-client-market-option
@@ -186,47 +180,13 @@ const clientMarkets = [
                     </label>
                   </FieldItem>
                 ))
-              }
-            </CheckboxGroup>
+              } -->
+            <!-- </CheckboxGroup> -->
             <FieldError match="customError" messageSource="validation">
               Selecciona al menos un mercado donde tendrás clientes.
             </FieldError>
           </Field>
         </FieldGroup>
       </div>
-    </CardContent>
-  </Form>
+  </CardContent>
 </Card>
-
-<script>
-  import { createForm } from "@starwind-ui/astro/form";
-
-  const initClientMarketValidation = () => {
-    document
-      .querySelectorAll<HTMLFormElement>("form[data-sw-form]")
-      .forEach((form) => {
-        if (!form.querySelector("#client-markets-group")) return;
-
-        createForm(form, {
-          fieldValidators: {
-            clientMarkets: (_value, { field }) => {
-              const hasSelection = Boolean(
-                field.root.querySelector("[data-sw-checkbox][data-checked]"),
-              );
-
-              if (hasSelection) return null;
-
-              return {
-                key: "customError",
-                message: "Selecciona al menos un mercado donde tendrás clientes.",
-                source: "custom",
-              };
-            },
-          },
-        });
-      });
-  };
-
-  initClientMarketValidation();
-  document.addEventListener("astro:page-load", initClientMarketValidation);
-</script>

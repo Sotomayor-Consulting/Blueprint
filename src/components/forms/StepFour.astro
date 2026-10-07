@@ -15,13 +15,12 @@ import {
   CardTitle,
 } from "@/components/starwind/card";
 import {
-  Field,
   FieldDescription,
   FieldError,
   FieldGroup,
-  FieldLabel,
+  FieldLegend,
+  FieldSet,
 } from "@/components/starwind/field";
-import { Form } from "@/components/starwind/form";
 import { RadioGroup, RadioGroupItem } from "@/components/starwind/radio-group";
 
 const confidencialidad = [
@@ -74,15 +73,10 @@ const defaultLevel = confidencialidad[0];
     </CardDescription>
   </CardHeader>
 
-  <Form
-    validationTiming="manual"
-    revalidationTiming="manual"
-    errorVisibility="manual"
-  >
-    <CardContent class="mt-5">
+  <CardContent class="mt-5">
       <FieldGroup>
-        <Field name="confidentialityLevel">
-          <FieldLabel>Selecciona un nivel de confidencialidad</FieldLabel>
+        <FieldSet>
+          <FieldLegend>Selecciona un nivel de confidencialidad</FieldLegend>
           <FieldDescription>
             Selecciona el nivel que mejor se ajuste a tus necesidades.
           </FieldDescription>
@@ -109,7 +103,6 @@ const defaultLevel = confidencialidad[0];
                       <RadioGroupItem
                         id={model.id}
                         value={model.value}
-                        aria-label={model.name}
                         variant="primary"
                       />
                     </span>
@@ -138,9 +131,9 @@ const defaultLevel = confidencialidad[0];
           </RadioGroup>
 
           <FieldError match="valueMissing">
-            Selecciona un modelo de negocio para continuar.
+            Selecciona un nivel de confidencialidad para continuar.
           </FieldError>
-        </Field>
+        </FieldSet>
 
         <Card
           class="bg-primary-accent/5 ring-primary-accent/20"
@@ -164,8 +157,7 @@ const defaultLevel = confidencialidad[0];
           </CardContent>
         </Card>
       </FieldGroup>
-    </CardContent>
-  </Form>
+  </CardContent>
 </Card>
 
 <script>
