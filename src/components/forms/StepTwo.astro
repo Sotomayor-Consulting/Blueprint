@@ -1,0 +1,237 @@
+---
+import Bolt from "@tabler/icons/filled/bolt.svg";
+import BuildingBank from "@tabler/icons/outline/building-bank.svg";
+
+import Service from "@tabler/icons/outline/package-export.svg";
+import Trader from "@tabler/icons/outline/arrows-exchange-2.svg";
+import Realstate from "@tabler/icons/outline/home-dollar.svg";
+import Migracion from "@tabler/icons/outline/plane-inflight.svg";
+import Fintech from "@tabler/icons/outline/briefcase.svg";
+import Bolsa from "@tabler/icons/outline/chart-dots.svg";
+import Broker from "@tabler/icons/outline/moneybag-move.svg";
+import Trader2 from "@tabler/icons/outline/building-skyscraper.svg";
+import { Badge } from "@/components/starwind/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/starwind/card";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/starwind/field";
+import { Form } from "@/components/starwind/form";
+import { RadioGroup, RadioGroupItem } from "@/components/starwind/radio-group";
+
+const businessModels = [
+  {
+    id: "Exportación-de-servicios",
+    value: "Exportación de servicios",
+    name: "Exportación de servicios",
+    description: "Vende tus servicios legalmente en EE. UU.",
+    image: Service,
+  },
+  {
+    id: "Trader-compra-venta-de-productos",
+    value: "Trader / compra-venta de productos",
+    name: "Trader / compra-venta de productos",
+    description: "Opera comercio internacional con estructura formal.",
+    image: Trader,
+  },
+  {
+    id: "Inversiones-o-negocios-en-bienes-raíces",
+    value: "Inversiones o negocios en bienes raíces",
+    name: "Inversiones o negocios en bienes raíces",
+    description: "Canaliza inversiones inmobiliarias desde EE. UU.",
+    image: Realstate,
+  },
+  {
+    id: "Migrar",
+    value: "Migrar",
+    name: "Migrar",
+    description: "Apoyo estratégico para procesos migratorios empresariales.",
+    image: Migracion,
+  },
+  {
+    id: "Fintech",
+    value: "Fintech",
+    name: "Fintech",
+    description: "Dos etapas: levantamiento de información e implementación.",
+    image: Fintech,
+  },
+  {
+    id: "Inversionista-en-Bolsa-de-Valores",
+    value: "Inversionista en Bolsa de Valores",
+    name: "Inversionista en Bolsa de Valores",
+    description: "Invierte en acciones desde una LLC.",
+    image: Bolsa,
+  },
+  {
+    id: "Broker-de-inversiones-en-Bolsa-de-Valores",
+    value: "Broker de inversiones en Bolsa de Valores",
+    name: "Broker de inversiones en Bolsa de Valores",
+    description: "Capta inversiones y canaliza portafolios.",
+    image: Broker,
+  },
+  {
+    id: "Trader-de-Stocks",
+    value: "Trader de Stocks",
+    name: "Trader de Stocks",
+    description: "Invierte capital propio en mercados globales.",
+    image: Trader2,
+  },
+];
+
+const defaultModel = businessModels[0];
+---
+
+<Card class="w-full px-5 py-10 shadow-2xl">
+  <CardHeader class="gap-y-5">
+    <Badge
+      tone="primary-accent"
+      appearance="outline"
+      size="md"
+      class="w-fit p-1"
+      eyebrow
+    >
+      <Bolt /> MODELO · DISEÑO ESTRATÉGICO
+    </Badge>
+    <CardTitle class="text-4xl md:text-6xl"
+      >Define el modelo de negocio</CardTitle
+    >
+    <CardDescription class="text-xl md:text-2xl">
+      Selecciona la actividad que mejor representa la operación principal de la
+      LLC.
+    </CardDescription>
+  </CardHeader>
+
+  <Form
+    validationTiming="manual"
+    revalidationTiming="manual"
+    errorVisibility="manual"
+  >
+    <CardContent class="mt-5">
+      <FieldGroup>
+        <Field name="businessModel">
+          <FieldLabel>Modelo principal</FieldLabel>
+          <FieldDescription>
+            Podrás reemplazar estas opciones provisionales por los modelos
+            definitivos.
+          </FieldDescription>
+
+          <RadioGroup
+            id="business-model-group"
+            name="businessModel"
+            legend="Selecciona el modelo principal de la LLC"
+            defaultValue={defaultModel.value}
+            required
+            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-4"
+          >
+            {
+              businessModels.map((model) => {
+                const ModelIcon = model.image;
+
+                return (
+                  <label
+                    for={model.id}
+                    data-business-model-option
+                    data-value={model.value}
+                    data-label={model.name}
+                    class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
+                  >
+                    <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
+                      <RadioGroupItem
+                        id={model.id}
+                        value={model.value}
+                        aria-label={model.name}
+                        variant="primary"
+                      />
+                    </span>
+
+                    <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                      <CardHeader class="pb-5">
+                        <div class="bg-primary-accent/30 mt-6 inline-flex w-fit rounded-xl p-4">
+                          <ModelIcon
+                            class="text-primary size-8"
+                            aria-hidden="true"
+                          />
+                        </div>
+                        <CardTitle class="text-base">{model.name}</CardTitle>
+                        <CardDescription class="text-sm">
+                          {model.description}
+                        </CardDescription>
+                      </CardHeader>
+                    </Card>
+                  </label>
+                );
+              })
+            }
+          </RadioGroup>
+
+          <FieldError match="valueMissing">
+            Selecciona un modelo de negocio para continuar.
+          </FieldError>
+        </Field>
+
+        <Card
+          class="bg-primary-accent/5 ring-primary-accent/20"
+          aria-live="polite"
+        >
+          <CardContent class="flex items-center gap-4">
+            <span
+              class="bg-primary-accent/10 text-primary-accent grid size-11 shrink-0 place-items-center rounded-full"
+            >
+              <BuildingBank class="size-5" aria-hidden="true" />
+            </span>
+            <div class="min-w-0">
+              <p class="text-muted-foreground text-sm">Modelo seleccionado</p>
+              <p
+                class="text-foreground truncate text-lg font-semibold"
+                data-selected-business-model
+              >
+                {defaultModel.name}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </FieldGroup>
+    </CardContent>
+  </Form>
+</Card>
+
+<script>
+  const setupBusinessModelSelector = (root: HTMLElement) => {
+    if (root.dataset.businessModelReady === "true") return;
+    root.dataset.businessModelReady = "true";
+
+    const output = root
+      .closest<HTMLElement>('[data-slot="card"]')
+      ?.querySelector<HTMLElement>("[data-selected-business-model]");
+    const options = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-business-model-option]"),
+    );
+
+    root.addEventListener("starwind:value-change", (event) => {
+      const { value } = (event as CustomEvent<{ value: string }>).detail;
+      const selected = options.find((option) => option.dataset.value === value);
+
+      if (output && selected?.dataset.label) {
+        output.textContent = selected.dataset.label;
+      }
+    });
+  };
+
+  const initBusinessModelSelectors = () => {
+    document
+      .querySelectorAll<HTMLElement>("#business-model-group")
+      .forEach((root) => setupBusinessModelSelector(root));
+  };
+
+  initBusinessModelSelectors();
+  document.addEventListener("astro:page-load", initBusinessModelSelectors);
+</script>

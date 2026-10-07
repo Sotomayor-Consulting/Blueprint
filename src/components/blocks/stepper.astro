@@ -1,0 +1,340 @@
+---
+import ArrowLeft from "@tabler/icons/outline/arrow-left.svg";
+import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
+import Check from "@tabler/icons/outline/check.svg";
+import { Button } from "@/components/starwind/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/starwind/tabs";
+import type { HTMLAttributes } from "astro/types";
+import { tv } from "tailwind-variants";
+
+export interface StepperStep {
+  id: string;
+  title: string;
+  description?: string;
+  disabled?: boolean;
+}
+
+interface Props
+  extends Omit<HTMLAttributes<"div">, "defaultValue" | "onChange" | "value"> {
+  steps: StepperStep[];
+  defaultValue?: string;
+  orientation?: "horizontal" | "vertical";
+  syncKey?: string;
+  showNavigation?: boolean;
+  validateOnAdvance?: boolean;
+  label?: string;
+  backLabel?: string;
+  nextLabel?: string;
+  finishLabel?: string;
+}
+
+const {
+  steps,
+  defaultValue,
+  orientation = "vertical",
+  syncKey,
+  showNavigation = true,
+  validateOnAdvance = true,
+  label = "Steps",
+  backLabel = "Back",
+  nextLabel = "Next",
+  finishLabel = "Finish",
+  class: className,
+  ...rest
+} = Astro.props;
+
+const stepper = tv({ base: "w-full" });
+
+const stepperList = tv({
+  base: "w-full items-stretch justify-start bg-transparent p-0",
+  variants: {
+    orientation: {
+      vertical: "flex-col",
+      horizontal: "flex-row",
+    },
+  },
+  defaultVariants: { orientation: "vertical" },
+});
+
+const stepperTrigger = tv({
+  base: [
+    "group/step relative grow-0 rounded-md border-0 bg-transparent py-0 font-normal whitespace-normal",
+    "text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none",
+    "dark:data-[state=active]:border-0 dark:data-[state=active]:bg-transparent dark:data-[state=active]:text-foreground",
+  ],
+  variants: {
+    orientation: {
+      vertical: "w-full flex-row items-start justify-start gap-3 px-0 py-3",
+      horizontal: "flex-1 flex-col items-start justify-start gap-2 pl-3",
+    },
+  },
+  defaultVariants: { orientation: "vertical" },
+});
+
+const stepperConnector = tv({
+  base: "pointer-events-none absolute bg-border transition-colors data-[completed]:bg-primary",
+  variants: {
+    orientation: {
+      vertical: "top-[2.875rem] -bottom-3 left-4 w-px",
+      horizontal: "top-4 -right-3 left-[2.75rem] h-px",
+    },
+  },
+  defaultVariants: { orientation: "vertical" },
+});
+
+const stepperMarker = tv({
+  base: [
+    "flex size-8 shrink-0 items-center justify-center rounded-full border text-sm font-medium transition-colors",
+    "border-border bg-muted text-muted-foreground",
+    "group-data-[state=active]/step:border-primary group-data-[state=active]/step:bg-primary group-data-[state=active]/step:text-primary-foreground",
+    "group-data-[completed]/step:border-primary group-data-[completed]/step:bg-primary group-data-[completed]/step:text-primary-foreground",
+  ],
+});
+
+const stepperText = tv({
+  base: "flex min-w-0 flex-1 flex-col gap-1",
+  variants: {
+    orientation: {
+      vertical: "items-start text-left",
+      horizontal: "items-start text-left",
+    },
+  },
+  defaultVariants: { orientation: "vertical" },
+});
+
+const stepperPanel = tv({ base: "mt-6" });
+---
+
+<Tabs
+  class={stepper({ class: className })}
+  defaultValue={defaultValue ?? steps[0]?.id}
+  orientation={orientation}
+  syncKey={syncKey}
+  data-stepper
+  data-stepper-validate={validateOnAdvance ? "" : undefined}
+  {...rest}
+>
+  <TabsList class={stepperList({ orientation })} aria-label={label}>
+    {
+      steps.map((step, index) => (
+        <TabsTrigger
+          value={step.id}
+          disabled={step.disabled}
+          class={stepperTrigger({ orientation })}
+        >
+          {index < steps.length - 1 && (
+            <span
+              class={stepperConnector({ orientation })}
+              data-stepper-connector
+              aria-hidden="true"
+            />
+          )}
+
+          <span class={stepperMarker()}>
+            <span class="inline-flex group-data-[completed]/step:hidden">{index + 1}</span>
+            <Check class="hidden size-4 group-data-[completed]/step:inline-flex" />
+          </span>
+
+          <span class={stepperText({ orientation })}>
+            <span class="truncate text-sm font-medium">{step.title}</span>
+            {step.description && (
+              <span class="text-muted-foreground line-clamp-2 text-xs">
+                {step.description}
+              </span>
+            )}
+          </span>
+        </TabsTrigger>
+      ))
+    }
+  </TabsList>
+
+  {
+    steps.map((step) => (
+      <TabsContent value={step.id} class={stepperPanel()}>
+        {Astro.slots.has(step.id) ? <slot name={step.id} /> : <slot />}
+      </TabsContent>
+    ))
+  }
+
+  {
+    showNavigation && (
+      <div class="mt-6 flex items-center justify-between gap-2 border-t pt-4">
+        <Button type="button" variant="outline" size="sm" data-stepper-prev>
+          <ArrowLeft />
+          {backLabel}
+        </Button>
+
+        <Button type="button" variant="primary" size="sm" data-stepper-next>
+          <span data-stepper-next-label>{nextLabel}</span>
+          <span data-stepper-finish-label class="hidden">
+            {finishLabel}
+          </span>
+          <ArrowRight />
+        </Button>
+      </div>
+    )
+  }
+</Tabs>
+
+<script>
+  import { createForm } from "@starwind-ui/astro/form";
+
+  const setupStepper = (root: HTMLElement) => {
+    const list = root.querySelector<HTMLElement>('[data-slot="tabs-list"]');
+    if (!list) return;
+
+    const triggers = Array.from(
+      list.querySelectorAll<HTMLButtonElement>('[data-slot="tabs-trigger"]'),
+    );
+    if (triggers.length === 0) return;
+
+    const previousButton = root.querySelector<HTMLButtonElement>("[data-stepper-prev]");
+    const nextButton = root.querySelector<HTMLButtonElement>("[data-stepper-next]");
+    const nextLabel = root.querySelector<HTMLElement>("[data-stepper-next-label]");
+    const finishLabel = root.querySelector<HTMLElement>("[data-stepper-finish-label]");
+
+    const shouldValidate = root.hasAttribute("data-stepper-validate");
+
+    triggers.forEach((trigger) => {
+      if (trigger.dataset.stepperAuthorDisabled === undefined) {
+        trigger.dataset.stepperAuthorDisabled = String(trigger.disabled);
+      }
+    });
+
+    const authorDisabled = () =>
+      triggers.map((trigger) => trigger.dataset.stepperAuthorDisabled === "true");
+
+    const activeIndex = () => {
+      const index = triggers.findIndex(
+        (trigger) => trigger.getAttribute("data-state") === "active",
+      );
+      return index === -1 ? 0 : index;
+    };
+
+    const move = (offset: number) => {
+      const start = activeIndex();
+      for (
+        let index = start + offset;
+        index >= 0 && index < triggers.length;
+        index += offset
+      ) {
+        const target = triggers[index];
+        if (target.disabled) continue;
+        target.click();
+        target.focus();
+        return;
+      }
+    };
+
+    const panels = () =>
+      Array.from(
+        root.querySelectorAll<HTMLElement>('[data-slot="tabs-content"]'),
+      );
+
+    const formIn = (panel: Element | null | undefined) =>
+      panel?.querySelector<HTMLFormElement>("form[data-sw-form]") ?? null;
+
+    const canAdvance = async () => {
+      if (!shouldValidate) return true;
+
+      const activePanel = panels().find((panel) => !panel.hidden);
+      const form = formIn(activePanel);
+      if (!form) return true;
+
+      const outcome = await createForm(form).validate({
+        reveal: true,
+        focus: true,
+      });
+
+      return outcome.status === "complete" && outcome.valid;
+    };
+
+    const syncLocks = () => {
+      if (!shouldValidate) return;
+
+      const authored = authorDisabled();
+      const panelsList = panels();
+      const active = activeIndex();
+      let reachable = true;
+
+      triggers.forEach((trigger, index) => {
+        if (index > active) {
+          trigger.disabled = authored[index] === true || !reachable;
+        } else {
+          trigger.disabled = authored[index] === true;
+        }
+
+        const form = formIn(panelsList[index]);
+        if (form && !form.checkValidity()) reachable = false;
+      });
+    };
+
+    const sync = () => {
+      const active = activeIndex();
+      const authored = authorDisabled();
+
+      syncLocks();
+
+      triggers.forEach((trigger, index) => {
+        const completed = index < active && authored[index] !== true;
+        trigger.toggleAttribute("data-completed", completed);
+
+        if (index === active) {
+          trigger.setAttribute("aria-current", "step");
+        } else {
+          trigger.removeAttribute("aria-current");
+        }
+
+        trigger
+          .querySelector("[data-stepper-connector]")
+          ?.toggleAttribute("data-completed", completed);
+      });
+
+      const hasNext = triggers
+        .slice(active + 1)
+        .some((_, offset) => authored[active + 1 + offset] !== true);
+
+      if (previousButton) previousButton.disabled = active === 0;
+      nextLabel?.classList.toggle("hidden", !hasNext);
+      finishLabel?.classList.toggle("hidden", hasNext);
+    };
+
+    if (root.dataset.stepperReady !== "true") {
+      root.dataset.stepperReady = "true";
+
+      previousButton?.addEventListener("click", () => move(-1));
+      nextButton?.addEventListener("click", async () => {
+        if (nextButton.dataset.validating === "true") return;
+        nextButton.dataset.validating = "true";
+        nextButton.setAttribute("aria-busy", "true");
+
+        try {
+          if (!(await canAdvance())) return;
+          syncLocks();
+          move(1);
+        } finally {
+          delete nextButton.dataset.validating;
+          nextButton.removeAttribute("aria-busy");
+        }
+      });
+      root.addEventListener("input", () => syncLocks());
+      root.addEventListener("change", () => syncLocks());
+      root.addEventListener("starwind:value-change", (event) => {
+        queueMicrotask(event.target === root ? sync : syncLocks);
+      });
+      root.addEventListener("starwind:checked-change", () => queueMicrotask(syncLocks));
+    }
+
+    sync();
+  };
+
+  const initSteppers = () => {
+    document
+      .querySelectorAll<HTMLElement>("[data-stepper]")
+      .forEach((root) => setupStepper(root));
+  };
+
+  initSteppers();
+  requestAnimationFrame(initSteppers);
+  document.addEventListener("astro:page-load", initSteppers);
+</script>

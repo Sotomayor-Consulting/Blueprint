@@ -1,0 +1,130 @@
+---
+import IconMenu2 from "@tabler/icons/outline/menu-2.svg";
+import { Icon } from "astro-icon/components";
+import IconX from "@tabler/icons/outline/x.svg";
+import type { HTMLAttributes } from "astro/types";
+import { tv } from "tailwind-variants";
+import { Badge } from "@/components/starwind/badge";
+import { Button } from "@/components/starwind/button";
+import { Separator } from "@/components/starwind/separator";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/starwind/sheet";
+
+/** Navigation link structure */
+export interface NavLink {
+  /** Display text for the link */
+  label: string;
+  /** URL the link points to */
+  href: string;
+}
+
+interface Props extends HTMLAttributes<"nav"> {
+  /** Logo displayed when no logo slot is provided */
+  Logo?: string;
+  /** Array of navigation links */
+  links?: NavLink[];
+  /** Primary CTA button text */
+  ctaText?: string;
+  /** Primary CTA button href */
+  ctaHref?: string;
+}
+
+// you could also swap "sticky" for "fixed"
+const navStyles = tv({
+  base: "bg-linear-[112deg,#0c2939_0%,#103846_48%,#1a5962_100%] sticky @container inset-x-0 top-0 z-50 border-b backdrop-blur",
+});
+
+const {
+  Logo = "LogoSCIwhite",
+  links = [],
+  ctaText = "Get Started",
+  ctaHref = "#",
+  class: className,
+  ...rest
+} = Astro.props;
+
+const hasLogoSlot = Astro.slots.has("logo");
+---
+
+<nav class={navStyles({ class: className })} {...rest}>
+  <div class="mx-auto flex h-20 max-w-7xl items-center px-4">
+    <!-- Logo / Site Name -->
+    <div class="flex shrink-0 items-center">
+      <a href="/" class="text-lg font-semibold">
+        <Icon name={Logo} class="text-5xl" />
+      </a>
+    </div>
+
+    <!-- Desktop Navigation Links -->
+    <div class="hidden items-center gap-1 @2xl:flex">
+      <!-- {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-sm font-medium transition-colors"
+          >
+            {link.label}
+          </a>
+        ))
+      } -->
+      <div class="w-full flex justify-start flex-col ml-10 gap-y-1">
+        <Badge tone="primary-accent" appearance="text" size="sm" eyebrow
+          >DECISIÓN EN CURSO</Badge
+        >
+        <p class="text-white text-2xl font-bold">Inicio del diseño</p>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <div class="@2xl:hidden">
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            class="[&_svg]:size-8"
+            aria-label="Open menu"
+          >
+            <IconMenu2 />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="right" class="max-w-[280px] sm:max-w-[300px]">
+          <SheetHeader>
+            <SheetTitle>
+              <Icon name={Logo} class="invert dark:invert-0 text-3xl" />
+            </SheetTitle>
+            <Separator class="mt-2" />
+          </SheetHeader>
+
+          <div class="-mt-5 flex flex-col px-4">
+            {
+              links.map((link) => (
+                <SheetClose asChild>
+                  <a
+                    href={link.href}
+                    class="text-muted-foreground hover:text-foreground -mx-3 rounded-md px-3 py-2 text-lg font-medium transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                </SheetClose>
+              ))
+            }
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button href={ctaHref} class="w-full">{ctaText}</Button>
+            </SheetClose>
+          </SheetFooter>
+          <IconX class="size-7" slot="icon" />
+        </SheetContent>
+      </Sheet>
+    </div>
+  </div>
+</nav>

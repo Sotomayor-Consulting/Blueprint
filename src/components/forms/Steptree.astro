@@ -1,0 +1,232 @@
+---
+import { Form } from "@/components/starwind/form";
+import { Badge } from "@/components/starwind/badge";
+import { Icon } from "astro-icon/components";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldItem,
+  FieldLabel,
+} from "@/components/starwind/field";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/starwind/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/starwind/select";
+import { Textarea } from "@/components/starwind/textarea";
+import { Checkbox } from "@/components/starwind/checkbox";
+import { CheckboxGroup } from "@/components/starwind/checkbox-group";
+
+import Bolt from "@tabler/icons/filled/bolt.svg";
+
+const clientMarkets = [
+  {
+    id: "client-market-latam",
+    value: "Latinoamérica",
+    name: "Latinoamérica",
+    code: "latam",
+    description: "Clientes y operaciones en mercados latinoamericanos.",
+  },
+  {
+    id: "client-market-us",
+    value: "Estados Unidos",
+    name: "Estados Unidos",
+    code: "america1",
+    description: "Clientes, ventas u operaciones dentro de Estados Unidos.",
+  },
+  {
+    id: "client-market-europe",
+    value: "Europa",
+    name: "Europa",
+    code: "europe",
+    description: "Actividad comercial con clientes de mercados europeos.",
+  },
+  {
+    id: "client-market-global",
+    value: "Global",
+    name: "Global",
+    code: "world",
+    description: "Operación internacional sin una región principal definida.",
+  },
+];
+---
+
+<Card class="w-full shadow-2xl px-5 py-10">
+  <CardHeader class="gap-y-5">
+    <Badge
+      tone="primary-accent"
+      appearance="outline"
+      size="md"
+      class="p-1 w-fit"
+      eyebrow
+    >
+      <Bolt /> Detalles ·  MODELO DE NEGOCIO</Badge
+    >
+    <CardTitle class="text-6xl">¿Qué hará la LLC?</CardTitle>
+    <CardDescription class="text-2xl"
+      >Define actividad, ingresos y mercados de la LLC</CardDescription
+    >
+  </CardHeader>
+  <Form
+    validationTiming="manual"
+    revalidationTiming="manual"
+    errorVisibility="manual"
+  >
+    <CardContent class="flex gap-4 mt-5">
+      <div class="w-full flex h-full flex-col gap-y-4">
+        <FieldGroup class="w-full">
+          <Field name="operationDescription">
+            <FieldLabel for="operation-description">
+              Descripción de la operación que realizará la LLC
+            </FieldLabel>
+            <Textarea
+              id="operation-description"
+              name="operationDescription"
+              placeholder="¿Qué hará la LLC, quiénes serán sus clientes y cómo recibirá sus ingresos?"
+              rows={5}
+              maxlength={500}
+              required
+            />
+            <FieldDescription>Máximo 500 caracteres.</FieldDescription>
+            <FieldError match="valueMissing">
+              La descripción de la operación es obligatoria.
+            </FieldError>
+            <FieldError match="tooLong">
+              Usa un máximo de 500 caracteres.
+            </FieldError>
+          </Field>
+
+          <Field name="projectedAnnualRevenue">
+            <FieldLabel for="projected-annual-revenue-trigger">
+              Facturación anual proyectada
+            </FieldLabel>
+            <Select
+              name="projectedAnnualRevenue"
+              id="projected-annual-revenue"
+              required
+            >
+              <SelectTrigger
+                id="projected-annual-revenue-trigger"
+                placeholder="Selecciona el rango de facturación"
+                class="w-full"
+              />
+              <SelectContent>
+                <SelectItem value="Menos de USD 50.000">
+                  Menos de USD 50.000
+                </SelectItem>
+                <SelectItem value="USD 50.000 - 250.000">
+                  USD 50.000 - 250.000
+                </SelectItem>
+                <SelectItem value="USD 250.001 - 1.000.000">
+                  USD 250.001 - 1.000.000
+                </SelectItem>
+                <SelectItem value="Más de USD 1.000.000">
+                  Más de USD 1.000.000
+                </SelectItem>
+                <SelectItem value="Aún no definido">
+                  Aún no definido
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            <FieldError match="valueMissing">
+              Selecciona el rango de facturación.
+            </FieldError>
+          </Field>
+          <Field name="clientMarkets">
+            <FieldLabel>Mercados donde tendrá clientes</FieldLabel>
+            <FieldDescription>
+              Puedes seleccionar una o varias regiones.
+            </FieldDescription>
+            <CheckboxGroup
+              id="client-markets-group"
+              aria-label="Mercados donde tendrá clientes"
+              class="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-2 lg:grid-cols-4"
+            >
+              {
+                clientMarkets.map((market) => (
+                  <FieldItem
+                    data-client-market-option
+                    class="group/market focus-within:ring-outline/50 has-data-checked:ring-primary relative block h-full rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
+                  >
+                    <span class="absolute top-4 right-4 z-10 rounded-md bg-background/90 p-1 shadow-sm backdrop-blur-sm">
+                      <Checkbox
+                        id={market.id}
+                        name="clientMarkets"
+                        value={market.value}
+                        aria-label={market.name}
+                        variant="primary"
+                      />
+                    </span>
+
+                    <label
+                      for={market.id}
+                      class="block h-full cursor-pointer rounded-xl"
+                    >
+                      <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/market:shadow-lg">
+                        <CardHeader class="pb-5">
+                          <span class="bg-primary-accent/15 text-primary-accent mt-6 inline-flex min-h-12 w-fit items-center rounded-xl px-4 text-sm font-semibold tracking-wider">
+                            <Icon name={market.code} class="text-primary text-2xl"/>
+                          </span>
+                          <CardTitle class="text-base">{market.name}</CardTitle>
+                          <CardDescription class="text-sm">
+                            {market.description}
+                          </CardDescription>
+                        </CardHeader>
+                      </Card>
+                    </label>
+                  </FieldItem>
+                ))
+              }
+            </CheckboxGroup>
+            <FieldError match="customError" messageSource="validation">
+              Selecciona al menos un mercado donde tendrás clientes.
+            </FieldError>
+          </Field>
+        </FieldGroup>
+      </div>
+    </CardContent>
+  </Form>
+</Card>
+
+<script>
+  import { createForm } from "@starwind-ui/astro/form";
+
+  const initClientMarketValidation = () => {
+    document
+      .querySelectorAll<HTMLFormElement>("form[data-sw-form]")
+      .forEach((form) => {
+        if (!form.querySelector("#client-markets-group")) return;
+
+        createForm(form, {
+          fieldValidators: {
+            clientMarkets: (_value, { field }) => {
+              const hasSelection = Boolean(
+                field.root.querySelector("[data-sw-checkbox][data-checked]"),
+              );
+
+              if (hasSelection) return null;
+
+              return {
+                key: "customError",
+                message: "Selecciona al menos un mercado donde tendrás clientes.",
+                source: "custom",
+              };
+            },
+          },
+        });
+      });
+  };
+
+  initClientMarketValidation();
+  document.addEventListener("astro:page-load", initClientMarketValidation);
+</script>

@@ -1,0 +1,102 @@
+---
+import Bolt from "@tabler/icons/filled/bolt.svg";
+import { Separator } from "@/components/starwind/separator";
+import { Switch } from "@/components/starwind/switch";
+import { Badge } from "@/components/starwind/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/starwind/card";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/starwind/field";
+import { Form } from "@/components/starwind/form";
+import { RadioGroup, RadioGroupItem } from "@/components/starwind/radio-group";
+
+const confidencialidad = [
+  {
+    id: "Si_fuenteEEUU",
+    value: "true",
+    name: "Sí, existe fuente estadounidense",
+    description:
+      "Se revisarán la actividad, los contratos y la conexión operativa.",
+  },
+  {
+    id: "No_fuenteEEUU",
+    value: "false",
+    name: "No se identifica fuente estadounidense",
+    description: "Se validará la respuesta frente a la operación real.",
+  },
+];
+
+const indicadoresOperativos = [
+  {
+    title: "Oficina, local o bodega",
+    description: "Presencia Fisica",
+    id: "oficina-local-bodega",
+    icon: "MaterialSymbolsLightLocalMallSharp",
+  },
+  {
+    title: "Inventario en EE. UU.",
+    description: "Stock o fulfillment",
+    id: "Inventario-en-EEUU",
+    icon: "MaterialSymbolsLightLocalMallSharp",
+  },
+  {
+    title: "Servicios ejecutados en EE. UU.",
+    description: "Trabajo presencial",
+    id: "Servicios-ejecutados-en-EEUU",
+    icon: "MaterialSymbolsLightDesignServices",
+  },
+  {
+    title: "Empleados en EE. UU.",
+    description: "Personal contratado",
+    id: "Empleados-en-EEUU",
+    icon: "MaterialSymbolsLightHowToRegRounded",
+  },
+  {
+    title: "Bien inmueble en EE. UU.",
+    description: "Propiedad o activo inmobiliario",
+    id: "Bien-inmueble-en-EEUU",
+    icon: "MaterialSymbolsLightInHomeModeRounded",
+  },
+  {
+    title: "Amazon FBA",
+    description: "Logística de terceros",
+    id: "Amazon-FBA",
+    icon: "MaterialSymbolsLightDeliveryTruckSpeedRounded",
+  },
+];
+
+const defaultLevel = confidencialidad[0];
+---
+
+<Card class="w-full px-5 py-10 shadow-2xl">
+  <CardHeader class="gap-y-5">
+    <Badge
+      tone="primary-accent"
+      appearance="outline"
+      size="md"
+      class="w-fit p-1"
+      eyebrow
+    >
+      <Bolt /> SISTEMA TRIBUTARIO
+    </Badge>
+    <CardTitle class="text-4xl md:text-6xl"
+      >Definamos la tributación de la LLC</CardTitle
+    >
+    <CardDescription class="text-xl md:text-2xl">
+      El especialista ubica personas, servicios, inventario y activos antes de
+      analizar alternativas tributarias.
+    </CardDescription>
+  </CardHeader>
+
+  
+</Card>

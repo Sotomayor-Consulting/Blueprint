@@ -1,0 +1,80 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { tv } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"div"> {
+  /**
+   * Border width in pixels
+   * @default 2
+   */
+  borderWidth?: number;
+  /**
+   * Animation duration in seconds
+   * @default 7
+   */
+  duration?: number;
+  /**
+   * Array of gradient colors (CSS color values)
+   * @default ["var(--color-blue-500)", "var(--color-violet-500)", "var(--color-pink-500)", "var(--color-emerald-500)"]
+   */
+  colors?: string[];
+}
+
+const rotatingGradient = tv({
+  base: "rotate-gradient-border relative isolate",
+});
+
+const {
+  borderWidth = 2,
+  duration = 7,
+  colors = [
+    "#0c2939",
+    "#1a5962",
+    "#c58f22"
+  ],
+  class: className,
+  ...rest
+} = Astro.props;
+
+const gradientColors = [...colors, colors[0]].join(", ");
+---
+
+<div
+  class={rotatingGradient({ class: className })}
+  style={`--border-width: ${borderWidth}px; --duration: ${duration}s; --gradient-colors: ${gradientColors};`}
+  {...rest}
+>
+  <slot />
+</div>
+
+<style>
+  .rotate-gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: var(--border-width);
+    background: linear-gradient(var(--gradient-angle, 0deg), var(--gradient-colors));
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    z-index: -1;
+    animation: rotate-gradient var(--duration) linear infinite;
+  }
+
+  @keyframes rotate-gradient {
+    0% {
+      --gradient-angle: 0deg;
+    }
+    100% {
+      --gradient-angle: 360deg;
+    }
+  }
+
+  @property --gradient-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+</style>

@@ -1,0 +1,515 @@
+---
+import Bolt from "@tabler/icons/filled/bolt.svg";
+import MapPin from "@tabler/icons/outline/map-pin.svg";
+
+import { Badge } from "@/components/starwind/badge";
+import { RadioGroup, RadioGroupItem } from "@/components/starwind/radio-group";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/starwind/card";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxLabel,
+} from "@/components/starwind/combobox";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/starwind/field";
+import { Form } from "@/components/starwind/form";
+
+const totalStates = ["Delaware", "Wyoming", "Nuevo México", "Nevada"];
+
+const nulaAndParcialStates = [
+  "Florida",
+  "Texas",
+  "California",
+  "Nueva York",
+  "Alabama",
+  "Alaska",
+  "Arizona",
+  "Arkansas",
+  "Carolina del Norte",
+  "Carolina del Sur",
+  "Colorado",
+  "Connecticut",
+  "Dakota del Norte",
+  "Dakota del Sur",
+  "Georgia",
+  "Hawái",
+  "Idaho",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Luisiana",
+  "Maine",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Misisipi",
+  "Misuri",
+  "Montana",
+  "Nebraska",
+  "Nueva Hampshire",
+  "Nueva Jersey",
+  "Ohio",
+  "Oklahoma",
+  "Oregón",
+  "Pensilvania",
+  "Rhode Island",
+  "Tennessee",
+  "Utah",
+  "Vermont",
+  "Virginia",
+  "Virginia Occidental",
+  "Washington",
+  "Wisconsin",
+];
+
+const stateOptions = [
+  ...totalStates.map((name) => ({ name, levels: ["Total"] })),
+  ...nulaAndParcialStates.map((name) => ({
+    name,
+    levels: ["Nula", "Parcial"],
+  })),
+];
+
+const confidencialidad = [
+  {
+    id: "Sí",
+    value: "Sí, existe presencia operativa",
+    name: "Sí, existe presencia operativa",
+    description: "Oficina, empleados, inventario, local u operación.",
+  },
+  {
+    id: "No",
+    value: "No hay presencia operativa definida",
+    name: "No hay presencia operativa definida",
+    description: "La operación se realiza fuera de EE. UU.",
+  },
+];
+
+const defaultLevel = confidencialidad[0];
+---
+
+<Card class="w-full px-5 py-10 shadow-2xl" data-formation-state-step>
+  <CardHeader class="gap-y-5">
+    <Badge
+      tone="primary-accent"
+      appearance="outline"
+      size="md"
+      class="w-fit p-1"
+      eyebrow
+    >
+      <Bolt /> ESTADO DE REGISTRO
+    </Badge>
+    <CardTitle class="text-4xl md:text-6xl">Selecciona el estado</CardTitle>
+    <CardDescription class="text-xl md:text-2xl">
+      Mostramos únicamente los estados compatibles con el nivel de
+      confidencialidad seleccionado.
+    </CardDescription>
+  </CardHeader>
+
+  <Form
+    validationTiming="manual"
+    revalidationTiming="manual"
+    errorVisibility="manual"
+  >
+    <CardContent class="mt-5">
+      <FieldGroup>
+        <Field name="formationState">
+          <Card
+            class="bg-primary-accent/5 ring-primary-accent/20 mb-5"
+            aria-live="polite"
+          >
+            <CardContent class="grid gap-5 md:grid-cols-[auto_1fr]">
+              <span
+                class="bg-primary-accent/10 text-primary-accent grid size-11 shrink-0 place-items-center rounded-full"
+              >
+                <MapPin class="size-5" aria-hidden="true" />
+              </span>
+              <div class="min-w-0 space-y-4">
+                <div>
+                  <p
+                    class="text-muted-foreground text-sm"
+                    data-state-info-eyebrow
+                  >
+                    Confidencialidad aplicada
+                  </p>
+                  <p
+                    class="text-foreground text-lg font-semibold"
+                    data-state-info-title
+                  >
+                    Nula
+                  </p>
+                  <p
+                    class="text-muted-foreground text-sm"
+                    data-state-info-summary
+                  >
+                    {nulaAndParcialStates.length} estados disponibles
+                  </p>
+                </div>
+
+                <dl
+                  class="grid gap-4 border-t border-primary-accent/20 pt-4 sm:grid-cols-3"
+                  data-state-info-details
+                  hidden
+                >
+                  <div class="space-y-1">
+                    <dt
+                      class="text-muted-foreground text-xs font-medium uppercase tracking-wide"
+                    >
+                      Franchise y mantenimiento
+                    </dt>
+                    <dd
+                      class="text-foreground text-sm font-medium"
+                      data-state-franchise
+                    >
+                    </dd>
+                  </div>
+                  <div class="space-y-1">
+                    <dt
+                      class="text-muted-foreground text-xs font-medium uppercase tracking-wide"
+                    >
+                      Impuesto estatal
+                    </dt>
+                    <dd
+                      class="text-foreground text-sm font-medium"
+                      data-state-tax
+                    >
+                    </dd>
+                  </div>
+                  <div class="space-y-1">
+                    <dt
+                      class="text-muted-foreground text-xs font-medium uppercase tracking-wide"
+                    >
+                      Ventaja
+                    </dt>
+                    <dd
+                      class="text-foreground text-sm font-medium"
+                      data-state-advantage
+                    >
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </CardContent>
+          </Card>
+          <Combobox
+            id="formation-state-combobox"
+            name="formationState"
+            filterMode="contains"
+            locale="es"
+            required
+            data-formation-state-combobox
+          >
+            <ComboboxLabel>Estado de constitución</ComboboxLabel>
+            <ComboboxInput placeholder="Busca un estado" showClear />
+            <ComboboxContent size="lg">
+              <ComboboxEmpty>No encontramos un estado disponible.</ComboboxEmpty
+              >
+              {
+                stateOptions.map((state) => (
+                  <ComboboxItem
+                    value={state.name}
+                    data-state-option
+                    data-levels={state.levels.join(" ")}
+                  >
+                    {state.name}
+                  </ComboboxItem>
+                ))
+              }
+            </ComboboxContent>
+          </Combobox>
+          <FieldDescription id="formation-state-description">
+            Escribe para filtrar y selecciona una opción de la lista.
+          </FieldDescription>
+          <FieldError match="valueMissing">
+            Selecciona un estado disponible para continuar.
+          </FieldError>
+          <FieldError match="customError" messageSource="validation">
+            Selecciona un estado disponible para continuar.
+          </FieldError>
+        </Field>
+        <Field name="operaciones">
+          <FieldLabel
+            >¿La LLC tendrá presencia operativa en un estado específico?</FieldLabel
+          >
+          <RadioGroup
+            id="operaciones-group"
+            name="operaciones"
+            legend="Selecciona si tu LLC tendrá presencia operativa en un estado específico"
+            defaultValue={defaultLevel.value}
+            required
+            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2"
+          >
+            {
+              confidencialidad.map((model) => {
+                return (
+                  <label
+                    for={model.id}
+                    data-confidentiality-option
+                    data-value={model.value}
+                    data-label={model.name}
+                    class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
+                  >
+                    <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
+                      <RadioGroupItem
+                        id={model.id}
+                        value={model.value}
+                        aria-label={model.name}
+                        variant="primary"
+                      />
+                    </span>
+
+                    <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                      <CardHeader class="py-5 grid-cols-[auto_1fr] grid-rows-1 h-full">
+                        <div>
+                          <CardTitle class="text-base">{model.name}</CardTitle>
+                          <CardDescription class="text-sm">
+                            {model.description}
+                          </CardDescription>
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  </label>
+                );
+              })
+            }
+          </RadioGroup>
+
+          <FieldError match="valueMissing">
+            Selecciona un modelo de negocio para continuar.
+          </FieldError>
+        </Field>
+      </FieldGroup>
+    </CardContent>
+  </Form>
+</Card>
+
+<script>
+  import { createForm } from "@starwind-ui/astro/form";
+  import stateInfoData from "./state-info.json";
+  import {
+    readFormDraft,
+    updateFormDraft,
+    type ConfidentialityLevel,
+  } from "./form-draft";
+
+  const isConfidentialityLevel = (
+    value: string,
+  ): value is ConfidentialityLevel =>
+    value === "Nula" || value === "Parcial" || value === "Total";
+
+  interface StateInfo {
+    Franchise_mantenimiento: string;
+    Impuesto_estatal: string;
+    Ventaja: string;
+  }
+
+  const stateInfo = stateInfoData as Record<string, StateInfo>;
+
+  const stateKeyFor = (state: string) =>
+    state
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/\s+/g, "_");
+
+  const setupFormationState = (container: HTMLElement) => {
+    if (container.dataset.formationStateReady === "true") return;
+    container.dataset.formationStateReady = "true";
+
+    const root = container.querySelector<HTMLElement>(
+      "[data-formation-state-combobox]",
+    );
+    const input = root?.querySelector<HTMLInputElement>(
+      '[data-slot="combobox-input"]',
+    );
+    const form = container.querySelector<HTMLFormElement>("form[data-sw-form]");
+    const infoEyebrow = container.querySelector<HTMLElement>(
+      "[data-state-info-eyebrow]",
+    );
+    const infoTitle = container.querySelector<HTMLElement>(
+      "[data-state-info-title]",
+    );
+    const infoSummary = container.querySelector<HTMLElement>(
+      "[data-state-info-summary]",
+    );
+    const infoDetails = container.querySelector<HTMLElement>(
+      "[data-state-info-details]",
+    );
+    const franchiseOutput = container.querySelector<HTMLElement>(
+      "[data-state-franchise]",
+    );
+    const taxOutput = container.querySelector<HTMLElement>("[data-state-tax]");
+    const advantageOutput = container.querySelector<HTMLElement>(
+      "[data-state-advantage]",
+    );
+    const options = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-state-option]"),
+    );
+    const optionsParent = options[0]?.parentElement;
+
+    if (
+      !root ||
+      !input ||
+      !form ||
+      !optionsParent ||
+      !infoEyebrow ||
+      !infoTitle ||
+      !infoSummary ||
+      !infoDetails ||
+      !franchiseOutput ||
+      !taxOutput ||
+      !advantageOutput
+    )
+      return;
+
+    let activeLevel: ConfidentialityLevel = "Nula";
+    let availableStateCount = 0;
+
+    const renderStateInfo = (state: string | null) => {
+      if (!state) {
+        infoEyebrow.textContent = "Confidencialidad aplicada";
+        infoTitle.textContent = activeLevel;
+        infoSummary.textContent = `${availableStateCount} estados disponibles`;
+        infoDetails.hidden = true;
+        return;
+      }
+
+      const details = stateInfo[stateKeyFor(state)];
+      infoEyebrow.textContent = "Estado seleccionado";
+      infoTitle.textContent = state;
+
+      if (!details) {
+        infoSummary.textContent =
+          "La información fiscal detallada aún no está disponible.";
+        infoDetails.hidden = true;
+        return;
+      }
+
+      infoSummary.textContent =
+        "Información referencial de mantenimiento e impuestos estatales.";
+      franchiseOutput.textContent = details.Franchise_mantenimiento;
+      taxOutput.textContent = details.Impuesto_estatal;
+      advantageOutput.textContent = details.Ventaja;
+      infoDetails.hidden = false;
+    };
+
+    createForm(form, {
+      fieldValidators: {
+        formationState: (value) => {
+          const selected = Array.isArray(value)
+            ? String(value[0] ?? "")
+            : String(value ?? "");
+
+          if (!selected) return null;
+
+          const selectedOption = options.find(
+            (option) => option.dataset.value === selected && option.isConnected,
+          );
+
+          if (selectedOption && input.value.trim() === selected) return null;
+
+          return {
+            key: "customError",
+            message: "Selecciona un estado disponible para continuar.",
+            source: "custom",
+          };
+        },
+      },
+    });
+
+    const setValue = (value: string | null) => {
+      root.dispatchEvent(
+        new CustomEvent("starwind:set-value", {
+          bubbles: true,
+          detail: { value, emit: true },
+        }),
+      );
+    };
+
+    const applyConfidentiality = (
+      level: ConfidentialityLevel,
+      restore = false,
+    ) => {
+      activeLevel = level;
+      container.dataset.confidentialityLevel = level;
+
+      let availableCount = 0;
+      options.forEach((option) => {
+        const available =
+          option.dataset.levels?.split(" ").includes(level) ?? false;
+        if (available) {
+          option.hidden = false;
+          option.removeAttribute("data-disabled");
+          option.setAttribute("aria-disabled", "false");
+          if (!option.isConnected) optionsParent.append(option);
+          availableCount += 1;
+        } else {
+          option.remove();
+        }
+      });
+
+      availableStateCount = availableCount;
+
+      const currentOption = options.find(
+        (option) => option.dataset.value === root.dataset.value,
+      );
+      if (currentOption && !currentOption.isConnected) {
+        setValue(null);
+        updateFormDraft({ formationState: undefined });
+      }
+
+      if (restore) {
+        const storedState = readFormDraft().answers.formationState;
+        const storedOption = options.find(
+          (option) =>
+            option.dataset.value === storedState && option.isConnected,
+        );
+        if (storedOption?.dataset.value) setValue(storedOption.dataset.value);
+      }
+
+      renderStateInfo(root.dataset.value ?? null);
+    };
+
+    root.addEventListener("starwind:value-change", (event) => {
+      const { value } = (event as CustomEvent<{ value: string | null }>).detail;
+      updateFormDraft({ formationState: value ?? undefined });
+      renderStateInfo(value);
+    });
+
+    document.addEventListener("llc-form:confidentiality-change", (event) => {
+      const { value } = (event as CustomEvent<{ value: string }>).detail;
+      if (isConfidentialityLevel(value)) applyConfidentiality(value);
+    });
+
+    const draftLevel = readFormDraft().answers.confidentialityLevel;
+    const selectedLevel =
+      draftLevel && isConfidentialityLevel(draftLevel) ? draftLevel : "Nula";
+    requestAnimationFrame(() => applyConfidentiality(selectedLevel, true));
+  };
+
+  const initFormationStateSteps = () => {
+    document
+      .querySelectorAll<HTMLElement>("[data-formation-state-step]")
+      .forEach((container) => setupFormationState(container));
+  };
+
+  initFormationStateSteps();
+  document.addEventListener("astro:page-load", initFormationStateSteps);
+</script>

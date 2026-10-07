@@ -1,0 +1,252 @@
+{
+  "florida": {
+    "Franchise_mantenimiento": "USD 138,75 anuales",
+    "Impuesto_estatal": "Sin income tax personal; C-Corp sí",
+    "Ventaja": "Muy popular, confiable y favorable para extranjeros"
+  },
+  "texas": {
+    "Franchise_mantenimiento": "USD 0 hasta USD 2,65 M de ingresos; sobre el umbral aplica Franchise Tax",
+    "Impuesto_estatal": "Sin personal/corporate income tax tradicional",
+    "Ventaja": "Jurisdicción prestigiosa, mercado enorme y favorable para negocios"
+  },
+  "california": {
+    "Franchise_mantenimiento": "USD 800 mínimo anual + USD 20 bienal",
+    "Impuesto_estatal": "Sí, relativamente alto",
+    "Ventaja": "Gran mercado y fuerte prestigio comercial, pero costoso"
+  },
+  "nueva_york": {
+    "Franchise_mantenimiento": "USD 9 cada 2 años",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Altísimo prestigio comercial y financiero; mayor complejidad regulatoria"
+  },
+  "alabama": {
+    "Franchise_mantenimiento": "Variable; USD 0 si el impuesto calculado es ≤ USD 100",
+    "Impuesto_estatal": "Sí, sobre renta y Business Privilege Tax",
+    "Ventaja": "Costos moderados y entorno favorable para operación local"
+  },
+  "alaska": {
+    "Franchise_mantenimiento": "USD 100 cada 2 años",
+    "Impuesto_estatal": "Sin impuesto personal; corporativo sí",
+    "Ventaja": "Sin income tax personal y estructura corporativa estable"
+  },
+  "arizona": {
+    "Franchise_mantenimiento": "USD 0; sin Annual Report",
+    "Impuesto_estatal": "Sí, sobre renta",
+    "Ventaja": "Muy bajo mantenimiento y administración sencilla"
+  },
+  "arkansas": {
+    "Franchise_mantenimiento": "USD 150 anuales",
+    "Impuesto_estatal": "Sí, sobre renta",
+    "Ventaja": "Bajo costo inicial y regulación empresarial sencilla"
+  },
+  "carolina_del_norte": {
+    "Franchise_mantenimiento": "USD 200 anuales",
+    "Impuesto_estatal": "Sí, con corporate rate competitivo",
+    "Ventaja": "Excelente clima empresarial y economía en crecimiento"
+  },
+  "carolina_del_sur": {
+    "Franchise_mantenimiento": "USD 0 para una LLC estándar",
+    "Impuesto_estatal": "Sí, sobre renta",
+    "Ventaja": "Bajo mantenimiento y entorno favorable para pequeñas empresas"
+  },
+  "colorado": {
+    "Franchise_mantenimiento": "USD 25 anuales",
+    "Impuesto_estatal": "Sí, sobre renta",
+    "Ventaja": "Bajo costo y excelente administración digital"
+  },
+  "connecticut": {
+    "Franchise_mantenimiento": "USD 80 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Jurisdicción estable dentro del mercado del noreste"
+  },
+  "dakota_del_norte": {
+    "Franchise_mantenimiento": "USD 50 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Tasas tributarias relativamente bajas y estabilidad"
+  },
+  "dakota_del_sur": {
+    "Franchise_mantenimiento": "USD 55 anuales en línea",
+    "Impuesto_estatal": "0% de income tax personal y corporativo",
+    "Ventaja": "Jurisdicción favorable, privada y reconocida para protección patrimonial"
+  },
+  "delaware": {
+    "Franchise_mantenimiento": "USD 300 anuales referenciales; confirmar tasa vigente",
+    "Impuesto_estatal": "Sí, según actividad y nexus",
+    "Ventaja": "Máximo prestigio corporativo, Court of Chancery y alta aceptación de inversionistas"
+  },
+  "georgia": {
+    "Franchise_mantenimiento": "USD 60 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Bajo mantenimiento y fuerte entorno comercial y logístico"
+  },
+  "hawai": {
+    "Franchise_mantenimiento": "USD 15 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Muy bajo costo de mantenimiento estatal"
+  },
+  "idaho": {
+    "Franchise_mantenimiento": "USD 0; Annual Report obligatorio",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Mantenimiento prácticamente gratuito y simple"
+  },
+  "illinois": {
+    "Franchise_mantenimiento": "USD 75 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Acceso a Chicago y uno de los mayores mercados del país"
+  },
+  "indiana": {
+    "Franchise_mantenimiento": "USD 32 cada 2 años",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Muy bajo mantenimiento y ambiente empresarial competitivo"
+  },
+  "iowa": {
+    "Franchise_mantenimiento": "USD 30 cada 2 años en línea",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Bajo costo y cumplimiento sencillo"
+  },
+  "kansas": {
+    "Franchise_mantenimiento": "USD 5 cada 2 años en línea, referencial desde 2026",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Uno de los mantenimientos más económicos del país"
+  },
+  "kentucky": {
+    "Franchise_mantenimiento": "USD 15 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Muy bajos costos de mantenimiento empresarial"
+  },
+  "luisiana": {
+    "Franchise_mantenimiento": "USD 30 anuales; confirmar ajuste previsto para 2026",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Bajo mantenimiento y mercado regional importante"
+  },
+  "maine": {
+    "Franchise_mantenimiento": "USD 85 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Jurisdicción estable y confiable para operaciones locales"
+  },
+  "maryland": {
+    "Franchise_mantenimiento": "USD 300 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Cercanía a Washington D.C. y fuerte economía empresarial"
+  },
+  "massachusetts": {
+    "Franchise_mantenimiento": "USD 500 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Alto prestigio en tecnología, finanzas y biotecnología"
+  },
+  "michigan": {
+    "Franchise_mantenimiento": "USD 25 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Bajo mantenimiento y fuerte sector industrial"
+  },
+  "minnesota": {
+    "Franchise_mantenimiento": "USD 0; renovación anual obligatoria",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Sin costo de renovación y entorno empresarial estable"
+  },
+  "misisipi": {
+    "Franchise_mantenimiento": "USD 0; Annual Report obligatorio",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Muy bajo costo de mantenimiento"
+  },
+  "misuri": {
+    "Franchise_mantenimiento": "USD 0; sin Annual Report para LLC",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Simplicidad y costos recurrentes mínimos"
+  },
+  "montana": {
+    "Franchise_mantenimiento": "USD 0 si se presenta a tiempo; USD 35 tarde",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Mantenimiento gratuito y administración sencilla"
+  },
+  "nebraska": {
+    "Franchise_mantenimiento": "USD 30 cada 2 años",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Bajo costo y estructura empresarial estable"
+  },
+  "nevada": {
+    "Franchise_mantenimiento": "Aproximadamente USD 350 anuales",
+    "Impuesto_estatal": "Sin income tax personal/corporativo; Commerce Tax puede aplicar",
+    "Ventaja": "Privacidad y protección patrimonial"
+  },
+  "nueva_hampshire": {
+    "Franchise_mantenimiento": "USD 100 anuales",
+    "Impuesto_estatal": "Sí, mediante impuestos empresariales",
+    "Ventaja": "Sin income tax personal general y ambiente empresarial sólido"
+  },
+  "nueva_jersey": {
+    "Franchise_mantenimiento": "USD 75 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Gran mercado y proximidad directa a Nueva York"
+  },
+  "nuevo_mexico": {
+    "Franchise_mantenimiento": "USD 0; sin Annual Report para LLC",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Muy bajo mantenimiento y buena privacidad registral"
+  },
+  "ohio": {
+    "Franchise_mantenimiento": "USD 0; sin Annual Report",
+    "Impuesto_estatal": "Sin corporate income tax; CAT puede aplicar",
+    "Ventaja": "Mantenimiento mínimo y gran mercado industrial"
+  },
+  "oklahoma": {
+    "Franchise_mantenimiento": "USD 25 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Costos bajos y cumplimiento sencillo"
+  },
+  "oregon": {
+    "Franchise_mantenimiento": "USD 100 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Sin sales tax estatal y sólido ecosistema empresarial"
+  },
+  "pensilvania": {
+    "Franchise_mantenimiento": "USD 7 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Mantenimiento muy bajo y gran mercado"
+  },
+  "rhode_island": {
+    "Franchise_mantenimiento": "USD 50 Annual Report + USD 400 mínimo estatal",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Jurisdicción estable, aunque relativamente costosa para LLC"
+  },
+  "tennessee": {
+    "Franchise_mantenimiento": "USD 300 mínimo anual",
+    "Impuesto_estatal": "Sin personal income tax; franchise/excise tax sí",
+    "Ventaja": "Excelente clima empresarial, pero mayor costo para LLC"
+  },
+  "utah": {
+    "Franchise_mantenimiento": "USD 18 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Bajo costo y fuerte ecosistema tecnológico y emprendedor"
+  },
+  "vermont": {
+    "Franchise_mantenimiento": "USD 45 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Jurisdicción estable y regulación corporativa sólida"
+  },
+  "virginia": {
+    "Franchise_mantenimiento": "USD 50 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Fuerte reputación empresarial y proximidad a Washington D.C."
+  },
+  "virginia_occidental": {
+    "Franchise_mantenimiento": "USD 25 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Bajo mantenimiento y bajos costos operativos"
+  },
+  "washington": {
+    "Franchise_mantenimiento": "USD 60 anuales",
+    "Impuesto_estatal": "Sin income tax general; B&O Tax sí",
+    "Ventaja": "Gran ecosistema tecnológico y fuerte reputación comercial"
+  },
+  "wisconsin": {
+    "Franchise_mantenimiento": "USD 25 anuales",
+    "Impuesto_estatal": "Sí",
+    "Ventaja": "Bajo costo, estabilidad y fuerte base industrial"
+  },
+  "wyoming": {
+    "Franchise_mantenimiento": "Mínimo USD 60 anual mediante Annual Report estatal",
+    "Impuesto_estatal": "0% de impuesto estatal sobre la renta para personas y corporaciones",
+    "Ventaja": "Jurisdicción confiable, privada y favorable para LLCs, con bajos costos y buena aceptación internacional"
+  }
+}

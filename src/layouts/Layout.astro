@@ -1,5 +1,18 @@
+---
+import "@/styles/starwind.css";
+import Navbar, { type NavLink } from "@components/blocks/Navbar.astro";
+import { Toaster } from "@/components/starwind/toast";
+
+const links: NavLink[] = [
+  { label: "Features", href: "#features" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "About", href: "#about" },
+  { label: "Blog", href: "#blog" },
+];
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -8,16 +21,10 @@
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro Basics</title>
 	</head>
-	<body>
+	<body class="m-0 w-full h-full">
+		<Navbar Logo="LogoSCIwhite" links={links} ctaText="Get Started" ctaHref="#get-started" />
 		<slot />
+		<Toaster position="top-right" />
 	</body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

@@ -1,11 +1,95 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import Stepper, { type StepperStep } from "@/components/blocks/stepper.astro";
+import { Checkbox } from "@/components/starwind/checkbox";
+import { Form } from "@/components/starwind/form";
+import {
+  Field,
+  FieldContent,
+  FieldControl,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldItem,
+  FieldLabel,
+} from "@/components/starwind/field";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import StepOne from "@components/forms/StepOne.astro";
+import StepTwo from "@components/forms/StepTwo.astro";
+import StepTree from "@components/forms/Steptree.astro";
+import StepFour from "@components/forms/StepFour.astro"
+import StepFive from "@components/forms/StepFive.astro";
+
+const steps: StepperStep[] = [
+  { id: "Correo", title: "Inicio", description: "" },
+  {
+    id: "Modelo",
+    title: "Modelo de negocio",
+    description: "",
+  },
+  { id: "Operacion", title: "Confirmación", description: "" },
+  { id: "Confidencialidad", title: "Confidencialidad", description: ""},
+  { id: "Estado", title: "Estado", description: "" },
+  { id: "review", title: "Final", description: ""},
+];
+
 ---
 
 <Layout>
-	<Welcome />
+  <div class="mx-auto w-full max-w-7xl px-4 py-10">
+    <Stepper
+      steps={steps}
+      defaultValue="Correo"
+      label="Alta de cuenta"
+      orientation="horizontal"
+      nextLabel="Siguiente"
+      finishLabel="Finalizar"
+    >
+      <StepOne slot="Correo"/>
+      <StepTwo slot="Modelo"/>
+      <StepTree slot="Operacion" />
+      <StepFour slot="Confidencialidad" />
+      <StepFive slot="Estado" />
+
+      <Form
+        slot="review"
+        validationTiming="manual"
+        revalidationTiming="manual"
+        errorVisibility="manual"
+      >
+        <FieldGroup>
+          <div class="text-muted-foreground space-y-2 text-sm">
+            <p class="text-foreground font-medium">Listo para confirmar.</p>
+            <p>
+              Revisa los pasos anteriores y acepta las condiciones para
+              finalizar.
+            </p>
+          </div>
+
+          <Field name="terms" orientation="horizontal">
+            <FieldItem>
+              <Checkbox
+                id="terms"
+                name="terms"
+                value="accepted"
+                aria-label="Aceptar los términos y condiciones"
+                required
+              />
+              <FieldContent>
+                <FieldLabel for="terms"
+                  >Acepto los términos y condiciones</FieldLabel
+                >
+                <FieldDescription>
+                  Este checkbox es obligatorio para completar el stepper.
+                </FieldDescription>
+              </FieldContent>
+            </FieldItem>
+            <FieldError match="valueMissing">
+              Debes aceptar los términos para continuar.
+            </FieldError>
+          </Field>
+        </FieldGroup>
+      </Form>
+    </Stepper>
+  </div>
 </Layout>
