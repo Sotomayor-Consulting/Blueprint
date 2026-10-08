@@ -16,7 +16,6 @@ import {
 } from "@/components/starwind/card";
 import {
   FieldDescription,
-  FieldError,
   FieldGroup,
   FieldLegend,
   FieldSet,
@@ -81,58 +80,67 @@ const defaultLevel = confidencialidad[0];
             Selecciona el nivel que mejor se ajuste a tus necesidades.
           </FieldDescription>
 
-          <RadioGroup
-            id="confidentiality-level-group"
-            name="confidentialityLevel"
-            legend="Selecciona el nivel de confidencialidad"
-            defaultValue={defaultLevel.value}
-            required
-            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-3"
-          >
-            {
-              confidencialidad.map((model) => {
-                return (
-                  <label
-                    for={model.id}
-                    data-confidentiality-option
-                    data-value={model.value}
-                    data-label={model.name}
-                    class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
-                  >
-                    <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
-                      <RadioGroupItem
-                        id={model.id}
-                        value={model.value}
-                        variant="primary"
-                      />
-                    </span>
+          <div>
+            <RadioGroup
+              id="confidentiality-level-group"
+              name="confidentialityLevel"
+              legend="Selecciona el nivel de confidencialidad"
+              defaultValue={defaultLevel.value}
+              required
+              aria-describedby="confidentiality-level-error"
+              class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-3"
+            >
+              {
+                confidencialidad.map((model) => {
+                  return (
+                    <label
+                      for={model.id}
+                      data-confidentiality-option
+                      data-value={model.value}
+                      data-label={model.name}
+                      class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
+                    >
+                      <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
+                        <RadioGroupItem
+                          id={model.id}
+                          value={model.value}
+                          aria-label={model.name}
+                          variant="primary"
+                        />
+                      </span>
 
-                    <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
-                      <CardHeader class="py-5 grid-cols-[auto_1fr] grid-rows-1 h-full">
-                        <div class="w-fit rounded-xl p-2 mr-5 flex items-center justify-center h-full">
-                          <Image
-                            src={model.image}
-                            alt={model.name}
-                            class="text-primary size-15"
-                          />
-                        </div>
-                        <div>
-                          <CardTitle class="text-base">{model.name}</CardTitle>
-                          <CardDescription class="text-sm">
-                            {model.description}
-                          </CardDescription>
-                        </div>
-                      </CardHeader>
-                    </Card>
-                  </label>
-                );
-              })
-            }
-          </RadioGroup>
+                      <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                        <CardHeader class="py-5 grid-cols-[auto_1fr] grid-rows-1 h-full">
+                          <div class="w-fit rounded-xl p-2 mr-5 flex items-center justify-center h-full">
+                            <Image
+                              src={model.image}
+                              alt={model.name}
+                              class="text-primary size-15"
+                            />
+                          </div>
+                          <div>
+                            <CardTitle class="text-base">{model.name}</CardTitle>
+                            <CardDescription class="text-sm">
+                              {model.description}
+                            </CardDescription>
+                          </div>
+                        </CardHeader>
+                      </Card>
+                    </label>
+                  );
+                })
+              }
+            </RadioGroup>
 
-          <FieldError match="valueMissing">
-            Selecciona un nivel de confidencialidad para continuar.
-          </FieldError>
+            <p
+              id="confidentiality-level-error"
+              class="text-error text-sm"
+              role="alert"
+              hidden
+            >
+              Selecciona un nivel de confidencialidad para continuar.
+            </p>
+          </div>
         </FieldSet>
 
         <Card
@@ -172,10 +180,16 @@ const defaultLevel = confidencialidad[0];
   ): value is ConfidentialityLevel =>
     value === "Nula" || value === "Parcial" || value === "Total";
 
-  const publishConfidentiality = (value: ConfidentialityLevel) => {
+  const publishConfidentiality = (
+    root: HTMLElement,
+    value: ConfidentialityLevel,
+  ) => {
     updateFormDraft({ confidentialityLevel: value });
-    document.dispatchEvent(
-      new CustomEvent("llc-form:confidentiality-change", { detail: { value } }),
+    root.dispatchEvent(
+      new CustomEvent("llc-form:confidentiality-change", {
+        bubbles: true,
+        detail: { value },
+      }),
     );
   };
 
@@ -198,7 +212,12 @@ const defaultLevel = confidencialidad[0];
         output.textContent = selected.dataset.label;
       }
 
-      if (isConfidentialityLevel(value)) publishConfidentiality(value);
+      if (isConfidentialityLevel(value)) publishConfidentiality(root, value);
+    });
+
+    root.closest("form")?.addEventListener("llc-form:reset", () => {
+      if (output) output.textContent = "Nula - Revela a los Socios y al Manager";
+      publishConfidentiality(root, "Nula");
     });
   };
 
@@ -209,17 +228,22 @@ const defaultLevel = confidencialidad[0];
     const storedValue = readFormDraft().answers.confidentialityLevel;
     const currentValue = root.dataset.value;
 
-    if (storedValue && storedValue !== currentValue) {
-      root
-        .querySelector<HTMLElement>(
-          `[data-slot="radio-group-item"][data-value="${storedValue}"]`,
-        )
+    if (
+      storedValue &&
+      isConfidentialityLevel(storedValue) &&
+      storedValue !== currentValue
+    ) {
+      const storedOption = Array.from(
+        root.querySelectorAll<HTMLElement>("[data-confidentiality-option]"),
+      ).find((option) => option.dataset.value === storedValue);
+      storedOption
+        ?.querySelector<HTMLElement>('[data-slot="radio-group-item"]')
         ?.click();
       return;
     }
 
     if (currentValue && isConfidentialityLevel(currentValue)) {
-      publishConfidentiality(currentValue);
+      publishConfidentiality(root, currentValue);
     }
   };
 

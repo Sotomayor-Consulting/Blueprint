@@ -242,57 +242,67 @@ const defaultLevel = confidencialidad[0];
         <FieldSet>
           <FieldLegend>¿La LLC tendrá presencia operativa en un estado específico?</FieldLegend>
 
-          <RadioGroup
-            id="operaciones-group"
-            name="operaciones"
-            legend="Selecciona si tu LLC tendrá presencia operativa en un estado específico"
-            defaultValue={defaultLevel.value}
-            required
-            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2"
-          >
-            {
-              confidencialidad.map((model) => {
-                return (
-                  <label
-                    for={model.id}
-                    data-operations-option
-                    data-value={model.value}
-                    data-label={model.name}
-                    class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
-                  >
-                    <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
-                      <RadioGroupItem
-                        id={model.id}
-                        value={model.value}
-                        variant="primary"
-                      />
-                    </span>
+          <div>
+            <RadioGroup
+              id="operaciones-group"
+              name="operaciones"
+              legend="Selecciona si tu LLC tendrá presencia operativa en un estado específico"
+              defaultValue={defaultLevel.value}
+              required
+              aria-describedby="operations-error"
+              class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2"
+            >
+              {
+                confidencialidad.map((model) => {
+                  return (
+                    <label
+                      for={model.id}
+                      data-operations-option
+                      data-value={model.value}
+                      data-label={model.name}
+                      class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
+                    >
+                      <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
+                        <RadioGroupItem
+                          id={model.id}
+                          value={model.value}
+                          aria-label={model.name}
+                          variant="primary"
+                        />
+                      </span>
 
-                    <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
-                      <CardHeader class="py-5 grid-cols-[auto_1fr] grid-rows-1 h-full">
-                        <div>
-                          <CardTitle class="text-base">{model.name}</CardTitle>
-                          <CardDescription class="text-sm">
-                            {model.description}
-                          </CardDescription>
-                        </div>
-                      </CardHeader>
-                    </Card>
-                  </label>
-                );
-              })
-            }
-          </RadioGroup>
+                      <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                        <CardHeader class="py-5 grid-cols-[auto_1fr] grid-rows-1 h-full">
+                          <div>
+                            <CardTitle class="text-base">{model.name}</CardTitle>
+                            <CardDescription class="text-sm">
+                              {model.description}
+                            </CardDescription>
+                          </div>
+                        </CardHeader>
+                      </Card>
+                    </label>
+                  );
+                })
+              }
+            </RadioGroup>
 
-          <FieldError match="valueMissing">
-            Selecciona si existe presencia operativa para continuar.
-          </FieldError>
+            <p
+              id="operations-error"
+              class="text-error text-sm"
+              role="alert"
+              hidden
+            >
+              Selecciona si existe presencia operativa para continuar.
+            </p>
+          </div>
         </FieldSet>
       </FieldGroup>
   </CardContent>
 </Card>
 
 <script>
+  import { createCombobox } from "@starwind-ui/runtime/combobox";
   import stateInfoData from "./state-info.json";
   import {
     readFormDraft,
@@ -350,14 +360,13 @@ const defaultLevel = confidencialidad[0];
       "[data-state-advantage]",
     );
     const options = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-state-option]"),
+      container.querySelectorAll<HTMLElement>("[data-state-option]"),
     );
-    const optionsParent = options[0]?.parentElement;
 
     if (
       !root ||
       !input ||
-      !optionsParent ||
+      options.length === 0 ||
       !infoEyebrow ||
       !infoTitle ||
       !infoSummary ||
@@ -370,6 +379,7 @@ const defaultLevel = confidencialidad[0];
 
     let activeLevel: ConfidentialityLevel = "Nula";
     let availableStateCount = 0;
+    const comboboxApi = createCombobox(root);
 
     const renderStateInfo = (state: string | null) => {
       if (!state) {
@@ -400,12 +410,7 @@ const defaultLevel = confidencialidad[0];
     };
 
     const setValue = (value: string | null) => {
-      root.dispatchEvent(
-        new CustomEvent("starwind:set-value", {
-          bubbles: true,
-          detail: { value, emit: true },
-        }),
-      );
+      comboboxApi.setValue(value, { emit: true });
     };
 
     const applyConfidentiality = (
@@ -459,9 +464,25 @@ const defaultLevel = confidencialidad[0];
       renderStateInfo(value);
     });
 
-    document.addEventListener("llc-form:confidentiality-change", (event) => {
+    const form = container.closest("form");
+    form?.addEventListener("llc-form:confidentiality-change", (event) => {
       const { value } = (event as CustomEvent<{ value: string }>).detail;
       if (isConfidentialityLevel(value)) applyConfidentiality(value);
+    });
+    form?.addEventListener("starwind:value-change", (event) => {
+      if (
+        event.target instanceof HTMLElement &&
+        event.target.matches("[data-stepper]")
+      ) {
+        const { value } = (event as CustomEvent<{ value: string }>).detail;
+        if (value !== "Estado") comboboxApi.close();
+      }
+    });
+    form?.addEventListener("llc-form:reset", () => {
+      comboboxApi.close();
+      updateFormDraft({ formationState: undefined });
+      applyConfidentiality("Nula");
+      renderStateInfo(null);
     });
 
     const draftLevel = readFormDraft().answers.confidentialityLevel;

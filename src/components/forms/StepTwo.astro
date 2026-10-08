@@ -20,7 +20,6 @@ import {
 } from "@/components/starwind/card";
 import {
   FieldDescription,
-  FieldError,
   FieldGroup,
   FieldLegend,
   FieldSet,
@@ -118,57 +117,66 @@ const defaultModel = businessModels[0];
             definitivos.
           </FieldDescription>
 
-          <RadioGroup
-            id="business-model-group"
-            name="businessModel"
-            legend="Selecciona el modelo principal de la LLC"
-            defaultValue={defaultModel.value}
-            required
-            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-4"
-          >
-            {
-              businessModels.map((model) => {
-                const ModelIcon = model.image;
+          <div>
+            <RadioGroup
+              id="business-model-group"
+              name="businessModel"
+              legend="Selecciona el modelo principal de la LLC"
+              defaultValue={defaultModel.value}
+              required
+              aria-describedby="business-model-error"
+              class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-4"
+            >
+              {
+                businessModels.map((model) => {
+                  const ModelIcon = model.image;
 
-                return (
-                  <label
-                    for={model.id}
-                    data-business-model-option
-                    data-value={model.value}
-                    data-label={model.name}
-                    class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
-                  >
-                    <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
-                      <RadioGroupItem
-                        id={model.id}
-                        value={model.value}
-                        variant="primary"
-                      />
-                    </span>
+                  return (
+                    <label
+                      for={model.id}
+                      data-business-model-option
+                      data-value={model.value}
+                      data-label={model.name}
+                      class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
+                    >
+                      <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
+                        <RadioGroupItem
+                          id={model.id}
+                          value={model.value}
+                          aria-label={model.name}
+                          variant="primary"
+                        />
+                      </span>
 
-                    <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
-                      <CardHeader class="pb-5">
-                        <div class="bg-primary-accent/30 mt-6 inline-flex w-fit rounded-xl p-4">
-                          <ModelIcon
-                            class="text-primary size-8"
-                            aria-hidden="true"
-                          />
-                        </div>
-                        <CardTitle class="text-base">{model.name}</CardTitle>
-                        <CardDescription class="text-sm">
-                          {model.description}
-                        </CardDescription>
-                      </CardHeader>
-                    </Card>
-                  </label>
-                );
-              })
-            }
-          </RadioGroup>
+                      <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                        <CardHeader class="pb-5">
+                          <div class="bg-primary-accent/30 mt-6 inline-flex w-fit rounded-xl p-4">
+                            <ModelIcon
+                              class="text-primary size-8"
+                              aria-hidden="true"
+                            />
+                          </div>
+                          <CardTitle class="text-base">{model.name}</CardTitle>
+                          <CardDescription class="text-sm">
+                            {model.description}
+                          </CardDescription>
+                        </CardHeader>
+                      </Card>
+                    </label>
+                  );
+                })
+              }
+            </RadioGroup>
 
-          <FieldError match="valueMissing">
-            Selecciona un modelo de negocio para continuar.
-          </FieldError>
+            <p
+              id="business-model-error"
+              class="text-error text-sm"
+              role="alert"
+              hidden
+            >
+              Selecciona un modelo de negocio para continuar.
+            </p>
+          </div>
         </FieldSet>
 
         <Card

@@ -19,6 +19,7 @@ import StepTwo from "@components/forms/StepTwo.astro";
 import StepTree from "@components/forms/Steptree.astro";
 import StepFour from "@components/forms/StepFour.astro"
 import StepFive from "@components/forms/StepFive.astro";
+import StepSix from "@components/forms/StepSix.astro";
 
 const steps: StepperStep[] = [
   { id: "Correo", title: "Inicio", description: "" },
@@ -30,6 +31,7 @@ const steps: StepperStep[] = [
   { id: "Operacion", title: "Confirmación", description: "" },
   { id: "Confidencialidad", title: "Confidencialidad", description: ""},
   { id: "Estado", title: "Estado", description: "" },
+  { id: "Tributacion", title: "Tributación", description: ""},
   { id: "review", title: "Final", description: ""},
 ];
 
@@ -56,6 +58,7 @@ const steps: StepperStep[] = [
         <StepTree slot="Operacion" />
         <StepFour slot="Confidencialidad" />
         <StepFive slot="Estado" />
+        <StepSix slot="Tributacion" />
 
         <div slot="review">
           <FieldGroup>
@@ -96,117 +99,351 @@ const steps: StepperStep[] = [
 
     <script>
       import { createForm } from "@starwind-ui/astro/form";
-
-      const form = document.querySelector<HTMLFormElement>("[data-llc-form]");
-      const formApi = form
-        ? createForm(form, {
-            fieldValidators: {
-              clientMarkets: (_value, { field }) => {
-                const hasSelection = Boolean(
-                  field.root.querySelector("[data-sw-checkbox][data-checked]"),
-                );
-
-                return hasSelection
-                  ? null
-                  : {
-                      key: "customError",
-                      message:
-                        "Selecciona al menos un mercado donde tendrás clientes.",
-                      source: "custom",
-                    };
-              },
-              formationState: () => {
-                const root = document.querySelector<HTMLElement>(
-                  "[data-formation-state-combobox]",
-                );
-                const selected = root?.dataset.value;
-                const label = root
-                  ?.querySelector<HTMLInputElement>(
-                    '[data-slot="combobox-input"]',
-                  )
-                  ?.value.trim();
-
-                return selected && label === selected
-                  ? null
-                  : {
-                      key: "customError",
-                      message:
-                        "Selecciona un estado disponible para continuar.",
-                      source: "custom",
-                    };
-              },
-            },
-          })
-        : null;
+      import { createTabs } from "@starwind-ui/runtime/tabs";
 
       const stepFields: Record<string, string[]> = {
         Correo: ["email"],
-        Modelo: ["businessModel"],
+        Modelo: [],
         Operacion: [
           "operationDescription",
           "projectedAnnualRevenue",
-          "clientMarkets",
         ],
-        Confidencialidad: ["confidentialityLevel"],
-        Estado: ["formationState", "operaciones"],
+        Confidencialidad: [],
+        Estado: ["formationState"],
+        Tributacion: [],
         review: ["terms"],
       };
 
-      const stepperRoot = document.querySelector<HTMLElement>("[data-stepper]");
-      const nextButton = stepperRoot?.querySelector<HTMLButtonElement>(
-        "[data-stepper-next]",
-      );
+      const standaloneGroups: Record<
+        string,
+        Array<{
+          errorId: string;
+          kind: "checkbox" | "radio";
+          rootId: string;
+        }>
+      > = {
+        Modelo: [
+          {
+            errorId: "business-model-error",
+            kind: "radio",
+            rootId: "business-model-group",
+          },
+        ],
+        Operacion: [
+          {
+            errorId: "client-markets-error",
+            kind: "checkbox",
+            rootId: "client-markets-group",
+          },
+        ],
+        Confidencialidad: [
+          {
+            errorId: "confidentiality-level-error",
+            kind: "radio",
+            rootId: "confidentiality-level-group",
+          },
+        ],
+        Estado: [
+          {
+            errorId: "operations-error",
+            kind: "radio",
+            rootId: "operaciones-group",
+          },
+        ],
+        Tributacion: [
+          {
+            errorId: "tributacion-model-error",
+            kind: "radio",
+            rootId: "tributacion-model-group",
+          },
+        ],
+      };
 
-      const currentStepId = () =>
-        stepperRoot
-          ?.querySelector<HTMLButtonElement>(
-            '[data-slot="tabs-trigger"][data-state="active"]',
-          )
-          ?.getAttribute("value") ?? "Correo";
+      const setupLlcForm = (form: HTMLFormElement) => {
+        if (form.dataset.llcFormReady === "true") return;
+        form.dataset.llcFormReady = "true";
 
-      const requestStepValidation = async (target?: HTMLButtonElement) => {
-        if (!formApi) return true;
+        const stepperRoot = form.querySelector<HTMLElement>("[data-stepper]");
+        const list = stepperRoot?.querySelector<HTMLElement>(
+          '[data-slot="tabs-list"]',
+        );
+        const triggers = Array.from(
+          list?.querySelectorAll<HTMLButtonElement>(
+            '[data-slot="tabs-trigger"]',
+          ) ?? [],
+        );
+        const previousButton = stepperRoot?.querySelector<HTMLButtonElement>(
+          "[data-stepper-prev]",
+        );
+        const nextButton = stepperRoot?.querySelector<HTMLButtonElement>(
+          "[data-stepper-next]",
+        );
+        const nextLabel = stepperRoot?.querySelector<HTMLElement>(
+          "[data-stepper-next-label]",
+        );
+        const finishLabel = stepperRoot?.querySelector<HTMLElement>(
+          "[data-stepper-finish-label]",
+        );
 
-        const activeStep = currentStepId();
-        const names = stepFields[activeStep] ?? [];
+        if (
+          !stepperRoot ||
+          !list ||
+          triggers.length === 0 ||
+          !previousButton ||
+          !nextButton
+        )
+          return;
 
-        const outcome = await formApi.validate({
-          names,
-          reveal: true,
-          focus: true,
-        });
+        const authoredDisabled = triggers.map((trigger) => trigger.disabled);
+        const completed = new Set<number>();
+        const tabsApi = createTabs(stepperRoot);
+        let highestUnlocked = 0;
+        let busy = false;
 
-        if (outcome.status !== "complete" || !outcome.valid) return false;
+        const activeIndex = () => {
+          const index = triggers.findIndex(
+            (trigger) => trigger.dataset.state === "active",
+          );
+          return index < 0 ? 0 : index;
+        };
 
-        if (target) {
-          target.dataset.skipStepValidation = "true";
-          target.click();
-          queueMicrotask(() => {
-            delete target.dataset.skipStepValidation;
+        const nextAvailableIndex = (from: number, direction: 1 | -1) => {
+          for (
+            let index = from + direction;
+            index >= 0 && index < triggers.length;
+            index += direction
+          ) {
+            if (!authoredDisabled[index]) return index;
+          }
+          return -1;
+        };
+
+        const sync = () => {
+          const active = activeIndex();
+          const next = nextAvailableIndex(active, 1);
+
+          triggers.forEach((trigger, index) => {
+            const locked = authoredDisabled[index] || index > highestUnlocked;
+            trigger.disabled = locked;
+            trigger.toggleAttribute("data-disabled", locked);
+            trigger.setAttribute("aria-disabled", String(locked));
+            trigger.toggleAttribute("data-completed", completed.has(index));
+            if (index === active) {
+              trigger.setAttribute("aria-current", "step");
+            } else {
+              trigger.removeAttribute("aria-current");
+            }
+
+            trigger
+              .querySelector("[data-stepper-connector]")
+              ?.toggleAttribute("data-completed", completed.has(index));
           });
-        }
 
-        return true;
-      };
+          previousButton.disabled = busy || nextAvailableIndex(active, -1) < 0;
+          nextButton.disabled = busy;
+          nextButton.setAttribute("aria-busy", String(busy));
+          nextLabel?.classList.toggle("hidden", next < 0);
+          finishLabel?.classList.toggle("hidden", next >= 0);
+        };
 
-      const guardClick = (
-        target: HTMLButtonElement | undefined,
-        event: MouseEvent,
-      ) => {
-        if (!target || target.dataset.skipStepValidation === "true") return;
+        const goTo = (index: number, focus = false) => {
+          const target = triggers[index];
+          const value = target?.dataset.value;
+          if (!target || !value || authoredDisabled[index]) return;
 
-        event.preventDefault();
-        event.stopPropagation();
-        void requestStepValidation(target);
-      };
+          tabsApi.setValue(value, { emit: true });
+          queueMicrotask(() => {
+            sync();
+            if (focus) target.focus();
+          });
+        };
 
-      stepperRoot
-        ?.querySelectorAll<HTMLButtonElement>('[data-slot="tabs-trigger"]')
-        .forEach((trigger) => {
-          trigger.addEventListener("click", (event) => guardClick(trigger, event), true);
+        const formApi = createForm(form, {
+          fieldValidators: {
+            formationState: () => {
+              const root = form.querySelector<HTMLElement>(
+                "[data-formation-state-combobox]",
+              );
+              const selected = root?.dataset.value;
+              const label = root
+                ?.querySelector<HTMLInputElement>(
+                  '[data-slot="combobox-input"]',
+                )
+                ?.value.trim();
+
+              return selected && label === selected
+                ? null
+                : {
+                    key: "customError",
+                    message:
+                      "Selecciona un estado disponible para continuar.",
+                    source: "custom",
+                  };
+            },
+          },
+          onSubmit: ({ form: submittedForm, values }) => {
+            completed.add(activeIndex());
+            sync();
+            submittedForm.dispatchEvent(
+              new CustomEvent("llc-form:submit", {
+                bubbles: true,
+                detail: {
+                  formData: new FormData(submittedForm),
+                  values,
+                },
+              }),
+            );
+          },
         });
 
-      nextButton?.addEventListener("click", (event) => guardClick(nextButton, event), true);
+        const isStandaloneGroupValid = (
+          group: (typeof standaloneGroups)[string][number],
+        ) => {
+          const root = form.querySelector<HTMLElement>(`#${group.rootId}`);
+          if (!root) return false;
+
+          return group.kind === "radio"
+            ? Boolean(root.dataset.value)
+            : Boolean(
+                root.querySelector('[data-slot="checkbox"][data-checked]'),
+              );
+        };
+
+        const setStandaloneGroupValidity = (
+          group: (typeof standaloneGroups)[string][number],
+          valid: boolean,
+        ) => {
+          const root = form.querySelector<HTMLElement>(`#${group.rootId}`);
+          const error = form.querySelector<HTMLElement>(`#${group.errorId}`);
+          root?.setAttribute("aria-invalid", String(!valid));
+          if (error) error.hidden = valid;
+        };
+
+        const validateStandaloneGroups = (stepId: string) => {
+          const groups = standaloneGroups[stepId] ?? [];
+          let firstInvalid: HTMLElement | null = null;
+
+          groups.forEach((group) => {
+            const valid = isStandaloneGroupValid(group);
+            setStandaloneGroupValidity(group, valid);
+            if (!valid && !firstInvalid) {
+              firstInvalid = form.querySelector<HTMLElement>(
+                `#${group.rootId} [data-slot="radio-group-item"], #${group.rootId} [data-slot="checkbox"]`,
+              );
+            }
+          });
+
+          firstInvalid?.focus();
+          return firstInvalid === null;
+        };
+
+        const advance = async () => {
+          if (busy) return;
+
+          const current = activeIndex();
+          const next = nextAvailableIndex(current, 1);
+          if (next < 0) {
+            form.requestSubmit();
+            return;
+          }
+
+          busy = true;
+          sync();
+
+          try {
+            const stepId = triggers[current]?.dataset.value ?? "";
+            if (!validateStandaloneGroups(stepId)) return;
+
+            const outcome = await formApi.validate({
+              names: stepFields[stepId] ?? [],
+              reveal: true,
+              focus: true,
+            });
+
+            if (outcome.status !== "complete" || !outcome.valid) return;
+
+            completed.add(current);
+            highestUnlocked = Math.max(highestUnlocked, next);
+            sync();
+            goTo(next, true);
+          } finally {
+            busy = false;
+            sync();
+          }
+        };
+
+        const invalidateActiveStep = (event: Event) => {
+          if (!(event.target instanceof Element)) return;
+          const panel = event.target.closest<HTMLElement>(
+            '[data-slot="tabs-content"][data-state="active"]',
+          );
+          if (!panel) return;
+
+          const current = activeIndex();
+          completed.forEach((index) => {
+            if (index >= current) completed.delete(index);
+          });
+          highestUnlocked = Math.min(highestUnlocked, current);
+          sync();
+
+          const stepId = triggers[current]?.dataset.value ?? "";
+          queueMicrotask(() => {
+            (standaloneGroups[stepId] ?? []).forEach((group) => {
+              const root = form.querySelector<HTMLElement>(`#${group.rootId}`);
+              if (root?.contains(event.target as Node) && isStandaloneGroupValid(group)) {
+                setStandaloneGroupValidity(group, true);
+              }
+            });
+          });
+        };
+
+        previousButton.addEventListener("click", () => {
+          if (busy) return;
+          const previous = nextAvailableIndex(activeIndex(), -1);
+          if (previous >= 0) goTo(previous, true);
+        });
+        nextButton.addEventListener("click", () => void advance());
+        list.addEventListener("click", (event) => {
+          if (!busy) return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }, true);
+        list.addEventListener("keydown", (event) => {
+          if (!busy) return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }, true);
+
+        form.addEventListener("input", invalidateActiveStep);
+        form.addEventListener("change", invalidateActiveStep);
+        form.addEventListener("starwind:value-change", invalidateActiveStep);
+        form.addEventListener("starwind:checked-change", invalidateActiveStep);
+        stepperRoot.addEventListener("starwind:value-change", (event) => {
+          if (event.target === stepperRoot) queueMicrotask(sync);
+        });
+        form.addEventListener("reset", () => {
+          window.setTimeout(() => {
+            completed.clear();
+            highestUnlocked = 0;
+            goTo(0, true);
+            sync();
+            form.dispatchEvent(
+              new CustomEvent("llc-form:reset", { bubbles: true }),
+            );
+          }, 0);
+        });
+
+        sync();
+      };
+
+      const initLlcForms = () => {
+        document
+          .querySelectorAll<HTMLFormElement>("[data-llc-form]")
+          .forEach(setupLlcForm);
+      };
+
+      initLlcForms();
+      document.addEventListener("astro:page-load", initLlcForms);
     </script>
   </div>
 </Layout>

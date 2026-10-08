@@ -13,6 +13,11 @@ interface FormDraft {
 
 const STORAGE_KEY = "llc-plan-draft-v1";
 
+const isConfidentialityLevel = (
+  value: unknown,
+): value is ConfidentialityLevel =>
+  value === "Nula" || value === "Parcial" || value === "Total";
+
 const emptyDraft = (): FormDraft => ({
   version: 1,
   updatedAt: new Date(0).toISOString(),
@@ -29,10 +34,21 @@ export const readFormDraft = (): FormDraft => {
       return emptyDraft();
     }
 
+    const confidentialityLevel = parsed.answers.confidentialityLevel;
+    const formationState = parsed.answers.formationState;
+
     return {
       version: 1,
       updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : new Date(0).toISOString(),
-      answers: parsed.answers,
+      answers: {
+        confidentialityLevel: isConfidentialityLevel(confidentialityLevel)
+          ? confidentialityLevel
+          : undefined,
+        formationState:
+          typeof formationState === "string" && formationState.trim()
+            ? formationState
+            : undefined,
+      },
     };
   } catch {
     return emptyDraft();
@@ -41,13 +57,22 @@ export const readFormDraft = (): FormDraft => {
 
 export const updateFormDraft = (answers: Partial<FormDraftAnswers>) => {
   const current = readFormDraft();
+  const nextAnswers = { ...current.answers, ...answers };
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify({
-      version: 1,
-      updatedAt: new Date().toISOString(),
-      answers: { ...current.answers, ...answers },
-    } satisfies FormDraft),
-  );
+  Object.entries(nextAnswers).forEach(([key, value]) => {
+    if (value === undefined) delete nextAnswers[key as keyof FormDraftAnswers];
+  });
+
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        version: 1,
+        updatedAt: new Date().toISOString(),
+        answers: nextAnswers,
+      } satisfies FormDraft),
+    );
+  } catch {
+    // Storage can be unavailable in private browsing or constrained contexts.
+  }
 };
