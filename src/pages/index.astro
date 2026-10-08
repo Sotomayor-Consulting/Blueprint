@@ -110,7 +110,7 @@ const steps: StepperStep[] = [
         ],
         Confidencialidad: [],
         Estado: ["formationState"],
-        Tributacion: [],
+        Tributacion: ["primaryOperatingCountry"],
         review: ["terms"],
       };
 
@@ -155,6 +155,11 @@ const steps: StepperStep[] = [
             errorId: "tributacion-model-error",
             kind: "radio",
             rootId: "tributacion-model-group",
+          },
+          {
+            errorId: "llc-tax-treatment-error",
+            kind: "radio",
+            rootId: "llc-tax-treatment-group",
           },
         ],
       };
@@ -277,6 +282,30 @@ const steps: StepperStep[] = [
                     key: "customError",
                     message:
                       "Selecciona un estado disponible para continuar.",
+                      source: "custom",
+                    };
+            },
+            primaryOperatingCountry: () => {
+              const taxSource = form.querySelector<HTMLElement>(
+                "#tributacion-model-group",
+              )?.dataset.value;
+              if (taxSource !== "false") return null;
+
+              const root = form.querySelector<HTMLElement>(
+                "[data-primary-operating-country]",
+              );
+              const selected = root?.dataset.value;
+              const label = root
+                ?.querySelector<HTMLInputElement>(
+                  '[data-slot="combobox-input"]',
+                )
+                ?.value.trim();
+
+              return selected && label === selected
+                ? null
+                : {
+                    key: "customError",
+                    message: "Selecciona el país principal de operación.",
                     source: "custom",
                   };
             },

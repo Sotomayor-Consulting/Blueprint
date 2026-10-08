@@ -15,6 +15,9 @@
       ],
       "@components/*": [
         "src/components/*"
+      ],
+      "@content/*": [
+        "src/assets/content/*"
       ]
     }
   }

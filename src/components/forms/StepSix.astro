@@ -1,9 +1,18 @@
 ---
 import Bolt from "@tabler/icons/filled/bolt.svg";
+import countries from "@content/countries.json";
 import { Separator } from "@/components/starwind/separator";
 import { Switch } from "@/components/starwind/switch";
 import { Icon } from "astro-icon/components";
 import { Badge } from "@/components/starwind/badge";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxLabel,
+} from "@/components/starwind/combobox";
 import {
   Card,
   CardContent,
@@ -12,10 +21,12 @@ import {
   CardTitle,
 } from "@/components/starwind/card";
 import {
+  Field,
   FieldDescription,
   FieldSet,
   FieldGroup,
   FieldLegend,
+  FieldError,
 } from "@/components/starwind/field";
 import { RadioGroup, RadioGroupItem } from "@/components/starwind/radio-group";
 
@@ -74,7 +85,33 @@ const indicadoresOperativos = [
   },
 ];
 
+const taxTreatments = [
+  {
+    id: "tax-treatment-pass-through",
+    value: "Entidad de paso",
+    name: "Entidad de paso",
+    description:
+      "Alternativa sujeta a la revisión de la operación y sus participantes.",
+  },
+  {
+    id: "tax-treatment-corporation",
+    value: "Corporación",
+    name: "Corporación",
+    description:
+      "Alternativa que requiere validación profesional antes de elegirla.",
+  },
+];
+
 const defaultLevel = confidencialidad[0];
+const defaultTaxTreatment = taxTreatments[0];
+
+const data = countries as {
+  nameES: string;
+  nameEN: string;
+  iso2: string;
+  iso3: string;
+  phoneCode: string;
+}[];
 ---
 
 <Card class="w-full px-5 py-10 shadow-2xl">
@@ -190,10 +227,110 @@ const defaultLevel = confidencialidad[0];
         }
       </div>
     </div>
+
+    <div data-tax-country aria-live="polite" aria-hidden="true" hidden>
+      <Separator class="my-5" />
+      <div>
+        <Field name="primaryOperatingCountry">
+          <Combobox
+            id="primary-operating-country-combobox"
+            name="primaryOperatingCountry"
+            filterMode="contains"
+            locale="es"
+            disabled
+            required
+            data-primary-operating-country
+          >
+            <ComboboxLabel>
+              ¿Desde qué país operará principalmente la LLC?
+            </ComboboxLabel>
+            <ComboboxInput placeholder="Busca un país" showClear />
+            <ComboboxContent size="lg">
+              <ComboboxEmpty>No encontramos ese país.</ComboboxEmpty>
+              {
+                data.map((c) => (
+                  <ComboboxItem value={c.nameES}>{c.nameES}</ComboboxItem>
+                ))
+              }
+            </ComboboxContent>
+          </Combobox>
+          <FieldDescription>
+            Escribe para filtrar y selecciona un país de la lista.
+          </FieldDescription>
+          <FieldError match="valueMissing">
+            Selecciona el país principal de operación.
+          </FieldError>
+          <FieldError match="customError" messageSource="validation">
+            Selecciona el país principal de operación.
+          </FieldError>
+        </Field>
+      </div>
+    </div>
+
+    <Separator class="my-5" />
+
+    <FieldGroup>
+      <FieldSet>
+        <FieldLegend>¿Cómo tributará la LLC?</FieldLegend>
+        <FieldDescription>
+          Selecciona la clasificación tributaria que deberá revisar el
+          especialista.
+        </FieldDescription>
+
+        <div>
+          <RadioGroup
+            id="llc-tax-treatment-group"
+            name="llcTaxTreatment"
+            legend="Selecciona cómo tributará la LLC"
+            defaultValue={defaultTaxTreatment.value}
+            required
+            aria-describedby="llc-tax-treatment-error"
+            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2"
+          >
+            {
+              taxTreatments.map((treatment) => (
+                <label
+                  for={treatment.id}
+                  data-tax-treatment-option
+                  data-value={treatment.value}
+                  class="group/treatment focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
+                >
+                  <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
+                    <RadioGroupItem
+                      id={treatment.id}
+                      value={treatment.value}
+                      aria-label={treatment.name}
+                      variant="primary"
+                    />
+                  </span>
+                  <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/treatment:shadow-lg">
+                    <CardHeader class="p-5">
+                      <CardTitle class="text-base">{treatment.name}</CardTitle>
+                      <CardDescription class="text-sm">
+                        {treatment.description}
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </label>
+              ))
+            }
+          </RadioGroup>
+          <p
+            id="llc-tax-treatment-error"
+            class="text-error text-sm"
+            role="alert"
+            hidden
+          >
+            Selecciona cómo tributará la LLC para continuar.
+          </p>
+        </div>
+      </FieldSet>
+    </FieldGroup>
   </CardContent>
 </Card>
 
 <script>
+  import { createCombobox } from "@starwind-ui/runtime/combobox";
   import { createSwitch } from "@starwind-ui/runtime/switch";
 
   const setupTaxSource = (root: HTMLElement) => {
@@ -201,26 +338,51 @@ const defaultLevel = confidencialidad[0];
     root.dataset.taxSourceReady = "true";
 
     const card = root.closest<HTMLElement>('[data-slot="card"]');
-    const indicators = card?.querySelector<HTMLElement>("[data-tax-indicators]");
+    const indicators = card?.querySelector<HTMLElement>(
+      "[data-tax-indicators]",
+    );
+    const countrySection =
+      card?.querySelector<HTMLElement>("[data-tax-country]");
+    const countryRoot = countrySection?.querySelector<HTMLElement>(
+      "[data-primary-operating-country]",
+    );
     const switches = Array.from(
-      indicators?.querySelectorAll<HTMLElement>('[data-slot="switch-button"]') ?? [],
+      indicators?.querySelectorAll<HTMLElement>(
+        '[data-slot="switch-button"]',
+      ) ?? [],
     ).map((switchRoot) => createSwitch(switchRoot));
 
-    if (!indicators) return;
+    if (!indicators || !countrySection || !countryRoot) return;
+
+    const countryApi = createCombobox(countryRoot);
 
     const applyVisibility = (value: string | undefined) => {
-      const visible = value === "true";
-      indicators.hidden = !visible;
-      indicators.setAttribute("aria-hidden", String(!visible));
-      switches.forEach((switchApi) => switchApi.setDisabled(!visible));
+      const showIndicators = value === "true";
+      indicators.hidden = !showIndicators;
+      indicators.setAttribute("aria-hidden", String(!showIndicators));
+      countrySection.hidden = showIndicators;
+      countrySection.setAttribute("aria-hidden", String(showIndicators));
+      switches.forEach((switchApi) => switchApi.setDisabled(!showIndicators));
+      countryApi.setDisabled(showIndicators);
+      if (showIndicators) countryApi.close();
     };
 
     root.addEventListener("starwind:value-change", (event) => {
       const { value } = (event as CustomEvent<{ value: string }>).detail;
       applyVisibility(value);
     });
-    root.closest("form")?.addEventListener("llc-form:reset", () => {
+    const form = root.closest("form");
+    form?.addEventListener("llc-form:reset", () => {
       applyVisibility(root.dataset.value);
+    });
+    form?.addEventListener("starwind:value-change", (event) => {
+      if (
+        event.target instanceof HTMLElement &&
+        event.target.matches("[data-stepper]")
+      ) {
+        const { value } = (event as CustomEvent<{ value: string }>).detail;
+        if (value !== "Tributacion") countryApi.close();
+      }
     });
 
     applyVisibility(root.dataset.value);

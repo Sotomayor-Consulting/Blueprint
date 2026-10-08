@@ -13,7 +13,7 @@ export const switchButton = tv({
   ],
   variants: {
     variant: {
-      primary: "aria-checked:border-primary focus-visible:border-primary/70 focus:ring-primary/50",
+      primary: "aria-checked:border-primary aria-checked:bg-primary/20 focus-visible:border-primary/70 focus:ring-primary/50",
       secondary: "aria-checked:border-secondary focus-visible:border-secondary/70 focus:ring-secondary/50",
       default: "aria-checked:border-foreground focus-visible:border-outline focus:ring-outline/50",
       info: "aria-checked:border-info focus-visible:border-info/70 focus:ring-info/50",
