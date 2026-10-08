@@ -84,7 +84,7 @@ const stepperConnector = tv({
 
 const stepperMarker = tv({
   base: [
-    "flex size-8 shrink-0 items-center justify-center rounded-full border text-sm font-medium transition-colors",
+    "flex size-8 shrink-0 items-center justify-center rounded-full border text-xs font-medium transition-colors",
     "border-border bg-muted text-muted-foreground",
     "group-data-[state=active]/step:border-primary group-data-[state=active]/step:bg-primary group-data-[state=active]/step:text-primary-foreground",
     "group-data-[completed]/step:border-primary group-data-[completed]/step:bg-primary group-data-[completed]/step:text-primary-foreground",
@@ -102,7 +102,7 @@ const stepperText = tv({
   defaultVariants: { orientation: "vertical" },
 });
 
-const stepperPanel = tv({ base: "mt-6" });
+const stepperPanel = tv({ base: "mt-5" });
 ---
 
 <Tabs
@@ -137,7 +137,7 @@ const stepperPanel = tv({ base: "mt-6" });
           </span>
 
           <span class={stepperText({ orientation })}>
-            <span class="truncate text-sm font-medium">{step.title}</span>
+            <span class="truncate text-xs font-medium">{step.title}</span>
             {step.description && (
               <span class="text-muted-foreground line-clamp-2 text-xs">
                 {step.description}
