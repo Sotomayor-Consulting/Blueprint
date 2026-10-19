@@ -20,6 +20,7 @@ import StepTree from "@components/forms/Steptree.astro";
 import StepFour from "@components/forms/StepFour.astro"
 import StepFive from "@components/forms/StepFive.astro";
 import StepSix from "@components/forms/StepSix.astro";
+import StepSeven from "@components/forms/StepSeven.astro";
 
 const steps: StepperStep[] = [
   { id: "Correo", title: "Inicio", description: "" },
@@ -32,6 +33,7 @@ const steps: StepperStep[] = [
   { id: "Confidencialidad", title: "Confidencialidad", description: ""},
   { id: "Estado", title: "Estado", description: "" },
   { id: "Tributacion", title: "Tributación", description: ""},
+  { id: "Estructura", title: "Estructura", description: ""},
   { id: "review", title: "Final", description: ""},
 ];
 
@@ -59,6 +61,7 @@ const steps: StepperStep[] = [
         <StepFour slot="Confidencialidad" />
         <StepFive slot="Estado" />
         <StepSix slot="Tributacion" />
+        <StepSeven slot="Estructura" />
 
         <div slot="review">
           <FieldGroup>
@@ -111,6 +114,7 @@ const steps: StepperStep[] = [
         Confidencialidad: [],
         Estado: ["formationState"],
         Tributacion: ["primaryOperatingCountry"],
+        Estructura: [],
         review: ["terms"],
       };
 
@@ -160,6 +164,23 @@ const steps: StepperStep[] = [
             errorId: "llc-tax-treatment-error",
             kind: "radio",
             rootId: "llc-tax-treatment-group",
+          },
+        ],
+        Estructura: [
+          {
+            errorId: "EstructureClass-level-error",
+            kind: "radio",
+            rootId: "EstructureClass-level-group",
+          },
+          {
+            errorId: "TypeOfSinglemember-level-error",
+            kind: "radio",
+            rootId: "TypeOfSinglemember-level-group",
+          },
+          {
+            errorId: "NumberOfPartnership-level-error",
+            kind: "radio",
+            rootId: "NumberOfPartnership-level-group",
           },
         ],
       };
@@ -286,11 +307,6 @@ const steps: StepperStep[] = [
                     };
             },
             primaryOperatingCountry: () => {
-              const taxSource = form.querySelector<HTMLElement>(
-                "#tributacion-model-group",
-              )?.dataset.value;
-              if (taxSource !== "false") return null;
-
               const root = form.querySelector<HTMLElement>(
                 "[data-primary-operating-country]",
               );
@@ -330,6 +346,7 @@ const steps: StepperStep[] = [
         ) => {
           const root = form.querySelector<HTMLElement>(`#${group.rootId}`);
           if (!root) return false;
+          if (root.closest("[hidden]")) return true;
 
           return group.kind === "radio"
             ? Boolean(root.dataset.value)

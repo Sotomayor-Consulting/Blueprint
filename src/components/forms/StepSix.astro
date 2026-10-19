@@ -14,6 +14,11 @@ import {
   ComboboxLabel,
 } from "@/components/starwind/combobox";
 import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/starwind/alert";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -30,19 +35,16 @@ import {
 } from "@/components/starwind/field";
 import { RadioGroup, RadioGroupItem } from "@/components/starwind/radio-group";
 
-const confidencialidad = [
+const sourceIncomeOptions = [
   {
     id: "Si_fuenteEEUU",
     value: "true",
-    name: "Sí, existe fuente estadounidense",
-    description:
-      "Se revisarán la actividad, los contratos y la conexión operativa.",
+    name: "Sí, tendrá ingresos de fuente estadounidense.",
   },
   {
     id: "No_fuenteEEUU",
     value: "false",
-    name: "No se identifica fuente estadounidense",
-    description: "Se validará la respuesta frente a la operación real.",
+    name: "No, no tendrá ingresos de fuente estadounidense.",
   },
 ];
 
@@ -89,21 +91,18 @@ const taxTreatments = [
   {
     id: "tax-treatment-pass-through",
     value: "Entidad de paso",
-    name: "Entidad de paso",
+    name: "Entidad de paso / Pass-through Entity",
     description:
-      "Alternativa sujeta a la revisión de la operación y sus participantes.",
+      "Bajo este tratamiento, los resultados fiscales de la LLC se atribuyen a sus propietarios, quienes cumplen las obligaciones tributarias correspondientes según su situación particular. Generalmente, la LLC no paga impuesto federal sobre la renta como una corporación separada.",
   },
   {
     id: "tax-treatment-corporation",
     value: "Corporación",
-    name: "Corporación",
+    name: "Corporación / Corporation",
     description:
-      "Alternativa que requiere validación profesional antes de elegirla.",
+      "La LLC tributará como una corporación, considerándose un contribuyente independiente de sus socios. Sus utilidades estarán sujetas a las reglas del impuesto corporativo estadounidense, y las distribuciones a los propietarios podrán generar consecuencias tributarias adicionales.",
   },
 ];
-
-const defaultLevel = confidencialidad[0];
-const defaultTaxTreatment = taxTreatments[0];
 
 const data = countries as {
   nameES: string;
@@ -125,207 +124,232 @@ const data = countries as {
     >
       <Bolt /> SISTEMA TRIBUTARIO
     </Badge>
-    <CardTitle class="text-4xl md:text-6xl"
+    <CardTitle class="text-4xl"
       >Definamos la tributación de la LLC</CardTitle
     >
-    <CardDescription class="text-xl md:text-2xl">
-      El especialista ubica personas, servicios, inventario y activos antes de
-      analizar alternativas tributarias.
+    <CardDescription class="text-xl">
+      Identificaremos desde dónde operará la empresa, si tendrá ingresos de fuente estadounidense y cuál será el tratamiento tributario más adecuado para su estructura.
     </CardDescription>
   </CardHeader>
   <CardContent class="mt-5">
-    <FieldGroup>
-      <FieldSet>
-        <FieldLegend>Fuente de ingresos en Estados Unidos</FieldLegend>
-        <FieldDescription>
-          Indica si la operación tendrá ingresos vinculados con actividades,
-          activos o presencia dentro de Estados Unidos.
-        </FieldDescription>
 
-        <div>
-          <RadioGroup
-            id="tributacion-model-group"
-            name="hasUsSourceIncome"
-            legend="Indica si existe fuente estadounidense"
-            defaultValue={defaultLevel.value}
-            required
-            aria-describedby="tributacion-model-error"
-            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2"
-          >
+    <div data-tax-country>
+      <Field name="primaryOperatingCountry">
+        <Combobox
+          id="primary-operating-country-combobox"
+          name="primaryOperatingCountry"
+          filterMode="contains"
+          locale="es"
+          required
+          data-primary-operating-country
+        >
+          <ComboboxLabel>
+            ¿Desde qué país operará principalmente la LLC?
+          </ComboboxLabel>
+          <ComboboxInput placeholder="Busca un país" showClear />
+          <ComboboxContent size="lg">
+            <ComboboxEmpty>No encontramos ese país.</ComboboxEmpty>
             {
-              confidencialidad.map((model) => {
-                return (
-                  <label
-                    for={model.id}
-                    data-tributacion-model-option
-                    data-value={model.value}
-                    data-label={model.name}
-                    class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
-                  >
-                    <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
-                      <RadioGroupItem
-                        id={model.id}
-                        value={model.value}
-                        aria-label={model.name}
-                        variant="primary"
-                      />
-                    </span>
-                    <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
-                      <CardHeader class="p-5">
-                        <CardTitle class="text-base">{model.name}</CardTitle>
-                        <CardDescription class="text-sm">
-                          {model.description}
-                        </CardDescription>
-                      </CardHeader>
-                    </Card>
-                  </label>
-                );
-              })
+              data.map((c) => (
+                <ComboboxItem value={c.nameES}>{c.nameES}</ComboboxItem>
+              ))
             }
-          </RadioGroup>
-          <p
-            id="tributacion-model-error"
-            class="text-error text-sm"
-            role="alert"
-            hidden
-          >
-            Selecciona un modelo de tributación para continuar.
-          </p>
-        </div>
-      </FieldSet>
-    </FieldGroup>
-
-    <div data-tax-indicators aria-live="polite">
-      <Separator class="my-5" />
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {
-          indicadoresOperativos.map((i) => (
-            <Card class="bg-primary-accent/5 ring-primary-accent/20">
-              <CardContent class="flex items-center justify-between gap-4">
-                <div class="flex gap-4">
-                  <span class="bg-primary-accent/10 text-primary-accent grid size-11 shrink-0 place-items-center rounded-full">
-                    <Icon name={i.icon} class="size-5" aria-hidden="true" />
-                  </span>
-                  <div class="min-w-0">
-                    <p class="text-foreground text-lg font-semibold">
-                      {i.title}
-                    </p>
-                    <p class="text-muted-foreground text-sm">{i.description}</p>
-                  </div>
-                </div>
-                <Switch
-                  id={i.id}
-                  name="operationalIndicators"
-                  value={i.id}
-                  label="Sí"
-                  aria-label={i.title}
-                  variant="primary"
-                />
-              </CardContent>
-            </Card>
-          ))
-        }
-      </div>
-    </div>
-
-    <div data-tax-country aria-live="polite" aria-hidden="true" hidden>
-      <Separator class="my-5" />
-      <div>
-        <Field name="primaryOperatingCountry">
-          <Combobox
-            id="primary-operating-country-combobox"
-            name="primaryOperatingCountry"
-            filterMode="contains"
-            locale="es"
-            disabled
-            required
-            data-primary-operating-country
-          >
-            <ComboboxLabel>
-              ¿Desde qué país operará principalmente la LLC?
-            </ComboboxLabel>
-            <ComboboxInput placeholder="Busca un país" showClear />
-            <ComboboxContent size="lg">
-              <ComboboxEmpty>No encontramos ese país.</ComboboxEmpty>
-              {
-                data.map((c) => (
-                  <ComboboxItem value={c.nameES}>{c.nameES}</ComboboxItem>
-                ))
-              }
-            </ComboboxContent>
-          </Combobox>
-          <FieldDescription>
-            Escribe para filtrar y selecciona un país de la lista.
-          </FieldDescription>
-          <FieldError match="valueMissing">
-            Selecciona el país principal de operación.
-          </FieldError>
-          <FieldError match="customError" messageSource="validation">
-            Selecciona el país principal de operación.
-          </FieldError>
-        </Field>
-      </div>
+          </ComboboxContent>
+        </Combobox>
+        <FieldDescription>
+          Escribe para filtrar y selecciona un país de la lista.
+        </FieldDescription>
+        <FieldError match="valueMissing">
+          Selecciona el país principal de operación.
+        </FieldError>
+        <FieldError match="customError" messageSource="validation">
+          Selecciona el país principal de operación.
+        </FieldError>
+      </Field>
     </div>
 
     <Separator class="my-5" />
 
-    <FieldGroup>
-      <FieldSet>
-        <FieldLegend>¿Cómo tributará la LLC?</FieldLegend>
-        <FieldDescription>
-          Selecciona la clasificación tributaria que deberá revisar el
-          especialista.
-        </FieldDescription>
+    <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-2">
+      <div data-tax-source>
+        <FieldGroup>
+          <FieldSet>
+            <FieldLegend>¿La LLC tendrá ingresos de fuente estadounidense?</FieldLegend>
+            <Alert variant="info">
+              <AlertTitle class="flex items-center gap-2 text-base">
+                <Icon name="MingcuteInformationFill" class="size-5" />
+                ¿Qué son los ingresos de fuente estadounidense?
+              </AlertTitle>
+              <AlertDescription class="text-sm">
+                Son ingresos cuya fuente fiscal se encuentra en Estados Unidos,
+                según las reglas tributarias aplicables. Su clasificación depende
+                de factores como el lugar donde se prestan los servicios, se venden
+                determinados bienes o se encuentran los activos que generan
+                ingresos.
+              </AlertDescription>
+            </Alert>
 
-        <div>
-          <RadioGroup
-            id="llc-tax-treatment-group"
-            name="llcTaxTreatment"
-            legend="Selecciona cómo tributará la LLC"
-            defaultValue={defaultTaxTreatment.value}
-            required
-            aria-describedby="llc-tax-treatment-error"
-            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2"
-          >
+            <div>
+              <RadioGroup
+                id="tributacion-model-group"
+                name="hasUsSourceIncome"
+                legend="¿La LLC tendrá ingresos de fuente estadounidense?"
+                required
+                aria-describedby="tributacion-model-error"
+                class="grid grid-cols-1 gap-4 pt-2"
+              >
+                {
+                  sourceIncomeOptions.map((option) => (
+                    <div
+                      data-tributacion-model-option
+                      data-value={option.value}
+                      data-label={option.name}
+                      class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition-shadow duration-200 focus-within:ring-3 has-data-checked:ring-3 motion-reduce:transition-none"
+                    >
+                      <RadioGroupItem
+                        id={option.id}
+                        value={option.value}
+                        aria-label={option.name}
+                        variant="primary"
+                        nativeButton
+                        wrapperClass="absolute inset-0 z-20 size-full group-data-[size=sm]/radio-group:size-full group-data-[size=md]/radio-group:size-full group-data-[size=lg]/radio-group:size-full"
+                        rootClass="rounded-xl"
+                        class="inset-auto top-4 right-4 size-5 bg-background/90 shadow-sm backdrop-blur-sm"
+                      />
+                      <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                        <CardHeader class="p-5">
+                          <CardTitle class="pr-8 text-base">{option.name}</CardTitle>
+                        </CardHeader>
+                      </Card>
+                    </div>
+                  ))
+                }
+              </RadioGroup>
+              <p
+                id="tributacion-model-error"
+                class="text-error text-sm"
+                role="alert"
+                hidden
+              >
+                Indica si la LLC tendrá ingresos de fuente estadounidense.
+              </p>
+            </div>
+          </FieldSet>
+        </FieldGroup>
+      </div>
+
+      <div data-tax-treatment>
+        <FieldGroup>
+          <FieldSet>
+            <FieldLegend>¿Cómo tributará la LLC?</FieldLegend>
+            <FieldDescription>
+              Selecciona la clasificación tributaria que deberá revisar el
+              especialista.
+            </FieldDescription>
+
+            <div>
+              <RadioGroup
+                id="llc-tax-treatment-group"
+                name="llcTaxTreatment"
+                legend="Selecciona cómo tributará la LLC"
+                required
+                aria-describedby="llc-tax-treatment-error"
+                class="grid grid-cols-1 gap-4 pt-2"
+              >
+                {
+                  taxTreatments.map((treatment) => (
+                    <div
+                      data-tax-treatment-option
+                      data-value={treatment.value}
+                      class="group/treatment focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition-shadow duration-200 focus-within:ring-3 has-data-checked:ring-3 motion-reduce:transition-none"
+                    >
+                      <RadioGroupItem
+                        id={treatment.id}
+                        value={treatment.value}
+                        aria-label={treatment.name}
+                        variant="primary"
+                        nativeButton
+                        wrapperClass="absolute inset-0 z-20 size-full group-data-[size=sm]/radio-group:size-full group-data-[size=md]/radio-group:size-full group-data-[size=lg]/radio-group:size-full"
+                        rootClass="rounded-xl"
+                        class="inset-auto top-4 right-4 size-5 bg-background/90 shadow-sm backdrop-blur-sm"
+                      />
+                      <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/treatment:shadow-lg">
+                        <CardHeader class="p-5">
+                          <CardTitle class="pr-8 text-base">{treatment.name}</CardTitle>
+                        </CardHeader>
+                      </Card>
+                    </div>
+                  ))
+                }
+              </RadioGroup>
+              <p
+                id="llc-tax-treatment-error"
+                class="text-error text-sm"
+                role="alert"
+                hidden
+              >
+                Selecciona cómo tributará la LLC para continuar.
+              </p>
+
+              <div class="mt-4" aria-live="polite">
+                {
+                  taxTreatments.map((treatment) => (
+                    <Alert
+                      variant="info"
+                      data-tax-treatment-description
+                      data-value={treatment.value}
+                      hidden
+                    >
+                      <AlertTitle>{treatment.name}</AlertTitle>
+                      <AlertDescription>{treatment.description}</AlertDescription>
+                    </Alert>
+                  ))
+                }
+              </div>
+            </div>
+          </FieldSet>
+        </FieldGroup>
+      </div>
+    </div>
+
+    <div data-tax-indicators aria-live="polite" aria-hidden="true" hidden>
+      <Separator class="my-5" />
+      <FieldGroup>
+        <FieldSet>
+          <FieldLegend>Indicadores operativos en Estados Unidos</FieldLegend>
+          <div class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2">
             {
-              taxTreatments.map((treatment) => (
-                <label
-                  for={treatment.id}
-                  data-tax-treatment-option
-                  data-value={treatment.value}
-                  class="group/treatment focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
-                >
-                  <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
-                    <RadioGroupItem
-                      id={treatment.id}
-                      value={treatment.value}
-                      aria-label={treatment.name}
+              indicadoresOperativos.map((i) => (
+                <Card class="bg-primary-accent/5 ring-primary-accent/20">
+                  <CardContent class="flex items-center justify-between gap-4">
+                    <div class="flex gap-4">
+                      <span class="bg-primary-accent/10 text-primary-accent grid size-11 shrink-0 place-items-center rounded-full">
+                        <Icon name={i.icon} class="size-5" aria-hidden="true" />
+                      </span>
+                      <div class="min-w-0">
+                        <p class="text-foreground text-lg font-semibold">
+                          {i.title}
+                        </p>
+                        <p class="text-muted-foreground text-sm">{i.description}</p>
+                      </div>
+                    </div>
+                    <Switch
+                      id={i.id}
+                      name="operationalIndicators"
+                      value={i.id}
+                      label="Sí"
+                      aria-label={i.title}
                       variant="primary"
+                      disabled
                     />
-                  </span>
-                  <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/treatment:shadow-lg">
-                    <CardHeader class="p-5">
-                      <CardTitle class="text-base">{treatment.name}</CardTitle>
-                      <CardDescription class="text-sm">
-                        {treatment.description}
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                </label>
+                  </CardContent>
+                </Card>
               ))
             }
-          </RadioGroup>
-          <p
-            id="llc-tax-treatment-error"
-            class="text-error text-sm"
-            role="alert"
-            hidden
-          >
-            Selecciona cómo tributará la LLC para continuar.
-          </p>
-        </div>
-      </FieldSet>
-    </FieldGroup>
+          </div>
+        </FieldSet>
+      </FieldGroup>
+    </div>
   </CardContent>
 </Card>
 
@@ -341,9 +365,13 @@ const data = countries as {
     const indicators = card?.querySelector<HTMLElement>(
       "[data-tax-indicators]",
     );
-    const countrySection =
-      card?.querySelector<HTMLElement>("[data-tax-country]");
-    const countryRoot = countrySection?.querySelector<HTMLElement>(
+    const treatmentSection = card?.querySelector<HTMLElement>(
+      "[data-tax-treatment]",
+    );
+    const treatmentRoot = treatmentSection?.querySelector<HTMLElement>(
+      "#llc-tax-treatment-group",
+    );
+    const countryRoot = card?.querySelector<HTMLElement>(
       "[data-primary-operating-country]",
     );
     const switches = Array.from(
@@ -352,28 +380,49 @@ const data = countries as {
       ) ?? [],
     ).map((switchRoot) => createSwitch(switchRoot));
 
-    if (!indicators || !countrySection || !countryRoot) return;
+    if (
+      !indicators ||
+      !treatmentSection ||
+      !treatmentRoot ||
+      !countryRoot
+    ) return;
 
     const countryApi = createCombobox(countryRoot);
 
-    const applyVisibility = (value: string | undefined) => {
+    const setSectionVisibility = (
+      section: HTMLElement,
+      visible: boolean,
+    ) => {
+      section.hidden = !visible;
+      section.setAttribute("aria-hidden", String(!visible));
+    };
+
+    const applyTreatmentDescription = (value: string | undefined) => {
+      treatmentSection
+        .querySelectorAll<HTMLElement>("[data-tax-treatment-description]")
+        .forEach((description) => {
+          description.hidden = description.dataset.value !== value;
+        });
+    };
+
+    const applySourceVisibility = (value: string | undefined) => {
       const showIndicators = value === "true";
-      indicators.hidden = !showIndicators;
-      indicators.setAttribute("aria-hidden", String(!showIndicators));
-      countrySection.hidden = showIndicators;
-      countrySection.setAttribute("aria-hidden", String(showIndicators));
+      setSectionVisibility(indicators, showIndicators);
       switches.forEach((switchApi) => switchApi.setDisabled(!showIndicators));
-      countryApi.setDisabled(showIndicators);
-      if (showIndicators) countryApi.close();
     };
 
     root.addEventListener("starwind:value-change", (event) => {
       const { value } = (event as CustomEvent<{ value: string }>).detail;
-      applyVisibility(value);
+      applySourceVisibility(value);
+    });
+    treatmentRoot.addEventListener("starwind:value-change", (event) => {
+      const { value } = (event as CustomEvent<{ value: string }>).detail;
+      applyTreatmentDescription(value);
     });
     const form = root.closest("form");
     form?.addEventListener("llc-form:reset", () => {
-      applyVisibility(root.dataset.value);
+      applySourceVisibility(root.dataset.value);
+      applyTreatmentDescription(treatmentRoot.dataset.value);
     });
     form?.addEventListener("starwind:value-change", (event) => {
       if (
@@ -385,7 +434,8 @@ const data = countries as {
       }
     });
 
-    applyVisibility(root.dataset.value);
+    applySourceVisibility(root.dataset.value);
+    applyTreatmentDescription(treatmentRoot.dataset.value);
   };
 
   const initTaxSources = () => {

@@ -1,0 +1,478 @@
+---
+import Bolt from "@tabler/icons/filled/bolt.svg";
+import BuildingBank from "@tabler/icons/outline/building-bank.svg";
+import { Icon } from "astro-icon/components";
+
+import Nulaimg from "@/assets/images/nula.webp";
+import Parcialimg from "@/assets/images/parcial.webp";
+import Totalimg from "@/assets/images/total.webp";
+import { Image } from "astro:assets";
+import { Badge } from "@/components/starwind/badge";
+import { Separator } from "@/components/starwind/separator";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/starwind/card";
+import { FieldGroup, FieldLegend, FieldSet } from "@/components/starwind/field";
+import { RadioGroup, RadioGroupItem } from "@/components/starwind/radio-group";
+
+const Estructura = [
+  {
+    id: "SingleMember",
+    value: "Single Member",
+    name: "Single Member",
+    description:
+      "La LLC tiene un solo socio directo, con propiedad del 100% de la compañía.",
+    list: [
+      "Estructura más simple de administrar.",
+      "La propiedad se concentra en un solo socio.",
+      "Facilita la toma de decisiones de miembros",
+      "Presentación de información limitada al IRS",
+    ],
+  },
+  {
+    id: "Partnership",
+    value: "Partnership",
+    name: "Partnership",
+    description:
+      "Dos o más miembros comparten propiedad, control y utilidades.",
+    list: [
+      "Permite distribuir participación entre varios socios.",
+      "Facilita estructuras compartidas de inversión o gestión.",
+      "Requiere mayor coordinación en propiedad, decisiones y utilidades.",
+      "La distribución entre socios se definirá según la estructura acordada.",
+      "Presentación de información completa al IRS",
+      "Mayor presentación de formularios",
+      "Obtención de ITIN por socio",
+    ],
+  },
+];
+
+const TypeOfSinglemember = [
+  {
+    id: "Persona-natural",
+    value: "Persona natural",
+    name: "Persona natural",
+    description:
+      "Una sola persona es dueña del 100% de la LLC. Para ciertos fines tributarios federales, los resultados de la compañía pueden atribuirse directamente a su propietario.",
+  },
+  {
+    id: "Persona-jurídica-Holding",
+    value: "Persona jurídica / Holding",
+    name: "Persona jurídica / Holding",
+    description:
+      "La LLC tiene un solo propietario directo, pero dicho propietario es una persona jurídica, como una holding u otra empresa con varios socios. Esto permite estructurar la propiedad de forma más ordenada y separar la operación directa de la titularidad final.",
+  },
+];
+
+const NumberOfPartnership = [
+  {
+    id: "2",
+    value: "2",
+    name: "2",
+    description:
+      "Dos miembros comparten la propiedad y requieren una estructura societaria coordinada. La administración y representación se definirán en la siguiente decisión del recorrido. Los datos detallados se completan posteriormente en el formulario de incorporación.",
+  },
+  {
+    id: "3",
+    value: "3",
+    name: "3",
+    description:
+      "Una estructura con varios socios necesita reglas de gobierno proporcionales y comprensibles. El grupo requiere una definición clara de administración para operar de forma ordenada. Los detalles societarios se recopilan posteriormente en el formulario de incorporación.",
+  },
+  {
+    id: "4+",
+    value: "4+",
+    name: "4+",
+    description:
+      "El crecimiento del grupo aumenta la necesidad de reglas formales de administración. La estructura debe pasar a una revisión societaria más detallada antes de incorporarse. La siguiente etapa determina la forma de administración de la LLC.",
+  },
+];
+
+const defaultSingleMemberType = TypeOfSinglemember[0];
+const defaultPartnershipCount = NumberOfPartnership[0];
+const defaultLevel = Estructura[0];
+---
+
+<Card class="w-full px-5 py-10 shadow-2xl">
+  <CardHeader class="gap-y-5">
+    <Badge
+      tone="primary-accent"
+      appearance="outline"
+      size="sm"
+      class="w-fit p-1"
+      eyebrow
+    >
+      <Bolt /> ESTRUCTURA SOCIETARIA
+    </Badge>
+    <CardTitle class="text-4xl">¿Quién será propietario de la LLC?</CardTitle>
+    <CardDescription class="text-xl">
+      Primero definimos si la LLC tendrá un solo socio o varios socios. Esta
+      decisión influye en la propiedad, el control, la distribución de
+      utilidades y el tratamiento tributario aplicable.
+    </CardDescription>
+  </CardHeader>
+
+  <CardContent class="mt-5">
+    <FieldGroup>
+      <FieldSet>
+        <FieldLegend>Selecciona la estructura de participación</FieldLegend>
+        <div>
+          <RadioGroup
+            id="EstructureClass-level-group"
+            name="EstructureClassLevel"
+            legend="Selecciona la estructura de participación"
+            defaultValue={defaultLevel.value}
+            required
+            aria-describedby="EstructureClass-level-error"
+            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2"
+          >
+            {
+              Estructura.map((model) => {
+                return (
+                  <div
+                    data-EstructureClass-option
+                    data-value={model.value}
+                    data-label={model.name}
+                    class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition-shadow duration-200 focus-within:ring-3 has-data-checked:ring-3 motion-reduce:transition-none"
+                  >
+                    <RadioGroupItem
+                      id={model.id}
+                      value={model.value}
+                      aria-label={model.name}
+                      variant="primary"
+                      nativeButton
+                      wrapperClass="absolute inset-0 z-20 size-full group-data-[size=sm]/radio-group:size-full group-data-[size=md]/radio-group:size-full group-data-[size=lg]/radio-group:size-full"
+                      rootClass="rounded-xl"
+                      class="inset-auto top-4 right-4 size-5 bg-background/90 shadow-sm backdrop-blur-sm"
+                    />
+
+                    <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                      <CardHeader class="py-5 grid-cols-[auto_1fr] grid-rows-1 h-full">
+                        <div>
+                          <CardTitle class="text-base">{model.name}</CardTitle>
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  </div>
+                );
+              })
+            }
+          </RadioGroup>
+
+          <p
+            id="EstructureClass-level-error"
+            class="text-error text-sm"
+            role="alert"
+            hidden
+          >
+            Selecciona la estructura de participación para continuar.
+          </p>
+        </div>
+      </FieldSet>
+
+      <Card
+        class="bg-primary-accent/5 ring-primary-accent/20"
+        aria-live="polite"
+      >
+        <CardContent class="flex items-start gap-4">
+          <span
+            class="bg-primary-accent/10 text-primary-accent grid size-11 shrink-0 place-items-center rounded-full"
+          >
+            <BuildingBank class="size-5" aria-hidden="true" />
+          </span>
+          <div class="min-w-0 flex-1" data-selected-EstructureClass>
+            <p class="text-muted-foreground text-sm">Modelo seleccionado</p>
+            {
+              Estructura.map((model) => (
+                <div
+                  data-structure-summary
+                  data-value={model.value}
+                  hidden={model.value !== defaultLevel.value}
+                  class="space-y-3"
+                >
+                  <p class="text-foreground text-lg font-semibold">
+                    {model.name}
+                  </p>
+                  <p class="text-muted-foreground text-sm">
+                    {model.description}
+                  </p>
+                  <div>
+                    <p class="text-foreground text-sm font-semibold">
+                      Beneficios:
+                    </p>
+                    <ul class="mt-2 space-y-2">
+                      {model.list.map((item) => (
+                        <li class="text-muted-foreground flex items-start gap-2 text-sm">
+                          <Icon
+                            name="MingcuteCheckCircleFill"
+                            class="text-primary/60 mt-0.5 size-4 shrink-0"
+                            aria-hidden="true"
+                          />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardContent>
+      </Card>
+    </FieldGroup>
+
+    <Separator class="my-5" />
+
+    <div data-single-member-section aria-live="polite">
+      <FieldGroup>
+        <FieldSet>
+          <FieldLegend>¿Quién será el miembro único de la LLC?</FieldLegend>
+          <div>
+            <RadioGroup
+              id="TypeOfSinglemember-level-group"
+              name="singleMemberOwnerType"
+              legend="Selecciona el tipo de miembro único"
+              defaultValue={defaultSingleMemberType.value}
+              required
+              aria-describedby="TypeOfSinglemember-level-error"
+              class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2"
+            >
+              {
+                TypeOfSinglemember.map((model) => {
+                  return (
+                    <div
+                      data-TypeOfSinglemember-option
+                      data-value={model.value}
+                      data-label={model.name}
+                      class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition-shadow duration-200 focus-within:ring-3 has-data-checked:ring-3 motion-reduce:transition-none"
+                    >
+                      <RadioGroupItem
+                        id={model.id}
+                        value={model.value}
+                        aria-label={model.name}
+                        variant="primary"
+                        nativeButton
+                        wrapperClass="absolute inset-0 z-20 size-full group-data-[size=sm]/radio-group:size-full group-data-[size=md]/radio-group:size-full group-data-[size=lg]/radio-group:size-full"
+                        rootClass="rounded-xl"
+                        class="inset-auto top-4 right-4 size-5 bg-background/90 shadow-sm backdrop-blur-sm"
+                      />
+
+                      <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                        <CardHeader class="py-5 grid h-full">
+                          <div class="w-fit rounded-xl p-2 mr-5 flex items-center justify-center h-full" />
+                          <div>
+                            <CardTitle class="text-base">
+                              {model.name}
+                            </CardTitle>
+                            <CardDescription>
+                              {model.description}
+                            </CardDescription>
+                          </div>
+                        </CardHeader>
+                      </Card>
+                    </div>
+                  );
+                })
+              }
+            </RadioGroup>
+
+            <p
+              id="TypeOfSinglemember-level-error"
+              class="text-error text-sm"
+              role="alert"
+              hidden
+            >
+              Selecciona el tipo de miembro único para continuar.
+            </p>
+          </div>
+        </FieldSet>
+
+        <Card
+          class="bg-primary-accent/5 ring-primary-accent/20"
+          aria-live="polite"
+        >
+          <CardContent class="flex items-center gap-4">
+            <span
+              class="bg-primary-accent/10 text-primary-accent grid size-11 shrink-0 place-items-center rounded-full"
+            >
+              <BuildingBank class="size-5" aria-hidden="true" />
+            </span>
+            <div class="min-w-0">
+              <p class="text-muted-foreground text-sm">Tipo seleccionado</p>
+              <p
+                class="text-foreground truncate text-lg font-semibold"
+                data-selected-single-member-type
+              >
+                {defaultSingleMemberType.name}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </FieldGroup>
+    </div>
+
+    <div data-partnership-section aria-live="polite" aria-hidden="true" hidden>
+      <FieldGroup>
+        <FieldSet>
+          <FieldLegend>¿Cuántos miembros tendrá la LLC?</FieldLegend>
+          <div>
+            <RadioGroup
+              id="NumberOfPartnership-level-group"
+              name="numberOfMembers"
+              legend="Selecciona la cantidad de miembros"
+              defaultValue={defaultPartnershipCount.value}
+              disabled
+              required
+              aria-describedby="NumberOfPartnership-level-error"
+              class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-3"
+            >
+              {
+                NumberOfPartnership.map((model) => {
+                  return (
+                    <div
+                      data-NumberOfPartnership-option
+                      data-value={model.value}
+                      data-label={model.name}
+                      class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition-shadow duration-200 focus-within:ring-3 has-data-checked:ring-3 motion-reduce:transition-none"
+                    >
+                      <RadioGroupItem
+                        id={model.id}
+                        value={model.value}
+                        aria-label={model.name}
+                        variant="primary"
+                        nativeButton
+                        wrapperClass="absolute inset-0 z-20 size-full group-data-[size=sm]/radio-group:size-full group-data-[size=md]/radio-group:size-full group-data-[size=lg]/radio-group:size-full"
+                        rootClass="rounded-xl"
+                        class="inset-auto top-4 right-4 size-5 bg-background/90 shadow-sm backdrop-blur-sm"
+                      />
+
+                      <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                        <CardHeader class="py-5 grid-cols-[auto_1fr] grid-rows-1 h-full">
+                          <div class="w-fit rounded-xl p-2 mr-5 flex items-center justify-center h-full" />
+                          <div>
+                            <CardTitle class="text-base">
+                              {model.name}
+                            </CardTitle>
+                          </div>
+                        </CardHeader>
+                      </Card>
+                    </div>
+                  );
+                })
+              }
+            </RadioGroup>
+
+            <p
+              id="NumberOfPartnership-level-error"
+              class="text-error text-sm"
+              role="alert"
+              hidden
+            >
+              Selecciona la cantidad de miembros para continuar.
+            </p>
+          </div>
+        </FieldSet>
+
+        
+      </FieldGroup>
+    </div>
+  </CardContent>
+</Card>
+
+<script>
+  import { createRadioGroup } from "@starwind-ui/runtime/radio-group";
+
+  const setupStructureBranches = (root: HTMLElement) => {
+    if (root.dataset.structureBranchesReady === "true") return;
+    root.dataset.structureBranchesReady = "true";
+
+    const card = root.closest<HTMLElement>('[data-slot="card"]');
+    const singleSection = card?.querySelector<HTMLElement>(
+      "[data-single-member-section]",
+    );
+    const partnershipSection = card?.querySelector<HTMLElement>(
+      "[data-partnership-section]",
+    );
+    const singleRoot = singleSection?.querySelector<HTMLElement>(
+      "#TypeOfSinglemember-level-group",
+    );
+    const partnershipRoot = partnershipSection?.querySelector<HTMLElement>(
+      "#NumberOfPartnership-level-group",
+    );
+    const structureOutput = card?.querySelector<HTMLElement>(
+      "[data-selected-EstructureClass]",
+    );
+    const singleOutput = card?.querySelector<HTMLElement>(
+      "[data-selected-single-member-type]",
+    );
+
+    if (
+      !singleSection ||
+      !partnershipSection ||
+      !singleRoot ||
+      !partnershipRoot
+    )
+      return;
+
+    const singleApi = createRadioGroup(singleRoot);
+    const partnershipApi = createRadioGroup(partnershipRoot);
+
+    const setSectionVisibility = (section: HTMLElement, visible: boolean) => {
+      section.hidden = !visible;
+      section.setAttribute("aria-hidden", String(!visible));
+    };
+
+    const optionLabel = (group: HTMLElement, value: string | undefined) =>
+      Array.from(group.querySelectorAll<HTMLElement>("[data-value]")).find(
+        (option) => option.dataset.value === value,
+      )?.dataset.label;
+
+    const applyStructure = (value: string | undefined) => {
+      const isSingleMember = value === "Single Member";
+      const isPartnership = value === "Partnership";
+
+      setSectionVisibility(singleSection, isSingleMember);
+      setSectionVisibility(partnershipSection, isPartnership);
+      singleApi.setDisabled(!isSingleMember);
+      partnershipApi.setDisabled(!isPartnership);
+
+      structureOutput
+        ?.querySelectorAll<HTMLElement>("[data-structure-summary]")
+        .forEach((summary) => {
+          summary.hidden = summary.dataset.value !== value;
+        });
+    };
+
+    root.addEventListener("starwind:value-change", (event) => {
+      const { value } = (event as CustomEvent<{ value: string }>).detail;
+      applyStructure(value);
+    });
+    singleRoot.addEventListener("starwind:value-change", (event) => {
+      const { value } = (event as CustomEvent<{ value: string }>).detail;
+      const label = optionLabel(singleRoot, value);
+      if (singleOutput && label) singleOutput.textContent = label;
+    });
+    root.closest("form")?.addEventListener("llc-form:reset", () => {
+      applyStructure(root.dataset.value);
+      if (singleOutput) {
+        singleOutput.textContent =
+          optionLabel(singleRoot, singleRoot.dataset.value) ?? "";
+      }
+    });
+
+    applyStructure(root.dataset.value);
+  };
+
+  const initStructureBranches = () => {
+    document
+      .querySelectorAll<HTMLElement>("#EstructureClass-level-group")
+      .forEach(setupStructureBranches);
+  };
+
+  initStructureBranches();
+  document.addEventListener("astro:page-load", initStructureBranches);
+</script>

@@ -15,7 +15,9 @@ type Props = Omit<HTMLAttributes<"span">, "defaultChecked" | "onChange"> & Varia
   nativeButton?: boolean;
   readOnly?: boolean;
   required?: boolean;
+  rootClass?: string;
   value: string;
+  wrapperClass?: string;
 };
 
 const {
@@ -29,15 +31,17 @@ const {
   nativeButton = false,
   readOnly = false,
   required = false,
+  rootClass,
   value,
+  wrapperClass,
   class: className,
   ...rest
 } = Astro.props;
 ---
 
-<div class={radioWrapper()} data-slot="radio-group-item-wrapper">
+<div class={radioWrapper({ class: wrapperClass })} data-slot="radio-group-item-wrapper">
   <RadioPrimitive.Root
-    class={radioItem()}
+    class={radioItem({ class: rootClass })}
     checked={checked}
     defaultChecked={defaultChecked}
     disabled={disabled}

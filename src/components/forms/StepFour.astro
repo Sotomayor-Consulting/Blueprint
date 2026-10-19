@@ -6,6 +6,7 @@ import Nulaimg from "@/assets/images/nula.webp";
 import Parcialimg from "@/assets/images/parcial.webp";
 import Totalimg from "@/assets/images/total.webp";
 import { Image } from "astro:assets";
+import { Icon } from 'astro-icon/components'
 import { Badge } from "@/components/starwind/badge";
 import {
   Card,
@@ -14,6 +15,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/starwind/card";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/starwind/alert";
 import {
   FieldDescription,
   FieldGroup,
@@ -26,25 +32,22 @@ const confidencialidad = [
   {
     id: "Nula",
     value: "Nula",
-    name: "Nula - Revela a los Socios y al Manager",
-    description:
-      "Privacidad baja: filings ordinarios pueden identificar responsables de la LLC.",
+    name: "Nula",
+    description: "Los socios se reflejan en el registro estatal.",
     image: Nulaimg,
   },
   {
     id: "Parcial",
     value: "Parcial",
-    name: "Parcial - Revela a los Socios o Manager(s)",
-    description:
-      "Privacidad intermedia: depende de estructura, administración y filings posteriores.",
+    name: "Parcial",
+    description: "Los socios se reflejan en el registro estatal.",
     image: Parcialimg,
   },
   {
     id: "Total",
     value: "Total",
-    name: "Total - Socios y managers",
-    description:
-      "Privacidad alta: identidad puede quedar fuera del registro ordinario con estructura adecuada.",
+    name: "Total",
+    description: "Los socios no se reflejan en el reqistro estatal.",
     image: Totalimg,
   },
 ];
@@ -57,114 +60,122 @@ const defaultLevel = confidencialidad[0];
     <Badge
       tone="primary-accent"
       appearance="outline"
-      size="md"
+      size="sm"
       class="w-fit p-1"
       eyebrow
     >
       <Bolt /> CONFIDENCIALIDAD
     </Badge>
-    <CardTitle class="text-4xl md:text-6xl"
-      >Confidencialidad registral</CardTitle
-    >
-    <CardDescription class="text-xl md:text-2xl">
+    <CardTitle class="text-4xl">Confidencialidad registral</CardTitle>
+    <CardDescription class="text-xl">
       Define qué información de socios y managers puede aparecer en el registro
       estatal.
     </CardDescription>
   </CardHeader>
 
   <CardContent class="mt-5">
-      <FieldGroup>
-        <FieldSet>
-          <FieldLegend>Selecciona un nivel de confidencialidad</FieldLegend>
-          <FieldDescription>
-            Selecciona el nivel que mejor se ajuste a tus necesidades.
-          </FieldDescription>
+    <FieldGroup>
+      <FieldSet>
+        <FieldLegend>Selecciona un nivel de confidencialidad</FieldLegend>
+        <FieldDescription>
+          Selecciona el nivel que mejor se ajuste a tus necesidades.
+        </FieldDescription>
 
-          <div>
-            <RadioGroup
-              id="confidentiality-level-group"
-              name="confidentialityLevel"
-              legend="Selecciona el nivel de confidencialidad"
-              defaultValue={defaultLevel.value}
-              required
-              aria-describedby="confidentiality-level-error"
-              class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-3"
-            >
-              {
-                confidencialidad.map((model) => {
-                  return (
-                    <label
-                      for={model.id}
-                      data-confidentiality-option
-                      data-value={model.value}
-                      data-label={model.name}
-                      class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
-                    >
-                      <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
-                        <RadioGroupItem
-                          id={model.id}
-                          value={model.value}
-                          aria-label={model.name}
-                          variant="primary"
-                        />
-                      </span>
+        <Alert variant="info">
+          <AlertTitle class="text-lg">
+            <Icon name="MingcuteInformationFill" />
+          </AlertTitle>
+          <AlertDescription class="text-sm">
+            La confidencialidad registral es importante porque determina si la información de los socios y de la administración de la empresa será visible públicamente en el registro estatal. Elegir el nivel adecuado permite proteger la privacidad de los propietarios, reducir la exposición de su información personal y alinearse con los objetivos de la estructura societaria.
+          </AlertDescription>
+        </Alert>
 
-                      <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
-                        <CardHeader class="py-5 grid-cols-[auto_1fr] grid-rows-1 h-full">
-                          <div class="w-fit rounded-xl p-2 mr-5 flex items-center justify-center h-full">
-                            <Image
-                              src={model.image}
-                              alt={model.name}
-                              class="text-primary size-15"
-                            />
-                          </div>
-                          <div>
-                            <CardTitle class="text-base">{model.name}</CardTitle>
-                            <CardDescription class="text-sm">
-                              {model.description}
-                            </CardDescription>
-                          </div>
-                        </CardHeader>
-                      </Card>
-                    </label>
-                  );
-                })
-              }
-            </RadioGroup>
+        <div>
+          <RadioGroup
+            id="confidentiality-level-group"
+            name="confidentialityLevel"
+            legend="Selecciona el nivel de confidencialidad"
+            defaultValue={defaultLevel.value}
+            required
+            aria-describedby="confidentiality-level-error"
+            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-3"
+          >
+            {
+              confidencialidad.map((model) => {
+                return (
+                  <div
+                    data-confidentiality-option
+                    data-value={model.value}
+                    data-label={model.name}
+                    class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition-shadow duration-200 focus-within:ring-3 has-data-checked:ring-3 motion-reduce:transition-none"
+                  >
+                    <RadioGroupItem
+                      id={model.id}
+                      value={model.value}
+                      aria-label={model.name}
+                      variant="primary"
+                      nativeButton
+                      wrapperClass="absolute inset-0 z-20 size-full group-data-[size=sm]/radio-group:size-full group-data-[size=md]/radio-group:size-full group-data-[size=lg]/radio-group:size-full"
+                      rootClass="rounded-xl"
+                      class="inset-auto top-4 right-4 size-5 bg-background/90 shadow-sm backdrop-blur-sm"
+                    />
 
+                    <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                      <CardHeader class="py-5 grid-cols-[auto_1fr] grid-rows-1 h-full">
+                        <div class="w-fit rounded-xl p-2 mr-5 flex items-center justify-center h-full">
+                          <Image
+                            src={model.image}
+                            alt={model.name}
+                            class="text-primary size-15"
+                          />
+                        </div>
+                        <div>
+                          <CardTitle class="text-base">{model.name}</CardTitle>
+                          <CardDescription class="text-sm">
+                            {model.description}
+                          </CardDescription>
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  </div>
+                );
+              })
+            }
+          </RadioGroup>
+
+          <p
+            id="confidentiality-level-error"
+            class="text-error text-sm"
+            role="alert"
+            hidden
+          >
+            Selecciona un nivel de confidencialidad para continuar.
+          </p>
+        </div>
+      </FieldSet>
+
+      <Card
+        class="bg-primary-accent/5 ring-primary-accent/20"
+        aria-live="polite"
+      >
+        <CardContent class="flex items-center gap-4">
+          <span
+            class="bg-primary-accent/10 text-primary-accent grid size-11 shrink-0 place-items-center rounded-full"
+          >
+            <BuildingBank class="size-5" aria-hidden="true" />
+          </span>
+          <div class="min-w-0">
+            <p class="text-muted-foreground text-sm">Modelo seleccionado</p>
             <p
-              id="confidentiality-level-error"
-              class="text-error text-sm"
-              role="alert"
-              hidden
+              class="text-foreground truncate text-lg font-semibold"
+              data-selected-confidentiality
             >
-              Selecciona un nivel de confidencialidad para continuar.
+              {defaultLevel.name}
             </p>
           </div>
-        </FieldSet>
-
-        <Card
-          class="bg-primary-accent/5 ring-primary-accent/20"
-          aria-live="polite"
-        >
-          <CardContent class="flex items-center gap-4">
-            <span
-              class="bg-primary-accent/10 text-primary-accent grid size-11 shrink-0 place-items-center rounded-full"
-            >
-              <BuildingBank class="size-5" aria-hidden="true" />
-            </span>
-            <div class="min-w-0">
-              <p class="text-muted-foreground text-sm">Modelo seleccionado</p>
-              <p
-                class="text-foreground truncate text-lg font-semibold"
-                data-selected-confidentiality
-              >
-                {defaultLevel.name}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </FieldGroup>
+        </CardContent>
+      </Card>
+    </FieldGroup>
   </CardContent>
 </Card>
 
@@ -216,7 +227,8 @@ const defaultLevel = confidencialidad[0];
     });
 
     root.closest("form")?.addEventListener("llc-form:reset", () => {
-      if (output) output.textContent = "Nula - Revela a los Socios y al Manager";
+      if (output)
+        output.textContent = "Nula - Revela a los Socios y al Manager";
       publishConfidentiality(root, "Nula");
     });
   };

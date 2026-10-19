@@ -110,14 +110,14 @@ const defaultLevel = confidencialidad[0];
     <Badge
       tone="primary-accent"
       appearance="outline"
-      size="md"
+      size="sm"
       class="w-fit p-1"
       eyebrow
     >
       <Bolt /> ESTADO DE REGISTRO
     </Badge>
-    <CardTitle class="text-4xl md:text-6xl">Selecciona el estado</CardTitle>
-    <CardDescription class="text-xl md:text-2xl">
+    <CardTitle class="text-4xl">Selecciona el estado</CardTitle>
+    <CardDescription class="text-xl">
       Mostramos únicamente los estados compatibles con el nivel de
       confidencialidad seleccionado.
     </CardDescription>
@@ -255,21 +255,22 @@ const defaultLevel = confidencialidad[0];
               {
                 confidencialidad.map((model) => {
                   return (
-                    <label
-                      for={model.id}
+                    <div
                       data-operations-option
                       data-value={model.value}
                       data-label={model.name}
-                      class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition duration-200 focus-within:ring-3 has-data-checked:-translate-y-1 has-data-checked:ring-3 motion-reduce:transition-none"
+                      class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition-shadow duration-200 focus-within:ring-3 has-data-checked:ring-3 motion-reduce:transition-none"
                     >
-                      <span class="absolute top-4 right-4 z-10 rounded-full bg-background/90 shadow-sm backdrop-blur-sm">
-                        <RadioGroupItem
-                          id={model.id}
-                          value={model.value}
-                          aria-label={model.name}
-                          variant="primary"
-                        />
-                      </span>
+                      <RadioGroupItem
+                        id={model.id}
+                        value={model.value}
+                        aria-label={model.name}
+                        variant="primary"
+                        nativeButton
+                        wrapperClass="absolute inset-0 z-20 size-full group-data-[size=sm]/radio-group:size-full group-data-[size=md]/radio-group:size-full group-data-[size=lg]/radio-group:size-full"
+                        rootClass="rounded-xl"
+                        class="inset-auto top-4 right-4 size-5 bg-background/90 shadow-sm backdrop-blur-sm"
+                      />
 
                       <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
                         <CardHeader class="py-5 grid-cols-[auto_1fr] grid-rows-1 h-full">
@@ -281,7 +282,7 @@ const defaultLevel = confidencialidad[0];
                           </div>
                         </CardHeader>
                       </Card>
-                    </label>
+                    </div>
                   );
                 })
               }

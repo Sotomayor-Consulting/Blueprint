@@ -1,23 +1,23 @@
 {
   "florida": {
     "Franchise_mantenimiento": "USD 138,75 anuales",
-    "Impuesto_estatal": "Sin income tax personal; C-Corp sí",
-    "Ventaja": "Muy popular, confiable y favorable para extranjeros"
+    "Impuesto_estatal": "0% sobre la renta para personas; corporaciones sujetas a impuestos corporativos estatales del 5.5%.",
+    "Ventaja": "Muy reconocida, confiable y favorable para extranjeros; ideal si la empresa operará realmente en Florida."
   },
   "texas": {
-    "Franchise_mantenimiento": "USD 0 hasta USD 2,65 M de ingresos; sobre el umbral aplica Franchise Tax",
-    "Impuesto_estatal": "Sin personal/corporate income tax tradicional",
-    "Ventaja": "Jurisdicción prestigiosa, mercado enorme y favorable para negocios"
+    "Franchise_mantenimiento": "USD 0 si están bajo el umbral aplicable.",
+    "Impuesto_estatal": "0% sobre la renta para personas; puede aplicar para corporaciones según actividad y clasificación fiscal",
+    "Ventaja": "Jurisdicción prestigiosa, mercado enorme y favorable para negocios."
   },
   "california": {
-    "Franchise_mantenimiento": "USD 800 mínimo anual + USD 20 bienal",
-    "Impuesto_estatal": "Sí, relativamente alto",
-    "Ventaja": "Gran mercado y fuerte prestigio comercial, pero costoso"
+    "Franchise_mantenimiento": "USD 820 anuales",
+    "Impuesto_estatal": "0% sobre la renta para personas; puede aplicar para corporaciones según actividad y clasificación fiscal.",
+    "Ventaja": "Conveniente cuando la empresa realmente opera en California, evitando tener que incorporarce en otro estado y luego registrarse allí."
   },
   "nueva_york": {
-    "Franchise_mantenimiento": "USD 9 cada 2 años",
-    "Impuesto_estatal": "Sí",
-    "Ventaja": "Altísimo prestigio comercial y financiero; mayor complejidad regulatoria"
+    "Franchise_mantenimiento": "USD 9 cada dos años, más annual filing fee desde USD 25 cuando aplique.",
+    "Impuesto_estatal": "0% sobre la renta para personas; aplica para corporaciones según actividad y clasificación fiscal.",
+    "Ventaja": "Ideal si la empresa tendrá operación real en New York y necesita acceso a uno de los mercados financieros y comerciales más importantes de EE.UU."
   },
   "alabama": {
     "Franchise_mantenimiento": "Variable; USD 0 si el impuesto calculado es ≤ USD 100",
@@ -70,9 +70,9 @@
     "Ventaja": "Jurisdicción favorable, privada y reconocida para protección patrimonial"
   },
   "delaware": {
-    "Franchise_mantenimiento": "USD 300 anuales referenciales; confirmar tasa vigente",
-    "Impuesto_estatal": "Sí, según actividad y nexus",
-    "Ventaja": "Máximo prestigio corporativo, Court of Chancery y alta aceptación de inversionistas"
+    "Franchise_mantenimiento": "USD 300 anuales.",
+    "Impuesto_estatal": "Sí puede existir impuesto corporativo si genera renta gravada en Delaware.",
+    "Ventaja": "Alta confidencialidad, estructura legal corporativa y muy reconocido por inversionistas y estructuras empresariales complejas."
   },
   "georgia": {
     "Franchise_mantenimiento": "USD 60 anuales",
@@ -165,9 +165,9 @@
     "Ventaja": "Bajo costo y estructura empresarial estable"
   },
   "nevada": {
-    "Franchise_mantenimiento": "Aproximadamente USD 350 anuales",
-    "Impuesto_estatal": "Sin income tax personal/corporativo; Commerce Tax puede aplicar",
-    "Ventaja": "Privacidad y protección patrimonial"
+    "Franchise_mantenimiento": "USD 350 anuales",
+    "Impuesto_estatal": "0% sobre la renta para personas; puede aplicar para corporaciones con ingresos altos.",
+    "Ventaja": "Buena privacidad registral, entorno empresarial favorable y atractivo para negocios con operaciones o activos en Nevada."
   },
   "nueva_hampshire": {
     "Franchise_mantenimiento": "USD 100 anuales",
@@ -180,9 +180,9 @@
     "Ventaja": "Gran mercado y proximidad directa a Nueva York"
   },
   "nuevo_mexico": {
-    "Franchise_mantenimiento": "USD 0; sin Annual Report para LLC",
-    "Impuesto_estatal": "Sí",
-    "Ventaja": "Muy bajo mantenimiento y buena privacidad registral"
+    "Franchise_mantenimiento": "USD 0",
+    "Impuesto_estatal": "0% sobre la renta para personas; puede aplicar para corporaciones según actividad y clasificación fiscal.",
+    "Ventaja": "Muy bajo mantenimiento, buena privacidad registral y estructura sencilla para negocios internacionales o holdings."
   },
   "ohio": {
     "Franchise_mantenimiento": "USD 0; sin Annual Report",
@@ -245,8 +245,8 @@
     "Ventaja": "Bajo costo, estabilidad y fuerte base industrial"
   },
   "wyoming": {
-    "Franchise_mantenimiento": "Mínimo USD 60 anual mediante Annual Report estatal",
-    "Impuesto_estatal": "0% de impuesto estatal sobre la renta para personas y corporaciones",
-    "Ventaja": "Jurisdicción confiable, privada y favorable para LLCs, con bajos costos y buena aceptación internacional"
-  }
+    "Franchise_mantenimiento": "Franchise / mantenimiento:  USD 60 anuales.",
+    "Impuesto_estatal": "0% sobre la renta para personas y corporaciones. ",
+    "Ventaja": "Alta privacidad registral, bajo costo y estructura simple. Recomendado para negocios digitales, internacionales y holdings."
+  } 
 }
