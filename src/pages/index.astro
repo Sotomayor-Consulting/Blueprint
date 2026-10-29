@@ -21,6 +21,9 @@ import StepFour from "@components/forms/StepFour.astro"
 import StepFive from "@components/forms/StepFive.astro";
 import StepSix from "@components/forms/StepSix.astro";
 import StepSeven from "@components/forms/StepSeven.astro";
+import StepEight from "@components/forms/StepseEight.astro";
+import StepNine from "@components/forms/StepNine.astro";
+import StepTen from "@components/forms/StepTen.astro";
 
 const steps: StepperStep[] = [
   { id: "Correo", title: "Inicio", description: "" },
@@ -34,6 +37,9 @@ const steps: StepperStep[] = [
   { id: "Estado", title: "Estado", description: "" },
   { id: "Tributacion", title: "Tributación", description: ""},
   { id: "Estructura", title: "Estructura", description: ""},
+  { id: "Administracion", title: "Administración", description: ""},
+  { id: "Contabilidad", title: "Método contable", description: ""},
+  { id: "Actividad", title: "Actividad económica", description: ""},
   { id: "review", title: "Final", description: ""},
 ];
 
@@ -62,6 +68,9 @@ const steps: StepperStep[] = [
         <StepFive slot="Estado" />
         <StepSix slot="Tributacion" />
         <StepSeven slot="Estructura" />
+        <StepEight slot="Administracion" />
+        <StepNine slot="Contabilidad" />
+        <StepTen slot="Actividad" />
 
         <div slot="review">
           <FieldGroup>
@@ -115,6 +124,9 @@ const steps: StepperStep[] = [
         Estado: ["formationState"],
         Tributacion: ["primaryOperatingCountry"],
         Estructura: [],
+        Administracion: [],
+        Contabilidad: [],
+        Actividad: ["primaryEconomicActivity"],
         review: ["terms"],
       };
 
@@ -181,6 +193,20 @@ const steps: StepperStep[] = [
             errorId: "NumberOfPartnership-level-error",
             kind: "radio",
             rootId: "NumberOfPartnership-level-group",
+          },
+        ],
+        Administracion: [
+          {
+            errorId: "sistem-model-error",
+            kind: "radio",
+            rootId: "sistem-model-group",
+          },
+        ],
+        Contabilidad: [
+          {
+            errorId: "cash-model-error",
+            kind: "radio",
+            rootId: "cash-model-group",
           },
         ],
       };
@@ -284,47 +310,60 @@ const steps: StepperStep[] = [
           });
         };
 
+        const validateComboboxSelection = (
+          selector: string,
+          message: string,
+        ) => {
+          const root = form.querySelector<HTMLElement>(selector);
+          const hiddenInput = root?.querySelector<HTMLInputElement>(
+            "[data-sw-combobox-hidden-input]",
+          );
+          const visibleInput = root?.querySelector<HTMLInputElement>(
+            '[data-slot="combobox-input"]',
+          );
+          const selectedValue = hiddenInput?.value.trim();
+
+          // The required hidden input reports valueMissing while no option is
+          // selected, including when the user has only typed filter text.
+          if (!selectedValue) return null;
+
+          const selectedItem = Array.from(
+            root?.querySelectorAll<HTMLElement>(
+              '[data-slot="combobox-item"]',
+            ) ?? [],
+          ).find((item) => item.dataset.value === selectedValue);
+          const selectedLabel = selectedItem
+            ?.querySelector<HTMLElement>('[data-slot="combobox-item-text"]')
+            ?.textContent?.trim();
+
+          if (!selectedLabel || visibleInput?.value.trim() === selectedLabel) {
+            return null;
+          }
+
+          return {
+            key: "customError" as const,
+            message,
+            source: "custom" as const,
+          };
+        };
+
         const formApi = createForm(form, {
           fieldValidators: {
-            formationState: () => {
-              const root = form.querySelector<HTMLElement>(
+            formationState: () =>
+              validateComboboxSelection(
                 "[data-formation-state-combobox]",
-              );
-              const selected = root?.dataset.value;
-              const label = root
-                ?.querySelector<HTMLInputElement>(
-                  '[data-slot="combobox-input"]',
-                )
-                ?.value.trim();
-
-              return selected && label === selected
-                ? null
-                : {
-                    key: "customError",
-                    message:
-                      "Selecciona un estado disponible para continuar.",
-                      source: "custom",
-                    };
-            },
-            primaryOperatingCountry: () => {
-              const root = form.querySelector<HTMLElement>(
+                "Selecciona un estado disponible para continuar.",
+              ),
+            primaryOperatingCountry: () =>
+              validateComboboxSelection(
                 "[data-primary-operating-country]",
-              );
-              const selected = root?.dataset.value;
-              const label = root
-                ?.querySelector<HTMLInputElement>(
-                  '[data-slot="combobox-input"]',
-                )
-                ?.value.trim();
-
-              return selected && label === selected
-                ? null
-                : {
-                    key: "customError",
-                    message: "Selecciona el país principal de operación.",
-                    source: "custom",
-                  };
-            },
+                "Selecciona el país principal de operación.",
+              ),
+            primaryEconomicActivity: () =>
+              validateComboboxSelection(
+                "[data-primary-economic-activity]",
+                "Selecciona una actividad económica disponible.",
+              ),
           },
           onSubmit: ({ form: submittedForm, values }) => {
             completed.add(activeIndex());

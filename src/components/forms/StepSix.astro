@@ -146,7 +146,7 @@ const data = countries as {
           <ComboboxLabel>
             ¿Desde qué país operará principalmente la LLC?
           </ComboboxLabel>
-          <ComboboxInput placeholder="Busca un país" showClear />
+          <ComboboxInput placeholder="Busca un país" showClear class="border-primary" />
           <ComboboxContent size="lg">
             <ComboboxEmpty>No encontramos ese país.</ComboboxEmpty>
             {
@@ -355,6 +355,8 @@ const data = countries as {
 
 <script>
   import { createCombobox } from "@starwind-ui/runtime/combobox";
+  import type { RadioCheckedChangeDetails } from "@starwind-ui/runtime/radio";
+  import { createRadioGroup } from "@starwind-ui/runtime/radio-group";
   import { createSwitch } from "@starwind-ui/runtime/switch";
 
   const setupTaxSource = (root: HTMLElement) => {
@@ -388,6 +390,10 @@ const data = countries as {
     ) return;
 
     const countryApi = createCombobox(countryRoot);
+    const sourceApi = createRadioGroup(root);
+    const treatmentApi = createRadioGroup(treatmentRoot);
+    sourceApi.refresh();
+    treatmentApi.refresh();
 
     const setSectionVisibility = (
       section: HTMLElement,
@@ -411,18 +417,30 @@ const data = countries as {
       switches.forEach((switchApi) => switchApi.setDisabled(!showIndicators));
     };
 
-    root.addEventListener("starwind:value-change", (event) => {
-      const { value } = (event as CustomEvent<{ value: string }>).detail;
-      applySourceVisibility(value);
+    const onAcceptedRadioChange = (
+      event: Event,
+      applyValue: (value: string) => void,
+    ) => {
+      if (!(event instanceof CustomEvent) || !(event.target instanceof HTMLElement))
+        return;
+
+      const details = event.detail as RadioCheckedChangeDetails;
+      const value = event.target.dataset.value;
+      if (!details.checked || !value) return;
+
+      details.onAccepted(() => applyValue(value));
+    };
+
+    root.addEventListener("starwind:checked-change", (event) => {
+      onAcceptedRadioChange(event, applySourceVisibility);
     });
-    treatmentRoot.addEventListener("starwind:value-change", (event) => {
-      const { value } = (event as CustomEvent<{ value: string }>).detail;
-      applyTreatmentDescription(value);
+    treatmentRoot.addEventListener("starwind:checked-change", (event) => {
+      onAcceptedRadioChange(event, applyTreatmentDescription);
     });
     const form = root.closest("form");
     form?.addEventListener("llc-form:reset", () => {
-      applySourceVisibility(root.dataset.value);
-      applyTreatmentDescription(treatmentRoot.dataset.value);
+      applySourceVisibility(undefined);
+      applyTreatmentDescription(undefined);
     });
     form?.addEventListener("starwind:value-change", (event) => {
       if (
@@ -434,8 +452,8 @@ const data = countries as {
       }
     });
 
-    applySourceVisibility(root.dataset.value);
-    applyTreatmentDescription(treatmentRoot.dataset.value);
+    applySourceVisibility(sourceApi.getValue());
+    applyTreatmentDescription(treatmentApi.getValue());
   };
 
   const initTaxSources = () => {

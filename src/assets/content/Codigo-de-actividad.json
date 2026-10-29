@@ -1,0 +1,3030 @@
+[
+  {
+    "CódigoDeActividad_Id": "2",
+    "Codigo": "51900",
+    "Actividad": "Otros servicios de información (incluyendo agencia de prensa, bibliotecas y servicios de información por Internet)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "3",
+    "Codigo": "112900",
+    "Actividad": "Producción de otros animales (incluyendo cría de gatos y perros)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "4",
+    "Codigo": "113000",
+    "Actividad": "Silvicultura y aserraderos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "5",
+    "Codigo": "114110",
+    "Actividad": "Pesca",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "6",
+    "Codigo": "114210",
+    "Actividad": "Caza y caza con trampas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "7",
+    "Codigo": "115110",
+    "Actividad": "Actividades de apoyo para la producción de cosechas (incluyendo desmotadora de algodón, preparación del suelo, siembra y cultivo)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "8",
+    "Codigo": "115210",
+    "Actividad": "Actividades de apoyo para la producción de animales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "9",
+    "Codigo": "115310",
+    "Actividad": "Actividades de apoyo para la silvicultura",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "10",
+    "Codigo": "211120",
+    "Actividad": "Extracción de petróleo crudo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "11",
+    "Codigo": "211130",
+    "Actividad": "Extracción de petróleo crudo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "12",
+    "Codigo": "212110",
+    "Actividad": "Minería de carbón",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "13",
+    "Codigo": "212200",
+    "Actividad": "Minería de minerales de metal",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "14",
+    "Codigo": "212300",
+    "Actividad": "Minería de minerales no metálicos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "15",
+    "Codigo": "213110",
+    "Actividad": "Actividades de apoyo para la minería",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "16",
+    "Codigo": "221000",
+    "Actividad": "Utilidades",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "17",
+    "Codigo": "236100",
+    "Actividad": "Construcción de edificios residenciales",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "18",
+    "Codigo": "236200",
+    "Actividad": "Construcción de edificios no residenciales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "19",
+    "Codigo": "237100",
+    "Actividad": "Contratistas de plomería, calefacción y aire acondicionado",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "20",
+    "Codigo": "237210",
+    "Actividad": "Sub-división de tierras y desarrollo de tierras",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "21",
+    "Codigo": "237310",
+    "Actividad": "Construcción de autopistas, calles, puentes y túneles",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "22",
+    "Codigo": "237990",
+    "Actividad": "Otras construcciones de ingeniería civil u obra pesada",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "23",
+    "Codigo": "238110",
+    "Actividad": "Contratistas de concreto",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "24",
+    "Codigo": "238120",
+    "Actividad": "Contratistas para montaje de estructuras prefabricadas",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "25",
+    "Codigo": "238130",
+    "Actividad": "Contratistas para instalación de productos de carpintería",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "26",
+    "Codigo": "238140",
+    "Actividad": "Contratistas de albañilería",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "27",
+    "Codigo": "238150",
+    "Actividad": "Contratistas para instalación de vidrios y cerámica",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "28",
+    "Codigo": "238160",
+    "Actividad": "Contratistas para colocar techos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "29",
+    "Codigo": "238170",
+    "Actividad": "Contratistas para colocar tablas de forro y láminas de metal",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "30",
+    "Codigo": "238190",
+    "Actividad": "Contratistas de otros trabajos en exteriores",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "31",
+    "Codigo": "238210",
+    "Actividad": "Contratistas electricistas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "32",
+    "Codigo": "238220",
+    "Actividad": "Contratistas de instalaciones hidrosanitarias, de gas, aire acondicionado y calefacción",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "33",
+    "Codigo": "238290",
+    "Actividad": "Contratistas de otras instalaciones y equipamiento en construcciones",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "34",
+    "Codigo": "238310",
+    "Actividad": "Contratistas para colocación de muros falsos y aislamiento",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "35",
+    "Codigo": "238320",
+    "Actividad": "Contratistas de pintura y cobertura de paredes",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "36",
+    "Codigo": "238330",
+    "Actividad": "Contratistas para colocación de pisos flexibles y de maderas",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "37",
+    "Codigo": "238340",
+    "Actividad": "Contratistas para colocación de pisos cerámicos y azulejos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "38",
+    "Codigo": "238350",
+    "Actividad": "Contratistas para trabajos de acabados en edificaciones",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "39",
+    "Codigo": "238390",
+    "Actividad": "Contratistas para otros trabajos de acabados en edificaciones",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "40",
+    "Codigo": "238910",
+    "Actividad": "Contratistas de preparación de terrenos para la construcción",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "41",
+    "Codigo": "238990",
+    "Actividad": "Contratistas de otros trabajos especializados para la construcción",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "42",
+    "Codigo": "311110",
+    "Actividad": "Manufactura de alimentos para animales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "43",
+    "Codigo": "311200",
+    "Actividad": "Molienda de grano y semillas oleaginosas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "44",
+    "Codigo": "311300",
+    "Actividad": "Manufactura de azúcar y productos de confitería",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "45",
+    "Codigo": "311400",
+    "Actividad": "Enlatado de fruta y verdura, y manufactura de especialidades en alimentos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "46",
+    "Codigo": "311500",
+    "Actividad": "Manufactura de productos lácteos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "47",
+    "Codigo": "311610",
+    "Actividad": "Matadero y procesamiento de animales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "48",
+    "Codigo": "311710",
+    "Actividad": "Preparación y empaquetamiento de mariscos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "49",
+    "Codigo": "311800",
+    "Actividad": "Panaderías y manufactura de tortillas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "50",
+    "Codigo": "311900",
+    "Actividad": "Manufactura de otros alimentos (incluyendo café, te, sazones y condimentos)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "51",
+    "Codigo": "312000",
+    "Actividad": "Manufactura de productos de bebidas y tabaco",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "52",
+    "Codigo": "313000",
+    "Actividad": "Moliendas textiles",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "53",
+    "Codigo": "314000",
+    "Actividad": "Productos de moliendas textiles",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "54",
+    "Codigo": "315000",
+    "Actividad": "Manufactura de ropa",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "55",
+    "Codigo": "316110",
+    "Actividad": "Cuero, cuero curtido y acabados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "56",
+    "Codigo": "316210",
+    "Actividad": "Manufactura de zapatos (incluyendo los de goma y plástico)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "57",
+    "Codigo": "316990",
+    "Actividad": "Manufactura de otros productos de cuero y aliados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "58",
+    "Codigo": "321000",
+    "Actividad": "Manufactura de productos de madera",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "59",
+    "Codigo": "322000",
+    "Actividad": "Manufactura de papel",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "60",
+    "Codigo": "323100",
+    "Actividad": "Imprenta y actividades de apoyo relacionadas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "61",
+    "Codigo": "324100",
+    "Actividad": "Manufactura de productos de carbón y petróleo",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "62",
+    "Codigo": "325100",
+    "Actividad": "Manufactura de químicos básicos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "63",
+    "Codigo": "325200",
+    "Actividad": "Manufactura de resinas, goma sintética y artificial, fibras sintéticas y filamentos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "64",
+    "Codigo": "325300",
+    "Actividad": "Manufactura de pesticidas, fertilizantes y otros químicos para la agricultura",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "65",
+    "Codigo": "325410",
+    "Actividad": "Manufactura de farmacéuticos y medicinas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "66",
+    "Codigo": "325500",
+    "Actividad": "Manufactura de pinturas, revestimientos y adhesivos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "67",
+    "Codigo": "325600",
+    "Actividad": "Manufactura de jabón, compuestos de limpieza y preparación para pocetas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "68",
+    "Codigo": "325900",
+    "Actividad": "Manufactura de otras preparaciones y productos químicos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "69",
+    "Codigo": "326000",
+    "Actividad": "Manufactura de productos de plástico y goma",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "70",
+    "Codigo": "327100",
+    "Actividad": "Manufactura de productos de arcilla y refractarios",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "71",
+    "Codigo": "327210",
+    "Actividad": "Manufactura de vidrios y productos de vidrios",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "72",
+    "Codigo": "327300",
+    "Actividad": "Manufactura de productos de cemento y concreto",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "73",
+    "Codigo": "327400",
+    "Actividad": "Manufactura de productos de cal y yeso",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "74",
+    "Codigo": "327900",
+    "Actividad": "Manufactura de otros productos de minerales no metálicos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "75",
+    "Codigo": "331000",
+    "Actividad": "Manufactura de metales primarios",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "76",
+    "Codigo": "332000",
+    "Actividad": "Manufactura de productos de metales fabricados",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "77",
+    "Codigo": "333000",
+    "Actividad": "Manufactura de maquinaria",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "78",
+    "Codigo": "334000",
+    "Actividad": "Manufactura de computadoras y equipos periféricos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "79",
+    "Codigo": "335000",
+    "Actividad": "Manufactura de equipos eléctricos, artefactos eléctricos y componentes",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "80",
+    "Codigo": "336000",
+    "Actividad": "Manufactura de equipos de transporte",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "81",
+    "Codigo": "337000",
+    "Actividad": "Manufactura de muebles y otros productos relacionados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "82",
+    "Codigo": "339110",
+    "Actividad": "Manufactura de equipos médicos y suministros",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "83",
+    "Codigo": "339900",
+    "Actividad": "Manufactura de otros misceláneos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "84",
+    "Codigo": "423100",
+    "Actividad": "Mayoristas de vehículos motores y partes para vehículos motores",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "85",
+    "Codigo": "423200",
+    "Actividad": "Mayoristas de muebles y mobiliarios para el hogar",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "86",
+    "Codigo": "423300",
+    "Actividad": "Mayoristas de tablas y otros materiales de construcción",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "87",
+    "Codigo": "423400",
+    "Actividad": "Mayoristas de equipos y suministros profesionales y comerciales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "88",
+    "Codigo": "423500",
+    "Actividad": "Mayoristas de metales y minerales (salvo petróleo)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "89",
+    "Codigo": "423600",
+    "Actividad": "Mayoristas de bienes eléctricos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "90",
+    "Codigo": "423700",
+    "Actividad": "Mayoristas de ferretería, y equipos y suministros de plomería y calefacción",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "91",
+    "Codigo": "423800",
+    "Actividad": "Mayoristas de maquinaria, equipos y suministros",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "92",
+    "Codigo": "423910",
+    "Actividad": "Mayoristas de bienes y suministros deportivos y recreacionales",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "93",
+    "Codigo": "423920",
+    "Actividad": "Mayoristas de bienes y suministros de juguetería y hobbies",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "94",
+    "Codigo": "423930",
+    "Actividad": "Mayoristas de materiales reciclables",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "95",
+    "Codigo": "423940",
+    "Actividad": "Mayoristas de joyería, relojes, piedras y metales preciosos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "96",
+    "Codigo": "423990",
+    "Actividad": "Mayoristas de otros bienes duraderos misceláneos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "97",
+    "Codigo": "424100",
+    "Actividad": "Mayoristas de papel y productos de papel",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "98",
+    "Codigo": "424210",
+    "Actividad": "Mayoristas de medicinas, drogas y artículos diversos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "99",
+    "Codigo": "424300",
+    "Actividad": "Mayoristas de ropa, bienes en piezas y nociones",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "100",
+    "Codigo": "424400",
+    "Actividad": "Mayoristas de comestibles y productos relacionados",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "101",
+    "Codigo": "424500",
+    "Actividad": "Mayoristas de productos de granja de materiales crudos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "102",
+    "Codigo": "424600",
+    "Actividad": "Mayoristas de químicos y productos aliados",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "103",
+    "Codigo": "424700",
+    "Actividad": "Mayoristas de petróleo y suministros del petróleo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "104",
+    "Codigo": "424800",
+    "Actividad": "Mayoristas de licores",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "105",
+    "Codigo": "424910",
+    "Actividad": "Mayoristas de suministros para granjas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "106",
+    "Codigo": "424920",
+    "Actividad": "Mayoristas de libros, revistas y periódicos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "107",
+    "Codigo": "424930",
+    "Actividad": "Mayoristas de flores, surtidos de viveros y suministros para floristerías",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "108",
+    "Codigo": "424940",
+    "Actividad": "Mayoristas de tabaco y productos del tabaco",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "109",
+    "Codigo": "424950",
+    "Actividad": "Mayoristas de pintura, barniz y suministros",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "110",
+    "Codigo": "424990",
+    "Actividad": "Mayoristas de otros bienes no duraderos misceláneos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "111",
+    "Codigo": "425120",
+    "Actividad": "Agentes y corredores que actúan como intermediarios en la distribución de mercancía al por mayor",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "112",
+    "Codigo": "441110",
+    "Actividad": "Concesionarios de autos nuevos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "113",
+    "Codigo": "441120",
+    "Actividad": "Concesionarios de autos usados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "114",
+    "Codigo": "441210",
+    "Actividad": "Concesionarios de vehículos recreacionales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "115",
+    "Codigo": "441222",
+    "Actividad": "Concesionario de botes",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "116",
+    "Codigo": "441228",
+    "Actividad": "Concesionarios de motocicletas",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "117",
+    "Codigo": "441300",
+    "Actividad": "Tiendas de partes automotores, accesorios y llantas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "118",
+    "Codigo": "442110",
+    "Actividad": "Mueblerías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "119",
+    "Codigo": "442200",
+    "Actividad": "Mobiliarios para el hogar",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "120",
+    "Codigo": "443141",
+    "Actividad": "Tiendas de electrodomésticos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "121",
+    "Codigo": "443142",
+    "Actividad": "Tiendas de electrónicos (incluyendo audio, vídeo, computadoras y cámaras)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "122",
+    "Codigo": "444110",
+    "Actividad": "Centros del hogar",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "123",
+    "Codigo": "444120",
+    "Actividad": "Tiendas de pinturas y papel tapiz",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "124",
+    "Codigo": "444130",
+    "Actividad": "Ferreterías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "125",
+    "Codigo": "444190",
+    "Actividad": "Otros concesionarios de materiales de construcción",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "126",
+    "Codigo": "444200",
+    "Actividad": "Tiendas de equipos y suministros para el césped y el jardín",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "127",
+    "Codigo": "445100",
+    "Actividad": "Grocery stores (including supermarkets & convenience stores without gas)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "128",
+    "Codigo": "445210",
+    "Actividad": "Tiendas de comestibles",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "129",
+    "Codigo": "445220",
+    "Actividad": "Pescaderías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "130",
+    "Codigo": "445230",
+    "Actividad": "Mercados de frutas y vegetales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "131",
+    "Codigo": "445290",
+    "Actividad": "Todas las tiendas de especialidades de alimentos restantes",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "132",
+    "Codigo": "445310",
+    "Actividad": "Licorerías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "133",
+    "Codigo": "446110",
+    "Actividad": "Farmacias y droguerías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "134",
+    "Codigo": "446120",
+    "Actividad": "Tiendas de cosméticos, suministros de belleza y perfumerías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "135",
+    "Codigo": "446130",
+    "Actividad": "Tiendas de bienes ópticos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "136",
+    "Codigo": "446190",
+    "Actividad": "Otras tiendas de cuidados personales y de salud",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "137",
+    "Codigo": "447100",
+    "Actividad": "Estaciones de gasolina (incluyendo las tiendas de comodidad)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "138",
+    "Codigo": "448110",
+    "Actividad": "Tiendas de ropa de caballeros",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "139",
+    "Codigo": "448120",
+    "Actividad": "Tiendas de ropa para damas",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "140",
+    "Codigo": "448130",
+    "Actividad": "Tiendas de ropa para niños e infantes",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "141",
+    "Codigo": "448140",
+    "Actividad": "Tiendas de ropa para la familia",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "142",
+    "Codigo": "448150",
+    "Actividad": "Tiendas de accesorios de vestir",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "143",
+    "Codigo": "448190",
+    "Actividad": "Otras tiendas de ropa",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "144",
+    "Codigo": "448210",
+    "Actividad": "Zapaterías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "145",
+    "Codigo": "448310",
+    "Actividad": "Joyerías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "146",
+    "Codigo": "448320",
+    "Actividad": "Tiendas de equipajes y bienes de cuero",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "147",
+    "Codigo": "451110",
+    "Actividad": "Tiendas de artículos deportivos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "148",
+    "Codigo": "451120",
+    "Actividad": "Jugueterías y tiendas de hobbies",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "149",
+    "Codigo": "451130",
+    "Actividad": "Mercerías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "150",
+    "Codigo": "451140",
+    "Actividad": "Tiendas de música",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "151",
+    "Codigo": "451211",
+    "Actividad": "Librerías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "152",
+    "Codigo": "451212",
+    "Actividad": "Concesionarios de noticias y puestos de periódicos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "153",
+    "Codigo": "452000",
+    "Actividad": "Tiendas de mercancía general",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "154",
+    "Codigo": "453110",
+    "Actividad": "Floristerías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "155",
+    "Codigo": "453210",
+    "Actividad": "Tiendas de suministros y papelería para oficinas",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "156",
+    "Codigo": "453220",
+    "Actividad": "Tiendas de novedades, regalos y recuerdos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "157",
+    "Codigo": "453310",
+    "Actividad": "Tiendas de mercancía usada",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "158",
+    "Codigo": "453910",
+    "Actividad": "Tiendas de mascotas y suministros para mascotas",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "159",
+    "Codigo": "453920",
+    "Actividad": "Concesionarios de arte",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "160",
+    "Codigo": "453930",
+    "Actividad": "Concesionarios de casas pre-fabricadas (móvil)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "161",
+    "Codigo": "453990",
+    "Actividad": "Todas las tiendas al por menor de misceláneos restantes (incluyendo las tabaquerías, tiendas de velas y de trofeos)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "162",
+    "Codigo": "454111",
+    "Actividad": "Comercio electrónico",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "163",
+    "Codigo": "454112",
+    "Actividad": "Subastas electrónicas",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "164",
+    "Codigo": "454113",
+    "Actividad": "Casas de órdenes por correo",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "165",
+    "Codigo": "454210",
+    "Actividad": "Operadores de maquinas expendedoras",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "166",
+    "Codigo": "454310",
+    "Actividad": "Concesionarios de petróleo",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "167",
+    "Codigo": "454390",
+    "Actividad": "Otros establecimientos de ventas directas (incluyendo ventas de puerta en puerta, proveedores de planes de comidas congeladas, plan de mercancías para fiestas y proveedores de servicios para descansos para el café)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "168",
+    "Codigo": "481000",
+    "Actividad": "Transporte aéreo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "169",
+    "Codigo": "482110",
+    "Actividad": "Transporte por ferrocarril",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "170",
+    "Codigo": "483000",
+    "Actividad": "Transporte acuático",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "171",
+    "Codigo": "484110",
+    "Actividad": "Flete general por transporte por camión, local",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "172",
+    "Codigo": "484120",
+    "Actividad": "Flete general por transporte por camión, larga distancia",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "173",
+    "Codigo": "484200",
+    "Actividad": "Flete por transporte por camión especializado",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "174",
+    "Codigo": "485110",
+    "Actividad": "Sistemas de transito urbano",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "175",
+    "Codigo": "485210",
+    "Actividad": "Transporte interurbano y rural por autobús",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "176",
+    "Codigo": "485300",
+    "Actividad": "Servicio de taxi y limosinas",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "177",
+    "Codigo": "485410",
+    "Actividad": "Transporte escolar y de empleados por autobús",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "178",
+    "Codigo": "485510",
+    "Actividad": "Industria de los autobuses fletados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "179",
+    "Codigo": "485990",
+    "Actividad": "Otros transportes terrestres de transito y pasajeros",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "180",
+    "Codigo": "486000",
+    "Actividad": "Transporte de ductos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "181",
+    "Codigo": "487000",
+    "Actividad": "Transporte de paseo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "182",
+    "Codigo": "488000",
+    "Actividad": "Actividades de apoyo al transporte (incluyendo servicio de grúa)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "183",
+    "Codigo": "492000",
+    "Actividad": "Correo y mensajeros",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "184",
+    "Codigo": "493100",
+    "Actividad": "Almacén y deposito (salvo los arrendadores de mini almacenes y unidades de auto almacenamiento)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "185",
+    "Codigo": "511000",
+    "Actividad": "Industrias de publicación (excepto el Internet)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "186",
+    "Codigo": "512100",
+    "Actividad": "Industrias cinematográficas y de video (salvo el alquiler de video)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "187",
+    "Codigo": "512200",
+    "Actividad": "Industrias discográficas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "188",
+    "Codigo": "515000",
+    "Actividad": "Radio y teledifusión (excepto el Internet)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "189",
+    "Codigo": "517000",
+    "Actividad": "Telecomunicaciones",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "190",
+    "Codigo": "518210",
+    "Actividad": "Servicios de procesamiento de datos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "191",
+    "Codigo": "522100",
+    "Actividad": "Intermediación de crédito depositario",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "192",
+    "Codigo": "522200",
+    "Actividad": "Intermediación de crédito no depositario",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "193",
+    "Codigo": "522300",
+    "Actividad": "Actividades relacionadas con el crédito de intermediación (incluyendo a los corredores de préstamos)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "194",
+    "Codigo": "523110",
+    "Actividad": "Banca de inversiones y manejo de acciones y bonos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "195",
+    "Codigo": "523120",
+    "Actividad": "Corretaje de acciones y bonos",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "196",
+    "Codigo": "523130",
+    "Actividad": "Manejo de contratos de mercancías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "197",
+    "Codigo": "523140",
+    "Actividad": "Corretaje de contratos de mercancías",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "198",
+    "Codigo": "523210",
+    "Actividad": "Intercambio de acciones, bonos y mercancías",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "199",
+    "Codigo": "523900",
+    "Actividad": "Otras actividades de inversión financiera (incluyendo la administración de carteras y asesoría de inversión)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "200",
+    "Codigo": "524210",
+    "Actividad": "Corredores y agencias de seguros",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "201",
+    "Codigo": "524290",
+    "Actividad": "Otras actividades relacionadas con los seguros",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "202",
+    "Codigo": "531100",
+    "Actividad": "Arrendadores de bienes raices (incluyendo los mini almacenes y bodegas personales)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "203",
+    "Codigo": "531210",
+    "Actividad": "Oficinas de agentes y corredores de bienes raices",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "204",
+    "Codigo": "531310",
+    "Actividad": "Administradores de propiedades de bienes raices",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "205",
+    "Codigo": "531320",
+    "Actividad": "Oficinas de avaluadores de bienes raices",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "206",
+    "Codigo": "531390",
+    "Actividad": "Otras actividades relacionadas con bienes raices",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "207",
+    "Codigo": "532100",
+    "Actividad": "Alquiler y arrendamiento de equipo automotriz",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "208",
+    "Codigo": "532210",
+    "Actividad": "Alquiler al consumidor de artefactos electrodomesticos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "209",
+    "Codigo": "532281",
+    "Actividad": "Alquiler de trajes formales y disfraces",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "210",
+    "Codigo": "532282",
+    "Actividad": "Alquiler de discos y cintas de video",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "211",
+    "Codigo": "532290",
+    "Actividad": "Alquiler de otros bienes al consumidor",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "212",
+    "Codigo": "532310",
+    "Actividad": "Centros de alquiler general",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "213",
+    "Codigo": "532400",
+    "Actividad": "Alquiler y arrendamiento de equipos y maquinarias industriales y comerciales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "214",
+    "Codigo": "541100",
+    "Actividad": "Servicios legales",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "215",
+    "Codigo": "541211",
+    "Actividad": "Oficinas de contadores públicos certificados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "216",
+    "Codigo": "541213",
+    "Actividad": "Servicios de preparación de impuestos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "217",
+    "Codigo": "541214",
+    "Actividad": "Servicios de nomina",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "218",
+    "Codigo": "541219",
+    "Actividad": "Otros servicios contables",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "219",
+    "Codigo": "541310",
+    "Actividad": "Servicios de arquitectos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "220",
+    "Codigo": "541320",
+    "Actividad": "Servicios de paisajes arquitectónicos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "221",
+    "Codigo": "541330",
+    "Actividad": "Servicios de ingeniería",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "222",
+    "Codigo": "541340",
+    "Actividad": "Servicios de bosquejos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "223",
+    "Codigo": "541350",
+    "Actividad": "Servicios de inspección de edificios",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "224",
+    "Codigo": "541360",
+    "Actividad": "Servicios de agrimensura y cartografía geofísica",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "225",
+    "Codigo": "541370",
+    "Actividad": "Servicios de agrimensura y cartografía (salvo la geofísica)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "226",
+    "Codigo": "541380",
+    "Actividad": "Laboratorios de pruebas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "227",
+    "Codigo": "541400",
+    "Actividad": "Servicios de diseños especializados (incluyendo el diseño interior, industrial, grafico y de modas)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "228",
+    "Codigo": "541510",
+    "Actividad": "Servicios de diseños de sistemas de computadoras y servicios relacionados",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "229",
+    "Codigo": "541600",
+    "Actividad": "Servicios de asesoría administrativa, científica y tecnológica",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "230",
+    "Codigo": "541700",
+    "Actividad": "Servicios de investigación y desarrollo científico",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "231",
+    "Codigo": "541800",
+    "Actividad": "Servicios de publicidad y servicios relacionados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "232",
+    "Codigo": "541910",
+    "Actividad": "Investigación de mercadeo y encuestas de opinión publica",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "233",
+    "Codigo": "541920",
+    "Actividad": "Servicios fotográficos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "234",
+    "Codigo": "541930",
+    "Actividad": "Servicios de traducción e interpretación",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "235",
+    "Codigo": "541940",
+    "Actividad": "Servicios veterinarios",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "236",
+    "Codigo": "541990",
+    "Actividad": "Los servicios profesionales, científicos y técnicos restantes",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "237",
+    "Codigo": "561110",
+    "Actividad": "Oficina de servicios administrativos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "238",
+    "Codigo": "561210",
+    "Actividad": "Servicios de apoyo a las instalaciones",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "239",
+    "Codigo": "561300",
+    "Actividad": "Servicios de empleo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "240",
+    "Codigo": "561410",
+    "Actividad": "Servicios de preparación de documentos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "241",
+    "Codigo": "561420",
+    "Actividad": "Centros de llamadas telefónicas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "242",
+    "Codigo": "561430",
+    "Actividad": "Centros de servicios a los negocios (incluyendo centros de correos privados y tiendas de copiado)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "243",
+    "Codigo": "561440",
+    "Actividad": "Agencias de cobranza",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "244",
+    "Codigo": "561450",
+    "Actividad": "Oficinas de crédito",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "245",
+    "Codigo": "561490",
+    "Actividad": "Otros servicios de apoyo a los negocios (incluyendo servicios de reposeción, informes para las cortes, y servicios de taquigrafía)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "246",
+    "Codigo": "561500",
+    "Actividad": "Agencias de viaje y servicios de reservaciones",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "247",
+    "Codigo": "561600",
+    "Actividad": "Servicios de seguridad e investigaciones",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "248",
+    "Codigo": "561710",
+    "Actividad": "Servicios de control de plagas y exterminio",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "249",
+    "Codigo": "561720",
+    "Actividad": "Servicios de limpieza",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "250",
+    "Codigo": "561730",
+    "Actividad": "Servicios de jardinería ornamental",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "251",
+    "Codigo": "561740",
+    "Actividad": "Servicios de limpieza de alfombras y tapicería",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "252",
+    "Codigo": "561790",
+    "Actividad": "Otros servicios a los edificios y viviendas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "253",
+    "Codigo": "561900",
+    "Actividad": "Otros servicios de apoyo (incluyendo servicios de empaque y etiquetado, yorganizadores de exposiciones para convenciones y exhibiciones de intercambio)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "254",
+    "Codigo": "562000",
+    "Actividad": "Control de desechos y servicios de reparación",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "255",
+    "Codigo": "611000",
+    "Actividad": "Servicios educativos (incluyendo tecnológicos, universidades y escuelas profesionales)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "256",
+    "Codigo": "621111",
+    "Actividad": "Consultorios médicos (salvo los especialistas en salud mental)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "257",
+    "Codigo": "621112",
+    "Actividad": "Consultorios médicos, especialistas en salud mental",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "258",
+    "Codigo": "621210",
+    "Actividad": "Consultorios odontológicos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "259",
+    "Codigo": "621310",
+    "Actividad": "Consultorios quiroprácticos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "260",
+    "Codigo": "621320",
+    "Actividad": "Consultorios oftalmológicos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "261",
+    "Codigo": "621330",
+    "Actividad": "Consultorios de profesionales en salud mental (salvo los médicos)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "262",
+    "Codigo": "621340",
+    "Actividad": "Consultorios de terapeutas físicos y ocupacionales, logopedas, y audiólogos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "263",
+    "Codigo": "621391",
+    "Actividad": "Consultorios privados de nutriólogos y dietistas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "264",
+    "Codigo": "621399",
+    "Actividad": "Oficinas de todos los demás profesionales de salud",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "265",
+    "Codigo": "621400",
+    "Actividad": "Centros de atención ambulatoria",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "266",
+    "Codigo": "621510",
+    "Actividad": "Laboratorios médicos y de diagnóstico",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "267",
+    "Codigo": "621610",
+    "Actividad": "Servicios de cuidado de salud en el hogar",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "268",
+    "Codigo": "621900",
+    "Actividad": "Servicios de atención ambulatoria (incluyendo servicios de ambulancia, y bancos de sangre y órganos)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "269",
+    "Codigo": "622000",
+    "Actividad": "Hospitales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "270",
+    "Codigo": "623000",
+    "Actividad": "Instalaciones de cuidado de convalecencia y residencial",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "271",
+    "Codigo": "624100",
+    "Actividad": "Servicios individuales y para la familia",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "272",
+    "Codigo": "624200",
+    "Actividad": "Alimentación y vivienda comunitaria, y emergencia y otros servicios de auxilio",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "273",
+    "Codigo": "624310",
+    "Actividad": "Servicios de rehabilitación vocacional",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "274",
+    "Codigo": "624410",
+    "Actividad": "Servicios de cuidado infantil",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "275",
+    "Codigo": "711100",
+    "Actividad": "Compañías de representación de las artes",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "276",
+    "Codigo": "711210",
+    "Actividad": "Deportes con espectadores (incluyendo los clubes de deportes y las pistas de carreras)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "277",
+    "Codigo": "711300",
+    "Actividad": "Promotores de la representación de las artes, deportes y eventos similares",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "278",
+    "Codigo": "711410",
+    "Actividad": "Agentes y administradores para los artistas, atletas, y otras figuras públicas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "279",
+    "Codigo": "711510",
+    "Actividad": "Artistas, escritores y representantes de las artes independientes",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "280",
+    "Codigo": "712100",
+    "Actividad": "Museos, lugares históricos e instituciones similares",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "281",
+    "Codigo": "713100",
+    "Actividad": "Parques de diversiones y salones de juego",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "282",
+    "Codigo": "713200",
+    "Actividad": "Industrias de apuestas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "283",
+    "Codigo": "713900",
+    "Actividad": "Otras industrias de diversión y recreación (incluyendo campos de golf, instalaciones para esquiar, marinas, centros de salud física y boliche)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "284",
+    "Codigo": "721100",
+    "Actividad": "Servicios de alojamiento temporal (incluyendo hoteles, moteles y posadas con camas y desayuno)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "285",
+    "Codigo": "721210",
+    "Actividad": "RV (vehículos recreacionales) parques y campos recreacionales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "286",
+    "Codigo": "721310",
+    "Actividad": "Pensiones",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "287",
+    "Codigo": "722300",
+    "Actividad": "Servicios especiales de alimentos (incluyendo contratistas de servicios de alimentos y catering)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "288",
+    "Codigo": "722410",
+    "Actividad": "Lugares para beber (bebidas alcohólicas)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "289",
+    "Codigo": "722511",
+    "Actividad": "Restaurantes de servicio completo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "290",
+    "Codigo": "722513",
+    "Actividad": "Restaurantes para comer con servicio limitado",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "291",
+    "Codigo": "722514",
+    "Actividad": "Cafeterías y buffets",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "292",
+    "Codigo": "722515",
+    "Actividad": "Bares de botanas y bebidas no alcohólicas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "293",
+    "Codigo": "811110",
+    "Actividad": "Mecánica automotriz, reparaciones eléctricas y mantenimiento",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "294",
+    "Codigo": "811120",
+    "Actividad": "Reparaciones de carrocería, pintura, interior y vidrios de automóviles",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "295",
+    "Codigo": "811190",
+    "Actividad": "Otras reparaciones y mantenimiento automotriz (incluyendo talleres de cambio de aceite y lubricación, y auto lavados)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "296",
+    "Codigo": "811210",
+    "Actividad": "Reparación y mantenimiento de equipos electrónicos y de precisión",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "297",
+    "Codigo": "811310",
+    "Actividad": "Reparación y mantenimiento de maquinaria y equipos comerciales e industriales (exceptuando automóviles y eléctricos)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "298",
+    "Codigo": "811410",
+    "Actividad": "Reparación y mantenimiento del hogar y jardín y electrodomésticos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "299",
+    "Codigo": "811420",
+    "Actividad": "Reparación y restauración de muebles",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "300",
+    "Codigo": "811430",
+    "Actividad": "Reparación de calzado y bienes de cuero",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "301",
+    "Codigo": "811490",
+    "Actividad": "Reparación y mantenimiento de otros bienes personales y del hogar",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "302",
+    "Codigo": "812111",
+    "Actividad": "Barberías",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "303",
+    "Codigo": "812112",
+    "Actividad": "Salones de belleza",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "304",
+    "Codigo": "812113",
+    "Actividad": "Salones de manicura",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "305",
+    "Codigo": "812190",
+    "Actividad": "Otros servicios de cuidado personal (incluyendo centros dietéticos y de reducción de peso)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "306",
+    "Codigo": "812210",
+    "Actividad": "Servicios de funeraria",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "307",
+    "Codigo": "812220",
+    "Actividad": "Cementerios y crematorios",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "308",
+    "Codigo": "812310",
+    "Actividad": "Servicios de tintorería y lavandería que funcionan con monedas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "309",
+    "Codigo": "812320",
+    "Actividad": "Servicios de tintorería y lavandería (exceptuando las que funcionan con monedas)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "310",
+    "Codigo": "812330",
+    "Actividad": "Suministros de ropa blanca y uniformes",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "311",
+    "Codigo": "812910",
+    "Actividad": "Servicios de cuidados para mascotas (exceptuando los veterinarios)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "312",
+    "Codigo": "812920",
+    "Actividad": "Acabado de fotografía",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "313",
+    "Codigo": "812930",
+    "Actividad": "Estaciones y garajes",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "314",
+    "Codigo": "812990",
+    "Actividad": "Los servicios personales restantes",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "315",
+    "Codigo": "813000",
+    "Actividad": "Organizaciones religiosas, becarias, cívicas, profesionales y similares",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "316",
+    "Codigo": "999000",
+    "Actividad": "Establecimientos no clasificados (no han sido posible clasificar)",
+    "Estado": "Inactive"
+  },
+  {
+    "CódigoDeActividad_Id": "334",
+    "Codigo": "111100",
+    "Actividad": "Cultivo de semillas oleaginosas y granos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "335",
+    "Codigo": "111210",
+    "Actividad": "Cultivo de hortalizas y melones",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "336",
+    "Codigo": "111300",
+    "Actividad": "Cultivo de frutas y frutos secos de árbol",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "337",
+    "Codigo": "111400",
+    "Actividad": "Invernaderos, viveros y floricultura",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "338",
+    "Codigo": "111900",
+    "Actividad": "Otros cultivos agrícolas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "339",
+    "Codigo": "112111",
+    "Actividad": "Cría y explotación de ganado bovino de carne",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "340",
+    "Codigo": "112112",
+    "Actividad": "Corrales de engorde de ganado",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "341",
+    "Codigo": "112120",
+    "Actividad": "Cría de ganado lechero y producción de leche",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "342",
+    "Codigo": "112210",
+    "Actividad": "Cría de cerdos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "343",
+    "Codigo": "112300",
+    "Actividad": "Producción avícola y de huevos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "344",
+    "Codigo": "112400",
+    "Actividad": "Cría de ovejas y cabras",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "345",
+    "Codigo": "112510",
+    "Actividad": "Acuicultura animal",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "346",
+    "Codigo": "113110",
+    "Actividad": "Explotación de bosques madereros",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "347",
+    "Codigo": "113210",
+    "Actividad": "Viveros forestales y productos forestales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "348",
+    "Codigo": "113310",
+    "Actividad": "Tala de madera",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "349",
+    "Codigo": "212310",
+    "Actividad": "Extracción y explotación de piedra en canteras",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "350",
+    "Codigo": "212320",
+    "Actividad": "Extracción de arena, grava, arcilla y minerales cerámicos y refractarios",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "351",
+    "Codigo": "212390",
+    "Actividad": "Otra minería y explotación de minerales no metálicos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "352",
+    "Codigo": "221100",
+    "Actividad": "Generación, transmisión y distribución de energía eléctrica",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "353",
+    "Codigo": "221210",
+    "Actividad": "Distribución de gas natural",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "354",
+    "Codigo": "221300",
+    "Actividad": "Agua, alcantarillado y otros sistemas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "355",
+    "Codigo": "221500",
+    "Actividad": "Sistemas combinados de gas y electricidad",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "356",
+    "Codigo": "236110",
+    "Actividad": "Construcción de edificios residenciales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "357",
+    "Codigo": "238100",
+    "Actividad": "Contratistas de cimentación, estructura y exteriores de edificios",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "358",
+    "Codigo": "238300",
+    "Actividad": "Contratistas de acabados de edificios",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "359",
+    "Codigo": "238900",
+    "Actividad": "Otros contratistas especializados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "360",
+    "Codigo": "312110",
+    "Actividad": "Fabricación de bebidas no alcohólicas y hielo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "361",
+    "Codigo": "312120",
+    "Actividad": "Cervecerías",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "362",
+    "Codigo": "312130",
+    "Actividad": "Bodegas vinícolas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "363",
+    "Codigo": "312140",
+    "Actividad": "Destilerías",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "364",
+    "Codigo": "312200",
+    "Actividad": "Manufactura de tabaco",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "365",
+    "Codigo": "315100",
+    "Actividad": "Tejido de prendas de vestir",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "366",
+    "Codigo": "315210",
+    "Actividad": "Contratistas de corte y confección de prendas de vestir",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "367",
+    "Codigo": "315250",
+    "Actividad": "Fabricación de prendas de vestir por corte y confección (excepto contratistas)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "368",
+    "Codigo": "315990",
+    "Actividad": "Fabricación de accesorios y otras prendas de vestir",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "369",
+    "Codigo": "321110",
+    "Actividad": "Aserraderos y preservación de la madera",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "370",
+    "Codigo": "321210",
+    "Actividad": "Fabricación de chapas, madera contrachapada y productos de madera de ingeniería",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "371",
+    "Codigo": "321900",
+    "Actividad": "Fabricación de otros productos de madera",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "372",
+    "Codigo": "322100",
+    "Actividad": "Fabricación de pulpa, papel y cartón",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "373",
+    "Codigo": "322200",
+    "Actividad": "Fabricación de productos transformados de papel",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "374",
+    "Codigo": "324110",
+    "Actividad": "Refinerías de petróleo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "375",
+    "Codigo": "324120",
+    "Actividad": "Fabricación de asfalto para pavimentación, techado y materiales saturados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "376",
+    "Codigo": "324190",
+    "Actividad": "Fabricación de otros productos de petróleo y carbón",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "377",
+    "Codigo": "326100",
+    "Actividad": "Fabricación de productos plásticos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "378",
+    "Codigo": "326200",
+    "Actividad": "Fabricación de productos de caucho",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "379",
+    "Codigo": "331110",
+    "Actividad": "Fabricación de hierro, acero y ferroaleaciones",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "380",
+    "Codigo": "331200",
+    "Actividad": "Fabricación de productos de acero a partir de acero comprado",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "381",
+    "Codigo": "331310",
+    "Actividad": "Producción y procesamiento de alúmina y aluminio",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "382",
+    "Codigo": "331400",
+    "Actividad": "Producción y procesamiento de metales no ferrosos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "383",
+    "Codigo": "331500",
+    "Actividad": "Fundiciones",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "384",
+    "Codigo": "332110",
+    "Actividad": "Forja y estampado",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "385",
+    "Codigo": "332210",
+    "Actividad": "Fabricación de cuchillería y herramientas manuales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "386",
+    "Codigo": "332300",
+    "Actividad": "Fabricación de metales arquitectónicos y estructurales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "387",
+    "Codigo": "332400",
+    "Actividad": "Fabricación de calderas, tanques y contenedores de transporte",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "388",
+    "Codigo": "332510",
+    "Actividad": "Fabricación de herrajes",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "389",
+    "Codigo": "332610",
+    "Actividad": "Fabricación de resortes y productos de alambre",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "390",
+    "Codigo": "332700",
+    "Actividad": "Talleres mecánicos y fabricación de productos torneados y de tornillos, tuercas y pernos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "391",
+    "Codigo": "332810",
+    "Actividad": "Recubrimiento, grabado, tratamiento térmico y actividades afines",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "392",
+    "Codigo": "332900",
+    "Actividad": "Fabricación de otros productos metálicos fabricados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "393",
+    "Codigo": "333100",
+    "Actividad": "Fabricación de maquinaria agrícola, de construcción y de minería",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "394",
+    "Codigo": "333200",
+    "Actividad": "Fabricación de maquinaria industrial",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "395",
+    "Codigo": "333310",
+    "Actividad": "Fabricación de maquinaria comercial y para la industria de servicios",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "396",
+    "Codigo": "333410",
+    "Actividad": "Fabricación de equipos de ventilación, calefacción, aire acondicionado y refrigeración",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "397",
+    "Codigo": "333510",
+    "Actividad": "Fabricación de maquinaria para trabajo de metales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "398",
+    "Codigo": "333610",
+    "Actividad": "Fabricación de motores, turbinas y equipos de transmisión de potencia",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "399",
+    "Codigo": "333900",
+    "Actividad": "Fabricación de otra maquinaria de uso general",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "400",
+    "Codigo": "334110",
+    "Actividad": "Fabricación de computadoras y equipos periféricos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "401",
+    "Codigo": "334200",
+    "Actividad": "Fabricación de equipos de comunicaciones",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "402",
+    "Codigo": "334310",
+    "Actividad": "Fabricación de equipos de audio y video",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "403",
+    "Codigo": "334410",
+    "Actividad": "Fabricación de semiconductores y otros componentes electrónicos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "404",
+    "Codigo": "334500",
+    "Actividad": "Fabricación de instrumentos de navegación, medición, electromedicina y control",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "405",
+    "Codigo": "334610",
+    "Actividad": "Fabricación y reproducción de medios magnéticos y ópticos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "406",
+    "Codigo": "335100",
+    "Actividad": "Fabricación de equipos de iluminación eléctrica",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "407",
+    "Codigo": "335200",
+    "Actividad": "Fabricación de electrodomésticos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "408",
+    "Codigo": "335310",
+    "Actividad": "Fabricación de equipos eléctricos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "409",
+    "Codigo": "335900",
+    "Actividad": "Fabricación de otros equipos y componentes eléctricos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "410",
+    "Codigo": "336100",
+    "Actividad": "Fabricación de vehículos automotores",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "411",
+    "Codigo": "336210",
+    "Actividad": "Fabricación de carrocerías y remolques para vehículos automotores",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "412",
+    "Codigo": "336300",
+    "Actividad": "Fabricación de partes para vehículos automotores",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "413",
+    "Codigo": "336410",
+    "Actividad": "Fabricación de productos y partes aeroespaciales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "414",
+    "Codigo": "336510",
+    "Actividad": "Fabricación de material rodante ferroviario",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "415",
+    "Codigo": "336610",
+    "Actividad": "Construcción de barcos y embarcaciones",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "416",
+    "Codigo": "336990",
+    "Actividad": "Fabricación de otros equipos de transporte",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "417",
+    "Codigo": "441227",
+    "Actividad": "Concesionarios de motocicletas, ATV y todos los demás vehículos motorizados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "418",
+    "Codigo": "444140",
+    "Actividad": "Minoristas de ferretería",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "419",
+    "Codigo": "444180",
+    "Actividad": "Otros distribuidores minoristas de materiales de construcción",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "420",
+    "Codigo": "445110",
+    "Actividad": "Supermercados y otros minoristas de comestibles (excepto tiendas de conveniencia)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "421",
+    "Codigo": "445131",
+    "Actividad": "Minoristas de conveniencia",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "422",
+    "Codigo": "445132",
+    "Actividad": "Operadores de máquinas expendedoras",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "423",
+    "Codigo": "445240",
+    "Actividad": "Minoristas de carne",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "424",
+    "Codigo": "445250",
+    "Actividad": "Minoristas de pescado y mariscos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "425",
+    "Codigo": "445291",
+    "Actividad": "Minoristas de productos horneados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "426",
+    "Codigo": "445292",
+    "Actividad": "Minoristas de confitería y frutos secos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "427",
+    "Codigo": "445298",
+    "Actividad": "Todos los demás minoristas de alimentos especializados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "428",
+    "Codigo": "445320",
+    "Actividad": "Tiendas de cerveza, vino y licores",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "429",
+    "Codigo": "449110",
+    "Actividad": "Minoristas de muebles",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "430",
+    "Codigo": "449121",
+    "Actividad": "Minoristas de revestimientos para pisos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "431",
+    "Codigo": "449122",
+    "Actividad": "Minoristas de tratamientos para ventanas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "432",
+    "Codigo": "449129",
+    "Actividad": "Todos los demás minoristas de artículos para el hogar",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "433",
+    "Codigo": "449210",
+    "Actividad": "Minoristas de electrónica y electrodomésticos (incluidas computadoras)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "434",
+    "Codigo": "455110",
+    "Actividad": "Grandes almacenes",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "435",
+    "Codigo": "455210",
+    "Actividad": "Clubes de almacén, supercentros y otros minoristas de mercancía general",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "436",
+    "Codigo": "456110",
+    "Actividad": "Farmacias y minoristas de medicamentos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "437",
+    "Codigo": "456120",
+    "Actividad": "Minoristas de cosméticos, productos de belleza y perfumes",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "438",
+    "Codigo": "456130",
+    "Actividad": "Minoristas de artículos ópticos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "439",
+    "Codigo": "456190",
+    "Actividad": "Otros minoristas de salud y cuidado personal",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "440",
+    "Codigo": "457100",
+    "Actividad": "Gasolineras (incluidas tiendas de conveniencia con gasolina)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "441",
+    "Codigo": "457210",
+    "Actividad": "Distribuidores de combustible (incluido fuel oil para calefacción y petróleo licuado)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "442",
+    "Codigo": "458110",
+    "Actividad": "Minoristas de ropa y accesorios de vestir",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "443",
+    "Codigo": "458210",
+    "Actividad": "Minoristas de calzado",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "444",
+    "Codigo": "458310",
+    "Actividad": "Minoristas de joyería",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "445",
+    "Codigo": "458320",
+    "Actividad": "Minoristas de equipaje y artículos de cuero",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "446",
+    "Codigo": "459110",
+    "Actividad": "Minoristas de artículos deportivos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "447",
+    "Codigo": "459120",
+    "Actividad": "Minoristas de pasatiempos, juguetes y juegos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "448",
+    "Codigo": "459130",
+    "Actividad": "Minoristas de costura, labores de aguja y telas por pieza",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "449",
+    "Codigo": "459140",
+    "Actividad": "Minoristas de instrumentos musicales y suministros",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "450",
+    "Codigo": "459210",
+    "Actividad": "Minoristas de libros y vendedores de noticias (incluidos quioscos)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "451",
+    "Codigo": "459310",
+    "Actividad": "Floristerías",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "452",
+    "Codigo": "459410",
+    "Actividad": "Minoristas de suministros de oficina y papelería",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "453",
+    "Codigo": "459420",
+    "Actividad": "Minoristas de regalos, novedades y recuerdos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "454",
+    "Codigo": "459510",
+    "Actividad": "Minoristas de mercancía usada",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "455",
+    "Codigo": "459910",
+    "Actividad": "Minoristas de mascotas y suministros para mascotas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "456",
+    "Codigo": "459920",
+    "Actividad": "Comerciantes de arte",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "457",
+    "Codigo": "459930",
+    "Actividad": "Concesionarios de casas prefabricadas (móviles)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "458",
+    "Codigo": "459990",
+    "Actividad": "Todos los demás minoristas de tiendas diversas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "459",
+    "Codigo": "485310",
+    "Actividad": "Servicio de taxi",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "460",
+    "Codigo": "485320",
+    "Actividad": "Servicio de limusina",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "461",
+    "Codigo": "488100",
+    "Actividad": "Actividades de apoyo para el transporte aéreo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "462",
+    "Codigo": "488210",
+    "Actividad": "Actividades de apoyo para el transporte ferroviario",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "463",
+    "Codigo": "488300",
+    "Actividad": "Actividades de apoyo para el transporte acuático",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "464",
+    "Codigo": "488410",
+    "Actividad": "Remolque de vehículos automotores",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "465",
+    "Codigo": "488490",
+    "Actividad": "Otras actividades de apoyo para el transporte por carretera",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "466",
+    "Codigo": "488510",
+    "Actividad": "Gestión y coordinación del transporte de carga",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "467",
+    "Codigo": "488990",
+    "Actividad": "Otras actividades de apoyo para el transporte",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "468",
+    "Codigo": "492110",
+    "Actividad": "Servicios de mensajería y entrega exprés",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "469",
+    "Codigo": "492210",
+    "Actividad": "Mensajeros locales y entrega local",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "470",
+    "Codigo": "513110",
+    "Actividad": "Editores de periódicos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "471",
+    "Codigo": "513120",
+    "Actividad": "Editores de publicaciones periódicas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "472",
+    "Codigo": "513130",
+    "Actividad": "Editores de libros",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "473",
+    "Codigo": "513140",
+    "Actividad": "Editores de directorios y listas de correo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "474",
+    "Codigo": "513190",
+    "Actividad": "Otros editores",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "475",
+    "Codigo": "513210",
+    "Actividad": "Editores de software",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "476",
+    "Codigo": "516100",
+    "Actividad": "Estaciones de radiodifusión y televisión",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "477",
+    "Codigo": "516210",
+    "Actividad": "Transmisión de medios, redes sociales y otros proveedores de contenido",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "478",
+    "Codigo": "519200",
+    "Actividad": "Portales de búsqueda web, bibliotecas, archivos y otros servicios de información",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "479",
+    "Codigo": "522110",
+    "Actividad": "Banca comercial",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "480",
+    "Codigo": "522130",
+    "Actividad": "Cooperativas de crédito",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "481",
+    "Codigo": "522180",
+    "Actividad": "Instituciones de ahorro y otra intermediación crediticia de depósito",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "482",
+    "Codigo": "522210",
+    "Actividad": "Emisión de tarjetas de crédito",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "483",
+    "Codigo": "522220",
+    "Actividad": "Financiamiento de ventas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "484",
+    "Codigo": "522291",
+    "Actividad": "Préstamos al consumidor",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "485",
+    "Codigo": "522292",
+    "Actividad": "Crédito inmobiliario (incluidos banqueros hipotecarios y originadores)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "486",
+    "Codigo": "522299",
+    "Actividad": "Mercado secundario internacional y otra intermediación crediticia no depositaria",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "487",
+    "Codigo": "523150",
+    "Actividad": "Banca de inversión e intermediación de valores",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "488",
+    "Codigo": "523160",
+    "Actividad": "Intermediación de contratos de materias primas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "489",
+    "Codigo": "524110",
+    "Actividad": "Aseguradoras directas de vida, salud y seguros médicos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "490",
+    "Codigo": "524120",
+    "Actividad": "Aseguradoras directas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "491",
+    "Codigo": "525100",
+    "Actividad": "Fondos de seguros y beneficios para empleados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "492",
+    "Codigo": "525910",
+    "Actividad": "Fondos de inversión abiertos (Formulario 1120-RIC)",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "493",
+    "Codigo": "525920",
+    "Actividad": "Fideicomisos, patrimonios y cuentas de agencia",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "494",
+    "Codigo": "525990",
+    "Actividad": "Otros vehículos financieros",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "495",
+    "Codigo": "531110",
+    "Actividad": "Arrendadores de edificios residenciales y viviendas",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "496",
+    "Codigo": "531120",
+    "Actividad": "Arrendadores de edificios no residenciales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "497",
+    "Codigo": "531130",
+    "Actividad": "Arrendadores de mini bodegas y unidades de autoalmacenamiento",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "498",
+    "Codigo": "531190",
+    "Actividad": "Arrendadores de otras propiedades inmobiliarias",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "499",
+    "Codigo": "532283",
+    "Actividad": "Alquiler de equipos de salud para el hogar",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "500",
+    "Codigo": "532284",
+    "Actividad": "Alquiler de bienes recreativos",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "501",
+    "Codigo": "532289",
+    "Actividad": "Todo otro alquiler de bienes de consumo",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "502",
+    "Codigo": "533110",
+    "Actividad": "Arrendadores de activos intangibles no financieros",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "503",
+    "Codigo": "541110",
+    "Actividad": "Oficinas de abogados",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "504",
+    "Codigo": "541190",
+    "Actividad": "Otros servicios legales",
+    "Estado": "Active"
+  },
+  {
+    "CódigoDeActividad_Id": "505",
+    "Codigo": "541511",
+    "Actividad": "Servicios de programación informática a medida",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "506",
+    "Codigo": "541512",
+    "Actividad": "Servicios de diseño de sistemas informáticos",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "507",
+    "Codigo": "541513",
+    "Actividad": "Servicios de gestión de instalaciones informáticas",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "508",
+    "Codigo": "541519",
+    "Actividad": "Otros servicios relacionados con computación",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "509",
+    "Codigo": "551111",
+    "Actividad": "Oficinas de sociedades holding bancarias",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "510",
+    "Codigo": "551112",
+    "Actividad": "Oficinas de otras sociedades holding",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "511",
+    "Codigo": "621410",
+    "Actividad": "Centros de planificación familiar",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "512",
+    "Codigo": "621420",
+    "Actividad": "Centros ambulatorios de salud mental y abuso de sustancias",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "513",
+    "Codigo": "621491",
+    "Actividad": "Centros médicos HMO",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "514",
+    "Codigo": "621492",
+    "Actividad": "Centros de diálisis renal",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "515",
+    "Codigo": "621493",
+    "Actividad": "Centros ambulatorios independientes de cirugía y emergencias",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "516",
+    "Codigo": "621498",
+    "Actividad": "Todos los demás centros de atención ambulatoria",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "517",
+    "Codigo": "721110",
+    "Actividad": "Hoteles y moteles",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "518",
+    "Codigo": "721120",
+    "Actividad": "Hoteles casino",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "519",
+    "Codigo": "721191",
+    "Actividad": "Posadas bed and breakfast",
+    "Estado": "Active"
+    
+  },
+  {
+    "CódigoDeActividad_Id": "520",
+    "Codigo": "721199",
+    "Actividad": "Todos los demás alojamientos para viajeros",
+    "Estado": "Active"
+    
+  }
+]

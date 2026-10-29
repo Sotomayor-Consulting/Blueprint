@@ -1,0 +1,156 @@
+---
+import Bolt from "@tabler/icons/filled/bolt.svg";
+import Actividades from "@content/Codigo-de-actividad.json";
+
+import { Badge } from "@/components/starwind/badge";
+import { Icon } from "astro-icon/components";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/starwind/alert";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/starwind/card";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxLabel,
+} from "@/components/starwind/combobox";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+} from "@/components/starwind/field";
+
+interface Activity {
+  CódigoDeActividad_Id: string;
+  Codigo: string;
+  Actividad: string;
+  Estado: string;
+}
+
+const activities = (Actividades as Activity[])
+  .filter((activity) => activity.Estado === "Active")
+  .sort((a, b) => a.Actividad.localeCompare(b.Actividad, "es"));
+---
+
+<Card class="w-full px-5 py-10 shadow-2xl">
+  <CardHeader class="gap-y-5">
+    <Badge
+      tone="primary-accent"
+      appearance="outline"
+      size="sm"
+      class="w-fit p-1"
+      eyebrow
+    >
+      <Bolt /> CÓDIGO DE ACTIVIDAD
+    </Badge>
+    <CardTitle class="text-4xl"
+      >¿Cuál será la actividad económica principal de la LLC?</CardTitle
+    >
+    <CardDescription class="text-xl">
+      Toda LLC debe identificar su actividad económica principal mediante un
+      código NAICS, un sistema de clasificación utilizado en Estados Unidos para
+      identificar el sector y el tipo de actividad que desarrolla una empresa.
+    </CardDescription>
+  </CardHeader>
+
+  <CardContent class="mt-5">
+    <FieldGroup>
+      <Field name="primaryEconomicActivity">
+        
+        <Combobox
+          id="primary-economic-activity-combobox"
+          name="primaryEconomicActivity"
+          filterMode="contains"
+          locale="es"
+          required
+          data-primary-economic-activity
+        >
+          <ComboboxLabel>BUSCADOR DE ACTIVIDAD ECONÓMICA</ComboboxLabel>
+          <ComboboxInput placeholder="Busca por código o actividad" showClear class="border-primary"/>
+          <ComboboxContent size="lg">
+            <ComboboxEmpty
+              >No encontramos una actividad económica disponible</ComboboxEmpty
+            >
+            {
+              activities.map((activity) => (
+                <ComboboxItem
+                  value={`${activity.Codigo} — ${activity.Actividad}`}
+                  data-activity-code={activity.Codigo}
+                  data-activity-id={activity["CódigoDeActividad_Id"]}
+                >
+                  <span class="font-medium">{activity.Codigo} - </span>
+                  <span class="text-muted-foreground">
+                    {activity.Actividad}
+                  </span>
+                </ComboboxItem>
+              ))
+            }
+          </ComboboxContent>
+        </Combobox>
+        <FieldDescription id="primary-economic-activity-description">
+          Escribe para filtrar y selecciona una opción de la lista.
+        </FieldDescription>
+        <FieldError match="valueMissing">
+          Selecciona una actividad económica disponible para continuar.
+        </FieldError>
+        <FieldError match="customError" messageSource="validation">
+          Selecciona una actividad económica disponible para continuar.
+        </FieldError>
+
+        <Alert variant="info">
+          <AlertTitle class="text-lg">
+            <Icon name="MingcuteInformationFill" />
+          </AlertTitle>
+          <AlertDescription class="text-sm">
+            Este código identifica la actividad económica principal de la LLC y
+            permite clasificar el negocio de acuerdo con los productos o
+            servicios que comercializa.
+          </AlertDescription>
+        </Alert>
+      </Field>
+    </FieldGroup>
+  </CardContent>
+</Card>
+
+<script>
+  import { createCombobox } from "@starwind-ui/runtime/combobox";
+
+  const setupActivityCombobox = (root: HTMLElement) => {
+    if (root.dataset.activityComboboxReady === "true") return;
+    root.dataset.activityComboboxReady = "true";
+
+    const api = createCombobox(root);
+    const form = root.closest("form");
+
+    form?.addEventListener("starwind:value-change", (event) => {
+      if (
+        event.target instanceof HTMLElement &&
+        event.target.matches("[data-stepper]")
+      ) {
+        const { value } = (event as CustomEvent<{ value: string }>).detail;
+        if (value !== "Actividad") api.close();
+      }
+    });
+    form?.addEventListener("llc-form:reset", () => api.close());
+  };
+
+  const initActivityComboboxes = () => {
+    document
+      .querySelectorAll<HTMLElement>("[data-primary-economic-activity]")
+      .forEach(setupActivityCombobox);
+  };
+
+  initActivityComboboxes();
+  document.addEventListener("astro:page-load", initActivityComboboxes);
+</script>

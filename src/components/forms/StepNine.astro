@@ -1,0 +1,131 @@
+---
+import Bolt from "@tabler/icons/filled/bolt.svg";
+import BuildingBank from "@tabler/icons/outline/building-bank.svg";
+import { Image } from "astro:assets";
+
+import MemberManaged from "@/assets/images/member-managed-admin.webp";
+import ManagerManaged from "@/assets/images/manager-managed-admin.webp";
+import { Badge } from "@/components/starwind/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/starwind/card";
+import { FieldGroup, FieldSet } from "@/components/starwind/field";
+import { RadioGroup, RadioGroupItem } from "@/components/starwind/radio-group";
+
+const cashModels = [
+  {
+    id: "Método-de-Efectivo-cash-basis",
+    value: "Método de Efectivo / Cash Basis",
+    name: "Método de Efectivo / Cash Basis",
+    description:
+      "Los ingresos se registran cuando se cobran y los gastos cuando se pagan.",
+    image: MemberManaged,
+  },
+  {
+    id: "Método-Devengado-Accrual-Basis",
+    value: "Método Devengado / Accrual-Basis",
+    name: "Método Devengado / Accrual-Basis",
+    description:
+      "Los ingresos y gastos se registran cuando se generan, aunque todavía no se hayan cobrado o pagado.",
+    image: ManagerManaged,
+  },
+];
+
+const defaultModel = cashModels[0];
+---
+
+<Card class="w-full px-5 py-10 shadow-2xl">
+  <CardHeader class="gap-y-5">
+    <Badge
+      tone="primary-accent"
+      appearance="outline"
+      size="sm"
+      class="w-fit p-1"
+      eyebrow
+    >
+      <Bolt /> MÉTODO CONTABLE
+    </Badge>
+    <CardTitle class="text-4xl"
+      >¿Cómo registrará la LLC sus ingresos y gastos?</CardTitle
+    >
+    <CardDescription class="text-xl">
+      Definiremos cuándo la LLC registrará sus ingresos y gastos: al momento de recibir o realizar pagos, o cuando se generen las operaciones, independientemente de cuándo se cobre o pague.
+    </CardDescription>
+  </CardHeader>
+
+  <CardContent class="mt-5">
+    <FieldGroup>
+      <FieldSet>
+        <div>
+          <RadioGroup
+            id="cash-model-group"
+            name="cashModel"
+            legend="Selecciona el modelo principal de la LLC"
+            defaultValue={defaultModel.value}
+            required
+            aria-describedby="cash-model-error"
+            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2"
+          >
+            {
+              cashModels.map((model) => {
+                return (
+                  <div
+                    data-cash-model-option
+                    data-value={model.value}
+                    data-label={model.name}
+                    class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition-shadow duration-200 focus-within:ring-3 has-data-checked:ring-3 motion-reduce:transition-none"
+                  >
+                    <RadioGroupItem
+                      id={model.id}
+                      value={model.value}
+                      aria-label={model.name}
+                      variant="primary"
+                      nativeButton
+                      wrapperClass="absolute inset-0 z-20 size-full group-data-[size=sm]/radio-group:size-full group-data-[size=md]/radio-group:size-full group-data-[size=lg]/radio-group:size-full"
+                      rootClass="rounded-xl"
+                      class="inset-auto top-4 right-4 size-5 bg-background/90 shadow-sm backdrop-blur-sm"
+                    />
+
+                    <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                      <CardHeader class="pb-5">
+                        <div class="bg-primary-accent/30 mt-6 inline-flex w-fit rounded-xl p-2">
+                          <Image
+                            class="text-primary size-6"
+                            aria-hidden="true"
+                            alt={`Imagen de ${model.name}`}
+                            src={model.image}
+                          />
+                        </div>
+                        <CardTitle class="text-base">{model.name}</CardTitle>
+                        <CardDescription class="text-sm">
+                          {model.description}
+                          
+                        </CardDescription>
+                      </CardHeader>
+                    </Card>
+                  </div>
+                );
+              })
+            }
+          </RadioGroup>
+
+          <p
+            id="cash-model-error"
+            class="text-error text-sm"
+            role="alert"
+            hidden
+          >
+            Selecciona un cash administrativo para continuar.
+          </p>
+        </div>
+      </FieldSet>
+
+      
+    </FieldGroup>
+  </CardContent>
+</Card>
+

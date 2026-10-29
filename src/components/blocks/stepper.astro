@@ -43,14 +43,19 @@ const {
   ...rest
 } = Astro.props;
 
-const stepper = tv({ base: "w-full" });
+const stepper = tv({ base: "min-w-0 w-full" });
 
 const stepperList = tv({
   base: "w-full items-stretch justify-start bg-transparent p-0",
   variants: {
     orientation: {
       vertical: "flex-col",
-      horizontal: "flex-row",
+      horizontal: [
+        "flex-row overflow-x-auto overscroll-x-contain scroll-smooth pb-3",
+        "snap-x snap-mandatory [scrollbar-width:thin]",
+        "[&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:rounded-full",
+        "[&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-track]:bg-transparent",
+      ],
     },
   },
   defaultVariants: { orientation: "vertical" },
@@ -65,7 +70,10 @@ const stepperTrigger = tv({
   variants: {
     orientation: {
       vertical: "w-full flex-row items-start justify-start gap-3 px-0 py-3",
-      horizontal: "flex-1 flex-col items-start justify-start gap-2 pl-3",
+      horizontal: [
+        "w-36 flex-none snap-start flex-col items-start justify-start gap-2 px-2",
+        "sm:w-40 lg:w-44",
+      ],
     },
   },
   defaultVariants: { orientation: "vertical" },
@@ -102,6 +110,17 @@ const stepperText = tv({
   defaultVariants: { orientation: "vertical" },
 });
 
+const stepperTitle = tv({
+  base: "text-xs font-medium leading-4",
+  variants: {
+    orientation: {
+      vertical: "",
+      horizontal: "line-clamp-2 min-h-8",
+    },
+  },
+  defaultVariants: { orientation: "vertical" },
+});
+
 const stepperPanel = tv({ base: "mt-5" });
 ---
 
@@ -111,10 +130,15 @@ const stepperPanel = tv({ base: "mt-5" });
   orientation={orientation}
   syncKey={syncKey}
   data-stepper
+  data-stepper-orientation={orientation}
   data-stepper-validate={validateOnAdvance ? "" : undefined}
   {...rest}
 >
-  <TabsList class={stepperList({ orientation })} aria-label={label}>
+  <TabsList
+    class={stepperList({ orientation })}
+    aria-label={label}
+    data-stepper-list
+  >
     {
       steps.map((step, index) => (
         <TabsTrigger
@@ -137,7 +161,9 @@ const stepperPanel = tv({ base: "mt-5" });
           </span>
 
           <span class={stepperText({ orientation })}>
-            <span class="truncate text-xs font-medium">{step.title}</span>
+            <span class={stepperTitle({ orientation })}>
+              {step.title}
+            </span>
             {step.description && (
               <span class="text-muted-foreground line-clamp-2 text-xs">
                 {step.description}
@@ -159,13 +185,25 @@ const stepperPanel = tv({ base: "mt-5" });
 
   {
     showNavigation && (
-      <div class="mt-6 flex items-center justify-between gap-2 border-t pt-4">
-        <Button type="button" variant="outline" size="sm" data-stepper-prev>
+      <div class="mt-6 grid grid-cols-2 gap-2 border-t pt-4 sm:flex sm:items-center sm:justify-between">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          class="w-full sm:w-auto"
+          data-stepper-prev
+        >
           <ArrowLeft />
           {backLabel}
         </Button>
 
-        <Button type="button" variant="primary" size="sm" data-stepper-next>
+        <Button
+          type="button"
+          variant="primary"
+          size="sm"
+          class="w-full sm:w-auto"
+          data-stepper-next
+        >
           <span data-stepper-next-label>{nextLabel}</span>
           <span data-stepper-finish-label class="hidden">
             {finishLabel}
@@ -176,3 +214,62 @@ const stepperPanel = tv({ base: "mt-5" });
     )
   }
 </Tabs>
+
+<script>
+  const setupResponsiveStepper = (root: HTMLElement) => {
+    if (
+      root.dataset.stepperResponsiveReady === "true" ||
+      root.dataset.stepperOrientation !== "horizontal"
+    )
+      return;
+
+    root.dataset.stepperResponsiveReady = "true";
+
+    const list = root.querySelector<HTMLElement>("[data-stepper-list]");
+    if (!list) return;
+
+    const activeTrigger = () =>
+      list.querySelector<HTMLElement>(
+        '[data-slot="tabs-trigger"][data-state="active"]',
+      );
+
+    const revealActiveStep = (behavior: ScrollBehavior = "smooth") => {
+      const trigger = activeTrigger();
+      if (!trigger) return;
+
+      const listRect = list.getBoundingClientRect();
+      const triggerRect = trigger.getBoundingClientRect();
+      const fullyVisible =
+        triggerRect.left >= listRect.left && triggerRect.right <= listRect.right;
+
+      if (fullyVisible) return;
+
+      const left =
+        list.scrollLeft +
+        triggerRect.left -
+        listRect.left -
+        (list.clientWidth - trigger.clientWidth) / 2;
+
+      list.scrollTo({ behavior, left: Math.max(0, left) });
+    };
+
+    root.addEventListener("starwind:value-change", (event) => {
+      if (event.target !== root) return;
+      requestAnimationFrame(() => revealActiveStep());
+    });
+
+    const resizeObserver = new ResizeObserver(() => revealActiveStep("auto"));
+    resizeObserver.observe(list);
+
+    requestAnimationFrame(() => revealActiveStep("auto"));
+  };
+
+  const initResponsiveSteppers = () => {
+    document
+      .querySelectorAll<HTMLElement>("[data-stepper]")
+      .forEach(setupResponsiveStepper);
+  };
+
+  initResponsiveSteppers();
+  document.addEventListener("astro:page-load", initResponsiveSteppers);
+</script>

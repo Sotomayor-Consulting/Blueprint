@@ -212,7 +212,7 @@ const defaultLevel = confidencialidad[0];
             data-formation-state-combobox
           >
             <ComboboxLabel>Estado de constitución</ComboboxLabel>
-            <ComboboxInput placeholder="Busca un estado" showClear />
+            <ComboboxInput placeholder="Busca un estado" showClear class="border-primary" />
             <ComboboxContent size="lg">
               <ComboboxEmpty>No encontramos un estado disponible.</ComboboxEmpty
               >
@@ -222,6 +222,7 @@ const defaultLevel = confidencialidad[0];
                     value={state.name}
                     data-state-option
                     data-levels={state.levels.join(" ")}
+                    
                   >
                     {state.name}
                   </ComboboxItem>
