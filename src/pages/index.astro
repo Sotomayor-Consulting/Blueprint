@@ -111,7 +111,45 @@ const steps: StepperStep[] = [
 
     <script>
       import { createForm } from "@starwind-ui/astro/form";
+      import { createCheckbox } from "@starwind-ui/runtime/checkbox";
+      import { createCombobox } from "@starwind-ui/runtime/combobox";
+      import { createSelect } from "@starwind-ui/runtime/select";
+      import { createSwitch } from "@starwind-ui/runtime/switch";
       import { createTabs } from "@starwind-ui/runtime/tabs";
+      import {
+        clearFormDraft,
+        persistedFieldNames,
+        readFormDraft,
+        writeFormDraft,
+        type FormDraft,
+        type FormDraftAnswers,
+        type FormDraftProgress,
+        type PersistedFieldName,
+      } from "@/components/forms/form-draft";
+
+      const multipleDraftFields = new Set<PersistedFieldName>([
+        "clientMarkets",
+        "operationalIndicators",
+      ]);
+
+      const radioGroupIds: Partial<Record<PersistedFieldName, string>> = {
+        businessModel: "business-model-group",
+        confidentialityLevel: "confidentiality-level-group",
+        operaciones: "operaciones-group",
+        hasUsSourceIncome: "tributacion-model-group",
+        llcTaxTreatment: "llc-tax-treatment-group",
+        EstructureClassLevel: "EstructureClass-level-group",
+        singleMemberOwnerType: "TypeOfSinglemember-level-group",
+        numberOfMembers: "NumberOfPartnership-level-group",
+        sistemModel: "sistem-model-group",
+        cashModel: "cash-model-group",
+      };
+
+      const comboboxSelectors: Partial<Record<PersistedFieldName, string>> = {
+        formationState: "[data-formation-state-combobox]",
+        primaryOperatingCountry: "[data-primary-operating-country]",
+        primaryEconomicActivity: "[data-primary-economic-activity]",
+      };
 
       const stepFields: Record<string, string[]> = {
         Correo: ["email"],
@@ -251,6 +289,9 @@ const steps: StepperStep[] = [
         const tabsApi = createTabs(stepperRoot);
         let highestUnlocked = 0;
         let busy = false;
+        let persistenceSuspended = true;
+        let draftDirty = false;
+        let draftSaveTimer: number | undefined;
 
         const activeIndex = () => {
           const index = triggers.findIndex(
@@ -347,6 +388,56 @@ const steps: StepperStep[] = [
           };
         };
 
+        const collectDraftAnswers = (): FormDraftAnswers => {
+          const formData = new FormData(form);
+          const answers: FormDraftAnswers = {};
+
+          persistedFieldNames.forEach((fieldName) => {
+            const values = formData
+              .getAll(fieldName)
+              .filter((value): value is string => typeof value === "string")
+              .filter((value) => value.trim().length > 0);
+
+            if (multipleDraftFields.has(fieldName)) {
+              if (values.length > 0) {
+                answers[fieldName] = Array.from(new Set(values));
+              }
+              return;
+            }
+
+            const value = values[0];
+            if (value) answers[fieldName] = value;
+          });
+
+          return answers;
+        };
+
+        const captureDraftProgress = (): FormDraftProgress => ({
+          currentStep: triggers[activeIndex()]?.dataset.value ?? "Correo",
+          highestUnlockedStep:
+            triggers[highestUnlocked]?.dataset.value ?? "Correo",
+          completedSteps: Array.from(completed)
+            .sort((a, b) => a - b)
+            .map((index) => triggers[index]?.dataset.value)
+            .filter((value): value is string => Boolean(value)),
+        });
+
+        const saveDraft = (force = false) => {
+          if (persistenceSuspended || (!force && !draftDirty)) return;
+          writeFormDraft(collectDraftAnswers(), captureDraftProgress());
+          draftDirty = false;
+        };
+
+        const scheduleDraftSave = () => {
+          if (persistenceSuspended) return;
+          draftDirty = true;
+          if (draftSaveTimer !== undefined) window.clearTimeout(draftSaveTimer);
+          draftSaveTimer = window.setTimeout(() => {
+            draftSaveTimer = undefined;
+            saveDraft();
+          }, 120);
+        };
+
         const formApi = createForm(form, {
           fieldValidators: {
             formationState: () =>
@@ -368,6 +459,7 @@ const steps: StepperStep[] = [
           onSubmit: ({ form: submittedForm, values }) => {
             completed.add(activeIndex());
             sync();
+            saveDraft(true);
             submittedForm.dispatchEvent(
               new CustomEvent("llc-form:submit", {
                 bubbles: true,
@@ -379,6 +471,214 @@ const steps: StepperStep[] = [
             );
           },
         });
+
+        const nextFrame = () =>
+          new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
+        const draftString = (
+          draft: FormDraft,
+          fieldName: PersistedFieldName,
+        ) => {
+          const value = draft.answers[fieldName];
+          return typeof value === "string" ? value : undefined;
+        };
+
+        const draftStrings = (
+          draft: FormDraft,
+          fieldName: PersistedFieldName,
+        ) => {
+          const value = draft.answers[fieldName];
+          return Array.isArray(value) ? value : [];
+        };
+
+        const restoreNativeField = (
+          draft: FormDraft,
+          fieldName: "email" | "operationDescription",
+          selector: string,
+        ) => {
+          const value = draftString(draft, fieldName);
+          const control = form.querySelector<
+            HTMLInputElement | HTMLTextAreaElement
+          >(selector);
+          if (!value || !control) return;
+
+          control.value = value;
+          control.dispatchEvent(new Event("input", { bubbles: true }));
+          control.dispatchEvent(new Event("change", { bubbles: true }));
+        };
+
+        const restoreRadioGroup = (
+          draft: FormDraft,
+          fieldName: PersistedFieldName,
+        ) => {
+          const value = draftString(draft, fieldName);
+          const rootId = radioGroupIds[fieldName];
+          if (!value || !rootId) return;
+
+          const root = form.querySelector<HTMLElement>(`#${rootId}`);
+          if (!root || root.dataset.value === value) return;
+
+          Array.from(
+            root.querySelectorAll<HTMLElement>(
+              '[data-slot="radio-group-item"]',
+            ),
+          )
+            .find((item) => item.dataset.value === value)
+            ?.click();
+        };
+
+        const restoreCheckboxes = (
+          draft: FormDraft,
+          fieldName: "clientMarkets",
+        ) => {
+          const selectedValues = new Set(draftStrings(draft, fieldName));
+
+          form
+            .querySelectorAll<HTMLElement>('[data-slot="checkbox"]')
+            .forEach((root) => {
+              const input = root.querySelector<HTMLInputElement>(
+                `input[name="${fieldName}"]`,
+              );
+              if (!input) return;
+              createCheckbox(root).setChecked(
+                selectedValues.has(input.value),
+                { emit: true },
+              );
+            });
+        };
+
+        const restoreSwitches = (
+          draft: FormDraft,
+          fieldName: "operationalIndicators",
+        ) => {
+          const selectedValues = new Set(draftStrings(draft, fieldName));
+
+          form
+            .querySelectorAll<HTMLElement>('[data-slot="switch-button"]')
+            .forEach((root) => {
+              if (root.dataset.name !== fieldName || !root.dataset.value) return;
+              createSwitch(root).setChecked(
+                selectedValues.has(root.dataset.value),
+                { emit: true },
+              );
+            });
+        };
+
+        const restoreSelect = (
+          draft: FormDraft,
+          fieldName: "projectedAnnualRevenue",
+          selector: string,
+        ) => {
+          const value = draftString(draft, fieldName);
+          const root = form.querySelector<HTMLElement>(selector);
+          if (!value || !root) return;
+          createSelect(root).setValue(value, { emit: true });
+        };
+
+        const restoreCombobox = (
+          draft: FormDraft,
+          fieldName:
+            | "formationState"
+            | "primaryOperatingCountry"
+            | "primaryEconomicActivity",
+        ) => {
+          const value = draftString(draft, fieldName);
+          const selector = comboboxSelectors[fieldName];
+          const root = selector
+            ? form.querySelector<HTMLElement>(selector)
+            : null;
+          if (!value || !root) return;
+          createCombobox(root).setValue(value, { emit: true });
+        };
+
+        const restoreDraftProgress = (draft: FormDraft) => {
+          const stepIndex = (stepId: string) =>
+            triggers.findIndex((trigger) => trigger.dataset.value === stepId);
+
+          const storedCurrent = stepIndex(draft.progress.currentStep);
+          const storedHighest = stepIndex(draft.progress.highestUnlockedStep);
+          const current = storedCurrent >= 0 ? storedCurrent : 0;
+          const highest = Math.max(
+            0,
+            current,
+            storedHighest >= 0 ? storedHighest : 0,
+          );
+
+          highestUnlocked = Math.min(highest, triggers.length - 1);
+          completed.clear();
+          draft.progress.completedSteps.forEach((stepId) => {
+            const index = stepIndex(stepId);
+            if (
+              index >= 0 &&
+              index <= highestUnlocked &&
+              !authoredDisabled[index]
+            ) {
+              completed.add(index);
+            }
+          });
+
+          sync();
+          goTo(Math.min(current, highestUnlocked));
+        };
+
+        const restoreDraft = async (draft: FormDraft) => {
+          await nextFrame();
+
+          restoreNativeField(draft, "email", '#email');
+          restoreNativeField(
+            draft,
+            "operationDescription",
+            '#operation-description',
+          );
+          restoreSelect(
+            draft,
+            "projectedAnnualRevenue",
+            "#projected-annual-revenue",
+          );
+          restoreRadioGroup(draft, "businessModel");
+          restoreCheckboxes(draft, "clientMarkets");
+
+          restoreRadioGroup(draft, "confidentialityLevel");
+          await nextFrame();
+          restoreCombobox(draft, "formationState");
+          restoreRadioGroup(draft, "operaciones");
+
+          restoreCombobox(draft, "primaryOperatingCountry");
+          restoreRadioGroup(draft, "hasUsSourceIncome");
+          restoreRadioGroup(draft, "llcTaxTreatment");
+          await nextFrame();
+          if (draftString(draft, "hasUsSourceIncome") === "true") {
+            restoreSwitches(draft, "operationalIndicators");
+          }
+
+          restoreRadioGroup(draft, "EstructureClassLevel");
+          await nextFrame();
+          const structure = draftString(draft, "EstructureClassLevel");
+          if (structure === "Single Member") {
+            restoreRadioGroup(draft, "singleMemberOwnerType");
+          } else if (structure === "Partnership") {
+            restoreRadioGroup(draft, "numberOfMembers");
+          }
+
+          restoreRadioGroup(draft, "sistemModel");
+          restoreRadioGroup(draft, "cashModel");
+          restoreCombobox(draft, "primaryEconomicActivity");
+
+          restoreDraftProgress(draft);
+        };
+
+        const initializeDraftPersistence = async () => {
+          const draft = readFormDraft();
+
+          try {
+            if (draft) await restoreDraft(draft);
+          } finally {
+            persistenceSuspended = false;
+          }
+
+          // Rewrites migrated or sanitized data using the current schema.
+          if (draft) saveDraft(true);
+        };
 
         const isStandaloneGroupValid = (
           group: (typeof standaloneGroups)[string][number],
@@ -458,6 +758,7 @@ const steps: StepperStep[] = [
         };
 
         const invalidateActiveStep = (event: Event) => {
+          if (persistenceSuspended) return;
           if (!(event.target instanceof Element)) return;
           const panel = event.target.closest<HTMLElement>(
             '[data-slot="tabs-content"][data-state="active"]',
@@ -482,6 +783,11 @@ const steps: StepperStep[] = [
           });
         };
 
+        const handleFormMutation = (event: Event) => {
+          invalidateActiveStep(event);
+          scheduleDraftSave();
+        };
+
         previousButton.addEventListener("click", () => {
           if (busy) return;
           const previous = nextAvailableIndex(activeIndex(), -1);
@@ -499,14 +805,26 @@ const steps: StepperStep[] = [
           event.stopImmediatePropagation();
         }, true);
 
-        form.addEventListener("input", invalidateActiveStep);
-        form.addEventListener("change", invalidateActiveStep);
-        form.addEventListener("starwind:value-change", invalidateActiveStep);
-        form.addEventListener("starwind:checked-change", invalidateActiveStep);
+        form.addEventListener("input", handleFormMutation);
+        form.addEventListener("change", handleFormMutation);
+        form.addEventListener("starwind:value-change", handleFormMutation);
+        form.addEventListener("starwind:checked-change", handleFormMutation);
         stepperRoot.addEventListener("starwind:value-change", (event) => {
-          if (event.target === stepperRoot) queueMicrotask(sync);
+          if (event.target !== stepperRoot) return;
+          queueMicrotask(() => {
+            sync();
+            scheduleDraftSave();
+          });
         });
         form.addEventListener("reset", () => {
+          persistenceSuspended = true;
+          draftDirty = false;
+          if (draftSaveTimer !== undefined) {
+            window.clearTimeout(draftSaveTimer);
+            draftSaveTimer = undefined;
+          }
+          clearFormDraft();
+
           window.setTimeout(() => {
             completed.clear();
             highestUnlocked = 0;
@@ -515,10 +833,16 @@ const steps: StepperStep[] = [
             form.dispatchEvent(
               new CustomEvent("llc-form:reset", { bubbles: true }),
             );
+            requestAnimationFrame(() => {
+              persistenceSuspended = false;
+            });
           }, 0);
         });
 
+        window.addEventListener("pagehide", () => saveDraft());
+
         sync();
+        void initializeDraftPersistence();
       };
 
       const initLlcForms = () => {

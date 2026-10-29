@@ -180,11 +180,7 @@ const defaultLevel = confidencialidad[0];
 </Card>
 
 <script>
-  import {
-    readFormDraft,
-    updateFormDraft,
-    type ConfidentialityLevel,
-  } from "./form-draft";
+  import type { ConfidentialityLevel } from "./form-draft";
 
   const isConfidentialityLevel = (
     value: string,
@@ -195,7 +191,6 @@ const defaultLevel = confidencialidad[0];
     root: HTMLElement,
     value: ConfidentialityLevel,
   ) => {
-    updateFormDraft({ confidentialityLevel: value });
     root.dispatchEvent(
       new CustomEvent("llc-form:confidentiality-change", {
         bubbles: true,
@@ -231,28 +226,7 @@ const defaultLevel = confidencialidad[0];
         output.textContent = "Nula - Revela a los Socios y al Manager";
       publishConfidentiality(root, "Nula");
     });
-  };
-
-  const restoreConfidentiality = (root: HTMLElement) => {
-    if (root.dataset.confidentialityRestored === "true") return;
-    root.dataset.confidentialityRestored = "true";
-
-    const storedValue = readFormDraft().answers.confidentialityLevel;
     const currentValue = root.dataset.value;
-
-    if (
-      storedValue &&
-      isConfidentialityLevel(storedValue) &&
-      storedValue !== currentValue
-    ) {
-      const storedOption = Array.from(
-        root.querySelectorAll<HTMLElement>("[data-confidentiality-option]"),
-      ).find((option) => option.dataset.value === storedValue);
-      storedOption
-        ?.querySelector<HTMLElement>('[data-slot="radio-group-item"]')
-        ?.click();
-      return;
-    }
 
     if (currentValue && isConfidentialityLevel(currentValue)) {
       publishConfidentiality(root, currentValue);
@@ -262,10 +236,7 @@ const defaultLevel = confidencialidad[0];
   const initConfidentialitySelectors = () => {
     document
       .querySelectorAll<HTMLElement>("#confidentiality-level-group")
-      .forEach((root) => {
-        setupConfidentialitySelector(root);
-        requestAnimationFrame(() => restoreConfidentiality(root));
-      });
+      .forEach(setupConfidentialitySelector);
   };
 
   initConfidentialitySelectors();

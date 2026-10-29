@@ -1,77 +1,184 @@
 export type ConfidentialityLevel = "Nula" | "Parcial" | "Total";
 
-interface FormDraftAnswers {
-  confidentialityLevel?: ConfidentialityLevel;
-  formationState?: string;
+export const persistedFieldNames = [
+  "email",
+  "businessModel",
+  "operationDescription",
+  "projectedAnnualRevenue",
+  "clientMarkets",
+  "confidentialityLevel",
+  "formationState",
+  "operaciones",
+  "primaryOperatingCountry",
+  "hasUsSourceIncome",
+  "llcTaxTreatment",
+  "operationalIndicators",
+  "EstructureClassLevel",
+  "singleMemberOwnerType",
+  "numberOfMembers",
+  "sistemModel",
+  "cashModel",
+  "primaryEconomicActivity",
+] as const;
+
+export type PersistedFieldName = (typeof persistedFieldNames)[number];
+export type FormDraftValue = string | string[];
+export type FormDraftAnswers = Partial<
+  Record<PersistedFieldName, FormDraftValue>
+>;
+
+export interface FormDraftProgress {
+  currentStep: string;
+  highestUnlockedStep: string;
+  completedSteps: string[];
 }
 
-interface FormDraft {
-  version: 1;
+export interface FormDraft {
+  version: 2;
   updatedAt: string;
   answers: FormDraftAnswers;
+  progress: FormDraftProgress;
 }
 
-const STORAGE_KEY = "llc-plan-draft-v1";
+const STORAGE_KEY = "llc-plan-draft-v2";
+const LEGACY_STORAGE_KEY = "llc-plan-draft-v1";
+const MULTIPLE_FIELDS = new Set<PersistedFieldName>([
+  "clientMarkets",
+  "operationalIndicators",
+]);
+const FIELD_NAMES = new Set<string>(persistedFieldNames);
+const MAX_STRING_LENGTH = 2_000;
+const MAX_ARRAY_LENGTH = 20;
 
-const isConfidentialityLevel = (
-  value: unknown,
-): value is ConfidentialityLevel =>
-  value === "Nula" || value === "Parcial" || value === "Total";
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
 
-const emptyDraft = (): FormDraft => ({
-  version: 1,
-  updatedAt: new Date(0).toISOString(),
-  answers: {},
-});
+const sanitizeString = (value: unknown) => {
+  if (typeof value !== "string" || !value.trim()) return undefined;
+  return value.slice(0, MAX_STRING_LENGTH);
+};
 
-export const readFormDraft = (): FormDraft => {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return emptyDraft();
+const sanitizeAnswers = (value: unknown): FormDraftAnswers => {
+  if (!isRecord(value)) return {};
 
-    const parsed = JSON.parse(stored) as Partial<FormDraft>;
-    if (parsed.version !== 1 || typeof parsed.answers !== "object" || !parsed.answers) {
-      return emptyDraft();
+  const answers: FormDraftAnswers = {};
+
+  Object.entries(value).forEach(([name, rawValue]) => {
+    if (!FIELD_NAMES.has(name)) return;
+    const fieldName = name as PersistedFieldName;
+
+    if (MULTIPLE_FIELDS.has(fieldName)) {
+      if (!Array.isArray(rawValue)) return;
+      const values = Array.from(
+        new Set(
+          rawValue
+            .slice(0, MAX_ARRAY_LENGTH)
+            .map(sanitizeString)
+            .filter((item): item is string => Boolean(item)),
+        ),
+      );
+      if (values.length > 0) answers[fieldName] = values;
+      return;
     }
 
-    const confidentialityLevel = parsed.answers.confidentialityLevel;
-    const formationState = parsed.answers.formationState;
+    const stringValue = sanitizeString(rawValue);
+    if (stringValue) answers[fieldName] = stringValue;
+  });
 
-    return {
-      version: 1,
-      updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : new Date(0).toISOString(),
-      answers: {
-        confidentialityLevel: isConfidentialityLevel(confidentialityLevel)
-          ? confidentialityLevel
-          : undefined,
-        formationState:
-          typeof formationState === "string" && formationState.trim()
-            ? formationState
-            : undefined,
-      },
-    };
+  return answers;
+};
+
+const sanitizeProgress = (value: unknown): FormDraftProgress => {
+  const progress = isRecord(value) ? value : {};
+  const currentStep = sanitizeString(progress.currentStep) ?? "Correo";
+  const highestUnlockedStep =
+    sanitizeString(progress.highestUnlockedStep) ?? "Correo";
+  const completedSteps = Array.isArray(progress.completedSteps)
+    ? Array.from(
+        new Set(
+          progress.completedSteps
+            .map(sanitizeString)
+            .filter((item): item is string => Boolean(item)),
+        ),
+      )
+    : [];
+
+  return { currentStep, highestUnlockedStep, completedSteps };
+};
+
+const parseCurrentDraft = (stored: string): FormDraft | null => {
+  const parsed = JSON.parse(stored) as unknown;
+  if (!isRecord(parsed) || parsed.version !== 2) return null;
+
+  return {
+    version: 2,
+    updatedAt:
+      typeof parsed.updatedAt === "string"
+        ? parsed.updatedAt
+        : new Date(0).toISOString(),
+    answers: sanitizeAnswers(parsed.answers),
+    progress: sanitizeProgress(parsed.progress),
+  };
+};
+
+const parseLegacyDraft = (stored: string): FormDraft | null => {
+  const parsed = JSON.parse(stored) as unknown;
+  if (!isRecord(parsed) || parsed.version !== 1 || !isRecord(parsed.answers)) {
+    return null;
+  }
+
+  const answers = sanitizeAnswers({
+    confidentialityLevel: parsed.answers.confidentialityLevel,
+    formationState: parsed.answers.formationState,
+  });
+
+  return {
+    version: 2,
+    updatedAt:
+      typeof parsed.updatedAt === "string"
+        ? parsed.updatedAt
+        : new Date(0).toISOString(),
+    answers,
+    progress: sanitizeProgress(undefined),
+  };
+};
+
+export const readFormDraft = (): FormDraft | null => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) return parseCurrentDraft(stored);
+
+    const legacyStored = localStorage.getItem(LEGACY_STORAGE_KEY);
+    return legacyStored ? parseLegacyDraft(legacyStored) : null;
   } catch {
-    return emptyDraft();
+    return null;
   }
 };
 
-export const updateFormDraft = (answers: Partial<FormDraftAnswers>) => {
-  const current = readFormDraft();
-  const nextAnswers = { ...current.answers, ...answers };
-
-  Object.entries(nextAnswers).forEach(([key, value]) => {
-    if (value === undefined) delete nextAnswers[key as keyof FormDraftAnswers];
-  });
-
+export const writeFormDraft = (
+  answers: FormDraftAnswers,
+  progress: FormDraftProgress,
+) => {
   try {
     localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({
-        version: 1,
+        version: 2,
         updatedAt: new Date().toISOString(),
-        answers: nextAnswers,
+        answers: sanitizeAnswers(answers),
+        progress: sanitizeProgress(progress),
       } satisfies FormDraft),
     );
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
+  } catch {
+    // Storage can be unavailable in private browsing or constrained contexts.
+  }
+};
+
+export const clearFormDraft = () => {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
   } catch {
     // Storage can be unavailable in private browsing or constrained contexts.
   }

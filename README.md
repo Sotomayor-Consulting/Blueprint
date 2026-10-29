@@ -23,7 +23,7 @@ Blueprint funciona actualmente como una aplicación frontend estática. El formu
 - Preguntas y secciones condicionales según las respuestas.
 - Controles ocultos deshabilitados y excluidos de `FormData`.
 - Catálogos de países, estados y actividades económicas.
-- Persistencia parcial del borrador mediante `localStorage`.
+- Persistencia completa del borrador y del progreso mediante `localStorage`.
 - Interacción mediante teclado y atributos de accesibilidad.
 - Despliegue automático en GitHub Pages.
 
@@ -118,7 +118,7 @@ src/
 - `src/pages/index.astro`: controla la navegación, validación, envío y reset del formulario.
 - `src/components/blocks/stepper.astro`: presenta los pasos, paneles y controles de navegación responsive.
 - `src/components/forms/Step*.astro`: contiene las preguntas y el comportamiento de cada etapa.
-- `src/components/forms/form-draft.ts`: administra la persistencia parcial del borrador.
+- `src/components/forms/form-draft.ts`: valida, migra y almacena el borrador completo.
 - `src/components/starwind/`: contiene los componentes UI utilizados por el formulario.
 - `src/assets/content/`: contiene los catálogos utilizados por los Combobox.
 
@@ -162,18 +162,25 @@ El evento `llc-form:reset` permite que los componentes condicionales sincronicen
 
 ## Persistencia local
 
-El borrador parcial utiliza la clave:
+El borrador utiliza la clave:
 
 ```text
-llc-plan-draft-v1
+llc-plan-draft-v2
 ```
 
-Actualmente conserva:
+Conserva:
 
-- Nivel de confidencialidad.
-- Estado de formación seleccionado.
+- Todos los campos del formulario, incluidos los valores múltiples.
+- Paso actual del Stepper.
+- Paso máximo desbloqueado.
+- Pasos completados.
 
-La lectura y escritura de `localStorage` se realiza de forma segura cuando el almacenamiento no está disponible o contiene información inválida.
+La aceptación final de términos no se guarda y debe confirmarse nuevamente. Los campos de ramas condicionales ocultas tampoco se conservan porque permanecen deshabilitados y no participan en `FormData`.
+
+La lectura y escritura se realiza de forma segura cuando `localStorage` no está disponible o contiene información inválida. Los borradores anteriores bajo `llc-plan-draft-v1` se migran automáticamente. Al restablecer el formulario se eliminan ambas versiones.
+
+> [!WARNING]
+> El borrador puede contener correo electrónico e información comercial. En equipos compartidos se recomienda restablecer el formulario al terminar.
 
 ## Despliegue actual
 
@@ -222,4 +229,4 @@ Al incorporar una nueva etapa se deben revisar los siguientes puntos:
 - No existe autenticación de usuarios.
 - No existe almacenamiento de solicitudes en servidor.
 - No se genera ningún PDF todavía.
-- La persistencia local solo cubre una parte del formulario.
+- El borrador se almacena únicamente en el navegador actual.
