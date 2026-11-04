@@ -113,7 +113,6 @@ const steps: StepperStep[] = [
       import { createForm } from "@starwind-ui/astro/form";
       import { createCheckbox } from "@starwind-ui/runtime/checkbox";
       import { createCombobox } from "@starwind-ui/runtime/combobox";
-      import { createSelect } from "@starwind-ui/runtime/select";
       import { createSwitch } from "@starwind-ui/runtime/switch";
       import { createTabs } from "@starwind-ui/runtime/tabs";
       import {
@@ -154,10 +153,7 @@ const steps: StepperStep[] = [
       const stepFields: Record<string, string[]> = {
         Correo: ["email"],
         Modelo: [],
-        Operacion: [
-          "operationDescription",
-          "projectedAnnualRevenue",
-        ],
+        Operacion: ["operationDescription"],
         Confidencialidad: [],
         Estado: ["formationState"],
         Tributacion: ["primaryOperatingCountry"],
@@ -564,17 +560,6 @@ const steps: StepperStep[] = [
             });
         };
 
-        const restoreSelect = (
-          draft: FormDraft,
-          fieldName: "projectedAnnualRevenue",
-          selector: string,
-        ) => {
-          const value = draftString(draft, fieldName);
-          const root = form.querySelector<HTMLElement>(selector);
-          if (!value || !root) return;
-          createSelect(root).setValue(value, { emit: true });
-        };
-
         const restoreCombobox = (
           draft: FormDraft,
           fieldName:
@@ -629,11 +614,6 @@ const steps: StepperStep[] = [
             draft,
             "operationDescription",
             '#operation-description',
-          );
-          restoreSelect(
-            draft,
-            "projectedAnnualRevenue",
-            "#projected-annual-revenue",
           );
           restoreRadioGroup(draft, "businessModel");
           restoreCheckboxes(draft, "clientMarkets");
@@ -809,6 +789,10 @@ const steps: StepperStep[] = [
         form.addEventListener("change", handleFormMutation);
         form.addEventListener("starwind:value-change", handleFormMutation);
         form.addEventListener("starwind:checked-change", handleFormMutation);
+        form.addEventListener("llc-form:submit", () => {
+          const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+          window.location.assign(`${baseUrl}informe/`);
+        });
         stepperRoot.addEventListener("starwind:value-change", (event) => {
           if (event.target !== stepperRoot) return;
           queueMicrotask(() => {

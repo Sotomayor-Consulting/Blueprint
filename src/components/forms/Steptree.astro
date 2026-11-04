@@ -18,12 +18,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/starwind/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/starwind/select";
 import { Textarea } from "@/components/starwind/textarea";
 import { Checkbox } from "@/components/starwind/checkbox";
 import { CheckboxGroup } from "@/components/starwind/checkbox-group";
@@ -75,7 +69,7 @@ const clientMarkets = [
     >
     <CardTitle class="text-4xl">¿Qué hará la LLC?</CardTitle>
     <CardDescription class="text-xl"
-      >Define actividad, ingresos y mercados de la LLC</CardDescription
+      >Define la actividad y los mercados de la LLC</CardDescription
     >
   </CardHeader>
   <CardContent class="flex gap-4 mt-5">
@@ -103,43 +97,6 @@ const clientMarkets = [
             </FieldError>
           </Field>
 
-          <Field name="projectedAnnualRevenue">
-            <FieldLabel for="projected-annual-revenue-trigger">
-              Facturación anual proyectada
-            </FieldLabel>
-            <Select
-              name="projectedAnnualRevenue"
-              id="projected-annual-revenue"
-              modal={false}
-              required
-            >
-              <SelectTrigger
-                id="projected-annual-revenue-trigger"
-                placeholder="Selecciona el rango de facturación"
-                class="w-full border-primary"
-              />
-              <SelectContent>
-                <SelectItem value="Menos de USD 50.000">
-                  Menos de USD 50.000
-                </SelectItem>
-                <SelectItem value="USD 50.000 - 250.000">
-                  USD 50.000 - 250.000
-                </SelectItem>
-                <SelectItem value="USD 250.001 - 1.000.000">
-                  USD 250.001 - 1.000.000
-                </SelectItem>
-                <SelectItem value="Más de USD 1.000.000">
-                  Más de USD 1.000.000
-                </SelectItem>
-                <SelectItem value="Aún no definido">
-                  Aún no definido
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            <FieldError match="valueMissing">
-              Selecciona el rango de facturación.
-            </FieldError>
-          </Field>
           <FieldSet>
             <FieldLegend>Mercados donde tendrá clientes</FieldLegend>
             <FieldDescription>
@@ -179,9 +136,6 @@ const clientMarkets = [
                               <Icon name={market.code} class="text-primary text-2xl"/>
                             </span>
                             <CardTitle class="text-base">{market.name}</CardTitle>
-                            <CardDescription class="text-sm">
-                              {market.description}
-                            </CardDescription>
                           </CardHeader>
                         </Card>
                       </label>
@@ -204,35 +158,3 @@ const clientMarkets = [
       </div>
   </CardContent>
 </Card>
-
-<script>
-  import { createSelect } from "@starwind-ui/runtime/select";
-
-  const setupProjectedRevenueSelect = (root: HTMLElement) => {
-    if (root.dataset.projectedRevenueReady === "true") return;
-    root.dataset.projectedRevenueReady = "true";
-
-    const selectApi = createSelect(root);
-    const form = root.closest("form");
-
-    form?.addEventListener("starwind:value-change", (event) => {
-      if (
-        event.target instanceof HTMLElement &&
-        event.target.matches("[data-stepper]")
-      ) {
-        const { value } = (event as CustomEvent<{ value: string }>).detail;
-        if (value !== "Operacion") selectApi.close();
-      }
-    });
-    form?.addEventListener("llc-form:reset", () => selectApi.close());
-  };
-
-  const initProjectedRevenueSelect = () => {
-    document
-      .querySelectorAll<HTMLElement>("#projected-annual-revenue")
-      .forEach(setupProjectedRevenueSelect);
-  };
-
-  initProjectedRevenueSelect();
-  document.addEventListener("astro:page-load", initProjectedRevenueSelect);
-</script>

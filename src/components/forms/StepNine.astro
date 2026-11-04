@@ -5,6 +5,11 @@ import { Image } from "astro:assets";
 
 import MemberManaged from "@/assets/images/member-managed-admin.webp";
 import ManagerManaged from "@/assets/images/manager-managed-admin.webp";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/starwind/alert";
 import { Badge } from "@/components/starwind/badge";
 import {
   Card,
@@ -23,6 +28,12 @@ const cashModels = [
     name: "Método de Efectivo / Cash Basis",
     description:
       "Los ingresos se registran cuando se cobran y los gastos cuando se pagan.",
+    explanation:
+      "En este método, la LLC registra los ingresos cuando recibe el dinero y los gastos cuando realiza los pagos, en lugar de reconocerlos cuando se emite una factura o se contrae una obligación.",
+    example:
+      "Si la LLC factura USD 1.000 en marzo, pero recibe el pago en abril, el ingreso se registra en abril.",
+    advantage:
+      "Es un método sencillo que facilita el control del dinero recibido y pagado.",
     image: MemberManaged,
   },
   {
@@ -31,6 +42,12 @@ const cashModels = [
     name: "Método Devengado / Accrual-Basis",
     description:
       "Los ingresos y gastos se registran cuando se generan, aunque todavía no se hayan cobrado o pagado.",
+    explanation:
+      "En este método, la LLC reconoce los ingresos cuando se obtienen y los gastos cuando se incurren, independientemente del momento en que se reciba o entregue el dinero.",
+    example:
+      "Si la LLC presta un servicio y factura USD 1.000 en marzo, pero recibe el pago en abril, el ingreso se registra en marzo.",
+    advantage:
+      "Permite reflejar con mayor precisión los resultados económicos de la empresa, incluyendo sus cuentas por cobrar y por pagar.",
     image: ManagerManaged,
   },
 ];
@@ -53,7 +70,9 @@ const defaultModel = cashModels[0];
       >¿Cómo registrará la LLC sus ingresos y gastos?</CardTitle
     >
     <CardDescription class="text-xl">
-      Definiremos cuándo la LLC registrará sus ingresos y gastos: al momento de recibir o realizar pagos, o cuando se generen las operaciones, independientemente de cuándo se cobre o pague.
+      Definiremos cuándo la LLC registrará sus ingresos y gastos: al momento de
+      recibir o realizar pagos, o cuando se generen las operaciones,
+      independientemente de cuándo se cobre o pague.
     </CardDescription>
   </CardHeader>
 
@@ -103,7 +122,6 @@ const defaultModel = cashModels[0];
                         <CardTitle class="text-base">{model.name}</CardTitle>
                         <CardDescription class="text-sm">
                           {model.description}
-                          
                         </CardDescription>
                       </CardHeader>
                     </Card>
@@ -121,11 +139,83 @@ const defaultModel = cashModels[0];
           >
             Selecciona un cash administrativo para continuar.
           </p>
+
+          <div class="mt-4" aria-live="polite">
+            {
+              cashModels.map((model) => (
+                <Alert
+                  variant="info"
+                  data-cash-model-description
+                  data-value={model.value}
+                  hidden={model.value !== defaultModel.value}
+                >
+                  <AlertTitle>{model.name}</AlertTitle>
+                  <AlertDescription class="text-justify">
+                    {model.explanation}
+                  </AlertDescription>
+                  <AlertDescription class="text-justify">
+                    <strong>Ejemplo práctico:</strong> {model.example}
+                  </AlertDescription>
+                  <AlertDescription class="text-justify">
+                    <strong>Ventaja principal:</strong> {model.advantage}
+                  </AlertDescription>
+                </Alert>
+              ))
+            }
+          </div>
         </div>
       </FieldSet>
-
-      
     </FieldGroup>
   </CardContent>
 </Card>
 
+<script>
+  import type { RadioCheckedChangeDetails } from "@starwind-ui/runtime/radio";
+  import { createRadioGroup } from "@starwind-ui/runtime/radio-group";
+
+  const setupCashModelDescriptions = (root: HTMLElement) => {
+    if (root.dataset.cashDescriptionReady === "true") return;
+    root.dataset.cashDescriptionReady = "true";
+
+    const card = root.closest<HTMLElement>('[data-slot="card"]');
+    const descriptions = Array.from(
+      card?.querySelectorAll<HTMLElement>("[data-cash-model-description]") ?? [],
+    );
+    if (descriptions.length === 0) return;
+
+    const cashModelApi = createRadioGroup(root);
+    cashModelApi.refresh();
+
+    const applyDescription = (value: string | undefined) => {
+      descriptions.forEach((description) => {
+        description.hidden = description.dataset.value !== value;
+      });
+    };
+
+    root.addEventListener("starwind:checked-change", (event) => {
+      if (!(event instanceof CustomEvent) || !(event.target instanceof HTMLElement))
+        return;
+
+      const details = event.detail as RadioCheckedChangeDetails;
+      const value = event.target.dataset.value;
+      if (!details.checked || !value) return;
+
+      details.onAccepted(() => applyDescription(value));
+    });
+
+    root.closest("form")?.addEventListener("llc-form:reset", () => {
+      applyDescription(cashModelApi.getValue());
+    });
+
+    applyDescription(cashModelApi.getValue());
+  };
+
+  const initCashModelDescriptions = () => {
+    document
+      .querySelectorAll<HTMLElement>("#cash-model-group")
+      .forEach(setupCashModelDescriptions);
+  };
+
+  initCashModelDescriptions();
+  document.addEventListener("astro:page-load", initCashModelDescriptions);
+</script>

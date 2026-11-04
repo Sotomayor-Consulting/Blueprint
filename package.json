@@ -21,6 +21,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "astro": "7.4.2",
     "astro-icon": "^1.2.0",
+    "html2pdf.js": "^0.14.0",
     "sharp": "^0.35.5",
     "tailwind-merge": "^3.7.0",
     "tailwind-variants": "^3.3.1",

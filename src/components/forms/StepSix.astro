@@ -180,7 +180,7 @@ const data = countries as {
                 <Icon name="MingcuteInformationFill" class="size-5" />
                 ¿Qué son los ingresos de fuente estadounidense?
               </AlertTitle>
-              <AlertDescription class="text-sm">
+              <AlertDescription class="text-sm text-justify">
                 Son ingresos cuya fuente fiscal se encuentra en Estados Unidos,
                 según las reglas tributarias aplicables. Su clasificación depende
                 de factores como el lugar donde se prestan los servicios, se venden
@@ -301,7 +301,9 @@ const data = countries as {
                       hidden
                     >
                       <AlertTitle>{treatment.name}</AlertTitle>
-                      <AlertDescription>{treatment.description}</AlertDescription>
+                      <AlertDescription class="text-justify">
+                        {treatment.description}
+                      </AlertDescription>
                     </Alert>
                   ))
                 }

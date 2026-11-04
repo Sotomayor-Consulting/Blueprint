@@ -4,7 +4,6 @@ export const persistedFieldNames = [
   "email",
   "businessModel",
   "operationDescription",
-  "projectedAnnualRevenue",
   "clientMarkets",
   "confidentialityLevel",
   "formationState",

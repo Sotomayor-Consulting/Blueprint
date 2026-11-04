@@ -24,6 +24,7 @@ const Estructura = [
     id: "SingleMember",
     value: "Single Member",
     name: "Single Member",
+    caracteristics: "Beneficios",
     description:
       "La LLC tiene un solo socio directo, con propiedad del 100% de la compañía.",
     list: [
@@ -37,6 +38,7 @@ const Estructura = [
     id: "Partnership",
     value: "Partnership",
     name: "Partnership",
+    caracteristics: "Implicaciones",
     description:
       "Dos o más miembros comparten propiedad, control y utilidades.",
     list: [
@@ -202,7 +204,7 @@ const defaultLevel = Estructura[0];
                   </p>
                   <div>
                     <p class="text-foreground text-sm font-semibold">
-                      Beneficios:
+                      {model.caracteristics}
                     </p>
                     <ul class="mt-2 space-y-2">
                       {model.list.map((item) => (

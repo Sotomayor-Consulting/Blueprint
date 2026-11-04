@@ -1,0 +1,269 @@
+---
+import ReportTemplate from "@/components/report/ReportTemplate.astro";
+import "@/styles/report.css";
+
+const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="description"
+      content="Vista previa del informe condicional de planificación de LLC."
+    />
+    <title>Informe de planificación estratégica y diseño legal y tributario de la LLC</title>
+  </head>
+  <body>
+    <header class="report-toolbar" data-report-toolbar>
+      <div class="report-toolbar__copy">
+        <strong>Vista previa del informe</strong>
+        <span>Prototipo generado en este navegador</span>
+      </div>
+      <nav class="report-toolbar__actions" aria-label="Acciones del informe">
+        <a class="report-button" href={homeUrl}>Editar respuestas</a>
+        <button
+          class="report-button report-button--primary"
+          type="button"
+          data-download-report
+          disabled
+        >
+          Descargar PDF
+        </button>
+      </nav>
+    </header>
+
+    <main class="report-page-shell">
+      <section class="report-status" data-report-loading aria-live="polite">
+        Preparando la vista previa…
+      </section>
+
+      <section class="report-empty" data-report-empty hidden>
+        <h1>No hay respuestas para generar el informe</h1>
+        <p>
+          Completa el formulario y pulsa <strong>Finalizar</strong> para crear
+          una vista previa condicional.
+        </p>
+        <a class="report-button report-button--primary" href={homeUrl}>
+          Ir al formulario
+        </a>
+      </section>
+
+      <div class="report-preview">
+        <ReportTemplate />
+      </div>
+
+      <p
+        class="report-download-message"
+        data-download-message
+        role="status"
+        aria-live="polite"
+      ></p>
+    </main>
+
+    <script>
+      import { readFormDraft } from "@/components/forms/form-draft";
+      import { deriveReportFacts } from "@/lib/report/facts";
+      import {
+        buildReportModel,
+        type ReportItem,
+        type ReportSection,
+      } from "@/lib/report/model";
+      import { normalizeAnswers } from "@/lib/report/normalize";
+
+      const report = document.querySelector<HTMLElement>("[data-report]");
+      const loading = document.querySelector<HTMLElement>(
+        "[data-report-loading]",
+      );
+      const empty = document.querySelector<HTMLElement>("[data-report-empty]");
+      const downloadButton = document.querySelector<HTMLButtonElement>(
+        "[data-download-report]",
+      );
+      const downloadMessage = document.querySelector<HTMLElement>(
+        "[data-download-message]",
+      );
+
+      const setText = (selector: string, value: string) => {
+        const target = report?.querySelector<HTMLElement>(selector);
+        if (target) target.textContent = value;
+      };
+
+      const element = <Tag extends keyof HTMLElementTagNameMap>(
+        tag: Tag,
+        className?: string,
+        text?: string,
+      ) => {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined) node.textContent = text;
+        return node;
+      };
+
+      const appendItems = (
+        container: HTMLElement,
+        items: ReportItem[],
+        rowClass: string,
+      ) => {
+        items.forEach((item) => {
+          const row = element("div", rowClass);
+          row.append(element("dt", undefined, item.label));
+          row.append(element("dd", undefined, item.value));
+          container.append(row);
+        });
+      };
+
+      const renderSection = (section: ReportSection) => {
+        const sectionElement = element("section", "report-section report-block");
+        sectionElement.dataset.section = section.id;
+        sectionElement.append(
+          element("p", "report-overline", section.eyebrow),
+          element("h2", undefined, section.title),
+        );
+
+        if (section.introduction) {
+          sectionElement.append(
+            element(
+              "p",
+              "report-section__introduction",
+              section.introduction,
+            ),
+          );
+        }
+
+        if (section.items.length > 0) {
+          const list = element("dl", "report-data-list");
+          appendItems(list, section.items, "report-data-row");
+          sectionElement.append(list);
+        }
+
+        if (section.bullets?.length) {
+          const bullets = element("div", "report-bullets");
+          bullets.append(
+            element(
+              "p",
+              "report-bullets__title",
+              section.id === "tax"
+                ? "Indicadores operativos seleccionados"
+                : "Aspectos a revisar",
+            ),
+          );
+          const list = element("ul");
+          section.bullets.forEach((bullet) =>
+            list.append(element("li", undefined, bullet)),
+          );
+          bullets.append(list);
+          sectionElement.append(bullets);
+        }
+
+        if (section.note) {
+          sectionElement.append(element("aside", "report-note", section.note));
+        }
+
+        return sectionElement;
+      };
+
+      const initializeReport = () => {
+        const draft = readFormDraft();
+        const hasAnswers = draft && Object.keys(draft.answers).length > 0;
+
+        if (!report || !draft || !hasAnswers) {
+          if (loading) loading.hidden = true;
+          if (empty) empty.hidden = false;
+          return;
+        }
+
+        const answers = normalizeAnswers(draft.answers);
+        const facts = deriveReportFacts(answers);
+        const model = buildReportModel(answers, facts);
+
+        setText("[data-report-title]", model.title);
+        setText("[data-report-subtitle]", model.subtitle);
+        setText("[data-report-email]", model.clientEmail);
+        setText("[data-report-date]", model.generatedAt);
+        setText("[data-report-version]", model.version);
+        setText("[data-report-disclaimer]", model.disclaimer);
+
+        const highlights = report.querySelector<HTMLElement>(
+          "[data-report-highlights]",
+        );
+        if (highlights) {
+          appendItems(highlights, model.highlights, "report-highlight");
+        }
+
+        const sections = report.querySelector<HTMLElement>(
+          "[data-report-sections]",
+        );
+        if (sections) {
+          const fragment = document.createDocumentFragment();
+          model.sections.forEach((section) =>
+            fragment.append(renderSection(section)),
+          );
+          sections.append(fragment);
+        }
+
+        report.hidden = false;
+        if (loading) loading.hidden = true;
+        if (downloadButton) downloadButton.disabled = false;
+      };
+
+      downloadButton?.addEventListener("click", async () => {
+        if (!report || report.hidden || !downloadButton) return;
+
+        downloadButton.disabled = true;
+        downloadButton.textContent = "Generando…";
+        if (downloadMessage) {
+          downloadMessage.dataset.error = "false";
+          downloadMessage.textContent =
+            "Preparando el documento. Esto puede tardar unos segundos.";
+        }
+
+        try {
+          await document.fonts.ready;
+          const { default: html2pdf } = await import("html2pdf.js");
+          const mobile = window.matchMedia("(max-width: 700px)").matches;
+          const options = {
+            filename: "informe-planificacion-llc.pdf",
+            margin: 0,
+            image: { type: "jpeg" as const, quality: 0.96 },
+            html2canvas: {
+              scale: mobile ? 1.25 : 2,
+              useCORS: true,
+              backgroundColor: "#ffffff",
+              logging: false,
+              windowWidth: 816,
+            },
+            jsPDF: {
+              unit: "in",
+              format: "letter",
+              orientation: "portrait" as const,
+            },
+            pagebreak: {
+              mode: ["css", "legacy"],
+              avoid: [".report-block", ".report-data-row"],
+            },
+          };
+
+          await html2pdf().set(options).from(report).save();
+          if (downloadMessage) {
+            downloadMessage.textContent = "PDF descargado correctamente.";
+          }
+        } catch (error) {
+          console.error("No se pudo generar el PDF", error);
+          if (downloadMessage) {
+            downloadMessage.dataset.error = "true";
+            downloadMessage.textContent =
+              "No se pudo generar el PDF. Intenta nuevamente desde este navegador.";
+          }
+        } finally {
+          downloadButton.disabled = false;
+          downloadButton.textContent = "Descargar PDF";
+        }
+      });
+
+      initializeReport();
+    </script>
+  </body>
+</html>

@@ -10,7 +10,7 @@ Blueprint funciona actualmente como una aplicación frontend estática. El formu
 
 - El evento `llc-form:submit` todavía no está conectado a una API.
 - No existe persistencia definitiva de las solicitudes en un servidor.
-- Supabase, Coolify y la generación condicional de PDF forman parte del roadmap y aún no están implementados.
+- El informe condicional y su PDF se generan actualmente en el navegador como prototipo; la persistencia definitiva en servidor sigue en el roadmap.
 
 ## Características
 
@@ -24,6 +24,8 @@ Blueprint funciona actualmente como una aplicación frontend estática. El formu
 - Controles ocultos deshabilitados y excluidos de `FormData`.
 - Catálogos de países, estados y actividades económicas.
 - Persistencia completa del borrador y del progreso mediante `localStorage`.
+- Vista previa HTML condicional del informe en `/informe`.
+- Descarga cliente en formato Letter mediante `html2pdf.js`.
 - Interacción mediante teclado y atributos de accesibilidad.
 - Despliegue automático en GitHub Pages.
 
@@ -33,7 +35,7 @@ Blueprint funciona actualmente como una aplicación frontend estática. El formu
 | --- | --- |
 | Inicio | Correo electrónico del cliente |
 | Modelo de negocio | Actividad o modelo principal de la LLC |
-| Confirmación | Operación, ingresos proyectados y mercados |
+| Confirmación | Operación y mercados |
 | Confidencialidad | Nivel de privacidad requerido |
 | Estado | Estado de formación y presencia operativa |
 | Tributación | País de operación, ingresos estadounidenses y tratamiento fiscal |
@@ -51,6 +53,7 @@ Blueprint funciona actualmente como una aplicación frontend estática. El formu
 - [Tailwind CSS 4](https://tailwindcss.com/)
 - [Astro Icon](https://www.astroicon.dev/)
 - [Tabler Icons](https://tabler.io/icons)
+- [html2pdf.js](https://ekoopmans.github.io/html2pdf.js/)
 - Node.js 22
 - pnpm 12
 
@@ -105,11 +108,15 @@ src/
 │   ├── blocks/
 │   │   └── stepper.astro
 │   ├── forms/
+│   ├── report/
 │   └── starwind/
+├── lib/
+│   └── report/
 ├── layouts/
 │   └── Layout.astro
 ├── pages/
-│   └── index.astro
+│   ├── index.astro
+│   └── informe.astro
 └── styles/
 ```
 
@@ -119,6 +126,9 @@ src/
 - `src/components/blocks/stepper.astro`: presenta los pasos, paneles y controles de navegación responsive.
 - `src/components/forms/Step*.astro`: contiene las preguntas y el comportamiento de cada etapa.
 - `src/components/forms/form-draft.ts`: valida, migra y almacena el borrador completo.
+- `src/lib/report/`: normaliza respuestas, deriva condiciones y construye el modelo del informe.
+- `src/pages/informe.astro`: presenta el informe y gestiona su descarga como PDF.
+- `src/styles/report.css`: define la plantilla Letter y sus reglas de paginación.
 - `src/components/starwind/`: contiene los componentes UI utilizados por el formulario.
 - `src/assets/content/`: contiene los catálogos utilizados por los Combobox.
 
@@ -160,6 +170,8 @@ Los campos condicionales ocultos están deshabilitados y no aparecen en `formDat
 
 El evento `llc-form:reset` permite que los componentes condicionales sincronicen su interfaz después de restablecer el formulario.
 
+Después de emitir `llc-form:submit`, el prototipo navega a `/informe/` respetando `import.meta.env.BASE_URL`.
+
 ## Persistencia local
 
 El borrador utiliza la clave:
@@ -181,6 +193,26 @@ La lectura y escritura se realiza de forma segura cuando `localStorage` no está
 
 > [!WARNING]
 > El borrador puede contener correo electrónico e información comercial. En equipos compartidos se recomienda restablecer el formulario al terminar.
+
+## Informe y PDF del prototipo
+
+La ruta `/informe/` lee el borrador local y ejecuta este flujo:
+
+```text
+FormDraftAnswers
+  → normalizeAnswers()
+  → deriveReportFacts()
+  → buildReportModel()
+  → vista previa HTML
+  → html2pdf.js
+```
+
+El modelo omite las ramas que no aplican, por ejemplo los indicadores operativos cuando no existen ingresos de fuente estadounidense, el número de miembros en una Single Member LLC o el tipo de propietario único en una Partnership.
+
+La vista previa se construye mediante nodos DOM y `textContent`; las respuestas del usuario no se insertan como HTML. El PDF se genera completamente en el navegador, en tamaño Letter, y no se envían respuestas a un servicio externo.
+
+> [!IMPORTANT]
+> El PDF es un prototipo informativo. `html2pdf.js` rasteriza el contenido principalmente mediante `html2canvas`, por lo que el texto puede no ser seleccionable, el archivo puede ser más pesado y el resultado puede variar entre dispositivos. No es un documento legal, fiscal o contable autoritativo.
 
 ## Despliegue actual
 
@@ -218,7 +250,7 @@ Al incorporar una nueva etapa se deben revisar los siguientes puntos:
 - Despliegue de la aplicación mediante Coolify.
 - Persistencia de solicitudes en Supabase Postgres.
 - Almacenamiento privado de documentos en Supabase Storage.
-- Generación de PDF condicional mediante Gotenberg.
+- Sustitución de la generación cliente por PDF condicional mediante Gotenberg.
 - Descarga privada de documentos mediante enlaces temporales.
 - Integración con Odoo o una API administrativa.
 - Pruebas automatizadas, monitoreo y política de retención de datos.
@@ -228,5 +260,5 @@ Al incorporar una nueva etapa se deben revisar los siguientes puntos:
 - El envío solo genera un evento en el navegador.
 - No existe autenticación de usuarios.
 - No existe almacenamiento de solicitudes en servidor.
-- No se genera ningún PDF todavía.
+- El PDF cliente no tiene trazabilidad, firma, almacenamiento ni garantía de reproducción idéntica.
 - El borrador se almacena únicamente en el navegador actual.
