@@ -8,6 +8,7 @@ import Parcialimg from "@/assets/images/parcial.webp";
 import Totalimg from "@/assets/images/total.webp";
 import { Image } from "astro:assets";
 import { Badge } from "@/components/starwind/badge";
+import { Checkbox } from "@/components/starwind/checkbox";
 import { Separator } from "@/components/starwind/separator";
 import {
   Card,
@@ -120,6 +121,25 @@ const defaultLevel = Estructura[0];
 
   <CardContent class="mt-5">
     <FieldGroup>
+      <FieldSet>
+        <FieldLegend>Residencia del propietario</FieldLegend>
+        <div class="rounded-xl border p-4">
+          <Checkbox
+            id="american-resident"
+            name="AmericanResident"
+            value="true"
+            uncheckedValue="false"
+            label="Sí, el propietario de la LLC es residente estadounidense."
+            variant="primary"
+            data-american-resident-checkbox
+          />
+          <p class="text-muted-foreground mt-2 text-sm">
+            Esta información se utilizará para determinar los formularios
+            federales previstos para una LLC de miembro único.
+          </p>
+        </div>
+      </FieldSet>
+
       <FieldSet>
         <FieldLegend>Selecciona la estructura de participación</FieldLegend>
         <div>

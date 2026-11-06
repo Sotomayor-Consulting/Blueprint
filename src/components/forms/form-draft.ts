@@ -1,6 +1,7 @@
 export type ConfidentialityLevel = "Nula" | "Parcial" | "Total";
 
 export const persistedFieldNames = [
+  "clientName",
   "email",
   "businessModel",
   "operationDescription",
@@ -12,6 +13,7 @@ export const persistedFieldNames = [
   "hasUsSourceIncome",
   "llcTaxTreatment",
   "operationalIndicators",
+  "AmericanResident",
   "EstructureClassLevel",
   "singleMemberOwnerType",
   "numberOfMembers",

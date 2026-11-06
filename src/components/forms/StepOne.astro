@@ -65,8 +65,31 @@ import Bolt from "@tabler/icons/filled/bolt.svg";
       </CardRotate>
       <div class="w-full flex h-full flex-col gap-y-4">
         <FieldGroup class="w-full">
+          <Field name="clientName">
+            <FieldLabel for="client-name">Nombre del cliente</FieldLabel>
+            <FieldControl
+              id="client-name"
+              name="clientName"
+              type="text"
+              class="border-primary"
+              autocomplete="name"
+              placeholder="Nombre completo"
+              maxlength={120}
+              required
+            />
+            <FieldDescription>
+              Nombre que aparecerá en el informe de planificación.
+            </FieldDescription>
+            <FieldError match="valueMissing">
+              Escribe el nombre del cliente.
+            </FieldError>
+            <FieldError match="tooLong">
+              Usa un máximo de 120 caracteres.
+            </FieldError>
+          </Field>
+
           <Field name="email">
-            <FieldLabel>Email</FieldLabel>
+            <FieldLabel for="email">Email</FieldLabel>
             <FieldControl
               id="email"
               name="email"

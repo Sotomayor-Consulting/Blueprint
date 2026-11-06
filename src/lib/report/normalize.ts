@@ -7,6 +7,7 @@ export type ManagementModel =
   | "No informado";
 
 export interface ReportAnswers {
+  clientName: string;
   email: string;
   businessModel: string;
   operationDescription: string;
@@ -16,6 +17,7 @@ export interface ReportAnswers {
   operationsPresence: string;
   primaryOperatingCountry: string;
   hasUsSourceIncome: boolean | null;
+  americanResident: boolean | null;
   taxTreatment: string;
   operationalIndicators: string[];
   structureType: StructureType;
@@ -44,9 +46,11 @@ export const normalizeAnswers = (
   answers: FormDraftAnswers,
 ): ReportAnswers => {
   const sourceIncome = asString(answers, "hasUsSourceIncome");
+  const americanResident = asString(answers, "AmericanResident");
   const structure = asString(answers, "EstructureClassLevel");
 
   return {
+    clientName: asString(answers, "clientName"),
     email: asString(answers, "email"),
     businessModel: asString(answers, "businessModel"),
     operationDescription: asString(answers, "operationDescription"),
@@ -57,6 +61,12 @@ export const normalizeAnswers = (
     primaryOperatingCountry: asString(answers, "primaryOperatingCountry"),
     hasUsSourceIncome:
       sourceIncome === "true" ? true : sourceIncome === "false" ? false : null,
+    americanResident:
+      americanResident === "true"
+        ? true
+        : americanResident === "false"
+          ? false
+          : null,
     taxTreatment: asString(answers, "llcTaxTreatment"),
     operationalIndicators:
       sourceIncome === "true"

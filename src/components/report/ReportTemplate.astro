@@ -4,7 +4,7 @@
   hidden
   aria-label="Vista previa del informe"
 >
-  <header class="report-cover">
+  <header class="report-page report-cover">
     <div class="report-cover__brand">
       <span class="report-brand-mark" aria-hidden="true"
         ><svg
@@ -66,22 +66,5 @@
     </p>
   </header>
 
-  <div class="report-content">
-    <section class="report-summary report-block">
-      <p class="report-overline">Resumen ejecutivo</p>
-      <h2>Configuración propuesta</h2>
-      <p>
-        Esta vista reúne las decisiones registradas y destaca los asuntos que
-        deben confirmarse antes de constituir y operar la LLC.
-      </p>
-      <dl class="report-highlight-grid" data-report-highlights></dl>
-    </section>
-
-    <div data-report-sections></div>
-
-    <footer class="report-disclaimer report-block">
-      <p class="report-overline">Aviso importante</p>
-      <p data-report-disclaimer></p>
-    </footer>
-  </div>
+  <div class="report-pages" data-report-pages></div>
 </article>

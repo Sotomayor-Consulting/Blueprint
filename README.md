@@ -25,7 +25,8 @@ Blueprint funciona actualmente como una aplicación frontend estática. El formu
 - Catálogos de países, estados y actividades económicas.
 - Persistencia completa del borrador y del progreso mediante `localStorage`.
 - Vista previa HTML condicional del informe en `/informe`.
-- Descarga cliente en formato Letter mediante `html2pdf.js`.
+- Vista previa paginada y descarga cliente en formato A4.
+- Tipografía Blinker servida localmente en el informe y el PDF.
 - Interacción mediante teclado y atributos de accesibilidad.
 - Despliegue automático en GitHub Pages.
 
@@ -33,7 +34,7 @@ Blueprint funciona actualmente como una aplicación frontend estática. El formu
 
 | Paso | Contenido |
 | --- | --- |
-| Inicio | Correo electrónico del cliente |
+| Inicio | Nombre y correo electrónico del cliente |
 | Modelo de negocio | Actividad o modelo principal de la LLC |
 | Confirmación | Operación y mercados |
 | Confidencialidad | Nivel de privacidad requerido |
@@ -54,6 +55,8 @@ Blueprint funciona actualmente como una aplicación frontend estática. El formu
 - [Astro Icon](https://www.astroicon.dev/)
 - [Tabler Icons](https://tabler.io/icons)
 - [html2pdf.js](https://ekoopmans.github.io/html2pdf.js/)
+- [jsPDF](https://github.com/parallax/jsPDF)
+- [Blinker](https://fonts.google.com/specimen/Blinker) mediante Fontsource
 - Node.js 22
 - pnpm 12
 
@@ -128,7 +131,7 @@ src/
 - `src/components/forms/form-draft.ts`: valida, migra y almacena el borrador completo.
 - `src/lib/report/`: normaliza respuestas, deriva condiciones y construye el modelo del informe.
 - `src/pages/informe.astro`: presenta el informe y gestiona su descarga como PDF.
-- `src/styles/report.css`: define la plantilla Letter y sus reglas de paginación.
+- `src/styles/report.css`: define las hojas A4, la tipografía Blinker y sus reglas de paginación.
 - `src/components/starwind/`: contiene los componentes UI utilizados por el formulario.
 - `src/assets/content/`: contiene los catálogos utilizados por los Combobox.
 
@@ -209,7 +212,7 @@ FormDraftAnswers
 
 El modelo omite las ramas que no aplican, por ejemplo los indicadores operativos cuando no existen ingresos de fuente estadounidense, el número de miembros en una Single Member LLC o el tipo de propietario único en una Partnership.
 
-La vista previa se construye mediante nodos DOM y `textContent`; las respuestas del usuario no se insertan como HTML. El PDF se genera completamente en el navegador, en tamaño Letter, y no se envían respuestas a un servicio externo.
+La vista previa se construye mediante nodos DOM y `textContent`; las respuestas del usuario no se insertan como HTML. El contenido se distribuye en hojas HTML A4 después de cargar Blinker, manteniendo juntas las unidades que no deben cortarse. Cada hoja se captura individualmente y se incorpora como una página A4 al PDF, completamente en el navegador y sin enviar respuestas a un servicio externo.
 
 > [!IMPORTANT]
 > El PDF es un prototipo informativo. `html2pdf.js` rasteriza el contenido principalmente mediante `html2canvas`, por lo que el texto puede no ser seleccionable, el archivo puede ser más pesado y el resultado puede variar entre dispositivos. No es un documento legal, fiscal o contable autoritativo.

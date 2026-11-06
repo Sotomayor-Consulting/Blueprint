@@ -151,7 +151,7 @@ const steps: StepperStep[] = [
       };
 
       const stepFields: Record<string, string[]> = {
-        Correo: ["email"],
+        Correo: ["clientName", "email"],
         Modelo: [],
         Operacion: ["operationDescription"],
         Confidencialidad: [],
@@ -489,7 +489,7 @@ const steps: StepperStep[] = [
 
         const restoreNativeField = (
           draft: FormDraft,
-          fieldName: "email" | "operationDescription",
+          fieldName: "clientName" | "email" | "operationDescription",
           selector: string,
         ) => {
           const value = draftString(draft, fieldName);
@@ -541,6 +541,18 @@ const steps: StepperStep[] = [
                 { emit: true },
               );
             });
+        };
+
+        const restoreBooleanCheckbox = (
+          draft: FormDraft,
+          fieldName: "AmericanResident",
+          selector: string,
+        ) => {
+          const value = draftString(draft, fieldName);
+          const root = form.querySelector<HTMLElement>(selector);
+          if (!root || (value !== "true" && value !== "false")) return;
+
+          createCheckbox(root).setChecked(value === "true", { emit: true });
         };
 
         const restoreSwitches = (
@@ -609,6 +621,7 @@ const steps: StepperStep[] = [
         const restoreDraft = async (draft: FormDraft) => {
           await nextFrame();
 
+          restoreNativeField(draft, "clientName", "#client-name");
           restoreNativeField(draft, "email", '#email');
           restoreNativeField(
             draft,
@@ -631,6 +644,11 @@ const steps: StepperStep[] = [
             restoreSwitches(draft, "operationalIndicators");
           }
 
+          restoreBooleanCheckbox(
+            draft,
+            "AmericanResident",
+            "[data-american-resident-checkbox]",
+          );
           restoreRadioGroup(draft, "EstructureClassLevel");
           await nextFrame();
           const structure = draftString(draft, "EstructureClassLevel");

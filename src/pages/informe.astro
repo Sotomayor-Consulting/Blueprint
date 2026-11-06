@@ -1,5 +1,9 @@
 ---
 import ReportTemplate from "@/components/report/ReportTemplate.astro";
+import "@fontsource/blinker/400.css";
+import "@fontsource/blinker/600.css";
+import "@fontsource/blinker/700.css";
+import "@fontsource/blinker/800.css";
 import "@/styles/report.css";
 
 const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
@@ -11,6 +15,7 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href={`${homeUrl}favicon.svg`} />
     <meta
       name="description"
       content="Vista previa del informe condicional de planificación de LLC."
@@ -69,8 +74,10 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
       import { deriveReportFacts } from "@/lib/report/facts";
       import {
         buildReportModel,
-        type ReportItem,
+        type ReportBlock,
         type ReportSection,
+        type ReportSubsection,
+        type ReportTable,
       } from "@/lib/report/model";
       import { normalizeAnswers } from "@/lib/report/normalize";
 
@@ -102,70 +109,266 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
         return node;
       };
 
-      const appendItems = (
-        container: HTMLElement,
-        items: ReportItem[],
-        rowClass: string,
-      ) => {
-        items.forEach((item) => {
-          const row = element("div", rowClass);
-          row.append(element("dt", undefined, item.label));
-          row.append(element("dd", undefined, item.value));
-          container.append(row);
+      const renderTable = (tableModel: ReportTable) => {
+        const wrapper = element("div", "report-table-wrap report-block");
+        const table = element("table", "report-table");
+        const head = element("thead");
+        const headerRow = element("tr");
+        tableModel.headers.forEach((header) => {
+          const cell = element("th", undefined, header);
+          cell.scope = "col";
+          headerRow.append(cell);
         });
+        head.append(headerRow);
+
+        const body = element("tbody");
+        tableModel.rows.forEach((row) => {
+          const tableRow = element("tr", "report-table-row");
+          row.forEach((value, index) => {
+            const cell = element("td");
+            if (index === 0) cell.className = "report-table__label";
+
+            if (typeof value === "string") {
+              cell.textContent = value;
+            } else {
+              const list = element("ul", "report-table-list");
+              value.items.forEach((item) =>
+                list.append(element("li", undefined, item)),
+              );
+              cell.append(list);
+            }
+
+            tableRow.append(cell);
+          });
+          body.append(tableRow);
+        });
+
+        table.append(head, body);
+        wrapper.append(table);
+        return wrapper;
       };
 
-      const renderSection = (section: ReportSection) => {
-        const sectionElement = element("section", "report-section report-block");
-        sectionElement.dataset.section = section.id;
-        sectionElement.append(
-          element("p", "report-overline", section.eyebrow),
-          element("h2", undefined, section.title),
+      const renderBlock = (block: ReportBlock) => {
+        if (block.kind === "table") return renderTable(block.table);
+
+        if (block.kind === "list") {
+          const list = element("ul", "report-list");
+          block.items.forEach((item) =>
+            list.append(element("li", undefined, item)),
+          );
+          return list;
+        }
+
+        if (block.kind === "selected") {
+          const selected = element("div", "report-selected report-block");
+          selected.append(
+            element("span", "report-selected__label", block.label),
+            element("strong", "report-selected__value", block.value),
+          );
+          return selected;
+        }
+
+        if (block.kind === "note") {
+          return element("aside", "report-note report-block", block.text);
+        }
+
+        const paragraph = element("p", "report-paragraph");
+        if (block.label) {
+          paragraph.append(
+            element("strong", undefined, `${block.label}: `),
+          );
+        }
+        paragraph.append(document.createTextNode(block.text));
+        return paragraph;
+      };
+
+      const renderSubsection = (
+        subsection: ReportSubsection,
+        flowUnit = true,
+      ) => {
+        const subsectionElement = element(
+          "section",
+          flowUnit
+            ? "report-subsection report-flow-unit"
+            : "report-subsection",
         );
+        subsectionElement.dataset.subsection = subsection.id;
+        subsectionElement.append(element("h3", undefined, subsection.title));
+        subsection.blocks.forEach((block) =>
+          subsectionElement.append(renderBlock(block)),
+        );
+        return subsectionElement;
+      };
+
+      const renderSectionUnits = (section: ReportSection) => {
+        const units: HTMLElement[] = [];
+        const opener = element(
+          "section",
+          "report-chapter report-flow-unit",
+        );
+        opener.dataset.section = section.id;
+        opener.append(element("h2", undefined, section.title));
 
         if (section.introduction) {
-          sectionElement.append(
+          opener.append(
             element(
               "p",
-              "report-section__introduction",
+              "report-chapter__introduction",
               section.introduction,
             ),
           );
         }
 
-        if (section.items.length > 0) {
-          const list = element("dl", "report-data-list");
-          appendItems(list, section.items, "report-data-row");
-          sectionElement.append(list);
+        const [firstSubsection, ...remainingSubsections] =
+          section.subsections ?? [];
+        if (firstSubsection) {
+          opener.append(renderSubsection(firstSubsection, false));
         }
+        section.blocks?.forEach((block) => opener.append(renderBlock(block)));
+        units.push(opener);
 
-        if (section.bullets?.length) {
-          const bullets = element("div", "report-bullets");
-          bullets.append(
-            element(
-              "p",
-              "report-bullets__title",
-              section.id === "tax"
-                ? "Indicadores operativos seleccionados"
-                : "Aspectos a revisar",
-            ),
-          );
-          const list = element("ul");
-          section.bullets.forEach((bullet) =>
-            list.append(element("li", undefined, bullet)),
-          );
-          bullets.append(list);
-          sectionElement.append(bullets);
-        }
+        remainingSubsections.forEach((subsection) =>
+          units.push(renderSubsection(subsection)),
+        );
 
-        if (section.note) {
-          sectionElement.append(element("aside", "report-note", section.note));
-        }
-
-        return sectionElement;
+        return units;
       };
 
-      const initializeReport = () => {
+      const createBodyPage = (pages: HTMLElement, pageNumber: number) => {
+        const page = element("section", "report-page report-body-page");
+        page.dataset.reportPage = String(pageNumber);
+        page.setAttribute("aria-label", `Página ${pageNumber} del informe`);
+        const content = element("div", "report-page__content");
+        page.append(content);
+        pages.append(page);
+        return content;
+      };
+
+      const paginateFlowUnits = (
+        pages: HTMLElement,
+        units: HTMLElement[],
+      ) => {
+        pages.replaceChildren();
+        let pageNumber = 2;
+        let content = createBodyPage(pages, pageNumber);
+
+        units.forEach((unit) => {
+          content.append(unit);
+          const overflows = content.scrollHeight > content.clientHeight + 1;
+          if (!overflows || content.childElementCount === 1) {
+            if (overflows) {
+              unit.dataset.pageOverflow = "true";
+              console.warn(
+                "Un bloque del informe supera una página A4.",
+                unit,
+              );
+            }
+            return;
+          }
+
+          unit.remove();
+          pageNumber += 1;
+          content = createBodyPage(pages, pageNumber);
+          content.append(unit);
+
+          if (content.scrollHeight > content.clientHeight + 1) {
+            unit.dataset.pageOverflow = "true";
+            console.warn(
+              "Un bloque del informe supera una página A4.",
+              unit,
+            );
+          }
+        });
+      };
+
+      const sanitizePdfClone = (clonedDocument: Document) => {
+        const clonedReport = clonedDocument.querySelector<HTMLElement>(
+          "[data-report]",
+        );
+        const clonedWindow = clonedDocument.defaultView;
+        if (!clonedReport || !clonedWindow) return;
+
+        const canvas = clonedDocument.createElement("canvas");
+        canvas.width = 1;
+        canvas.height = 1;
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        if (!context) return;
+
+        const colorCache = new Map<string, string>();
+        const toRgba = (value: string) => {
+          const cached = colorCache.get(value);
+          if (cached) return cached;
+
+          context.clearRect(0, 0, 1, 1);
+          context.fillStyle = "#000000";
+          context.fillStyle = value;
+          context.fillRect(0, 0, 1, 1);
+          const [red, green, blue, alpha] = context.getImageData(
+            0,
+            0,
+            1,
+            1,
+          ).data;
+          const converted = `rgba(${red}, ${green}, ${blue}, ${alpha / 255})`;
+          colorCache.set(value, converted);
+          return converted;
+        };
+
+        const colorProperties = [
+          "color",
+          "background-color",
+          "border-top-color",
+          "border-right-color",
+          "border-bottom-color",
+          "border-left-color",
+          "outline-color",
+          "text-decoration-color",
+          "-webkit-text-stroke-color",
+          "caret-color",
+          "column-rule-color",
+          "fill",
+          "stroke",
+        ];
+
+        clonedReport.style.boxShadow = "none";
+        clonedReport.style.margin = "0";
+        clonedReport.classList.add("report-document--pdf");
+        clonedReport
+          .querySelectorAll<HTMLElement>(".report-page")
+          .forEach((page) => {
+            page.style.setProperty("margin", "0", "important");
+            page.style.setProperty("box-shadow", "none", "important");
+          });
+
+        clonedDocument
+          .querySelectorAll<HTMLElement>("*")
+          .forEach((element) => {
+            const computed = clonedWindow.getComputedStyle(element);
+            colorProperties.forEach((property) => {
+              const value = computed.getPropertyValue(property);
+              if (value) {
+                element.style.setProperty(property, toRgba(value), "important");
+              }
+            });
+
+            element.style.setProperty("box-shadow", "none", "important");
+            element.style.setProperty("text-shadow", "none", "important");
+
+            const backgroundImage = computed.backgroundImage.toLowerCase();
+            if (
+              backgroundImage.includes("oklch(") ||
+              backgroundImage.includes("oklab(")
+            ) {
+              element.style.setProperty(
+                "background-image",
+                "none",
+                "important",
+              );
+            }
+          });
+      };
+
+      const initializeReport = async () => {
         const draft = readFormDraft();
         const hasAnswers = draft && Object.keys(draft.answers).length > 0;
 
@@ -184,27 +387,48 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
         setText("[data-report-email]", model.clientEmail);
         setText("[data-report-date]", model.generatedAt);
         setText("[data-report-version]", model.version);
-        setText("[data-report-disclaimer]", model.disclaimer);
+        const pages = report.querySelector<HTMLElement>("[data-report-pages]");
+        if (!pages) return;
 
-        const highlights = report.querySelector<HTMLElement>(
-          "[data-report-highlights]",
+        const units: HTMLElement[] = [];
+        const introduction = element(
+          "section",
+          "report-introduction report-flow-unit",
         );
-        if (highlights) {
-          appendItems(highlights, model.highlights, "report-highlight");
-        }
+        model.introduction.forEach((paragraph) =>
+          introduction.append(
+            element("p", "report-introduction__paragraph", paragraph),
+          ),
+        );
+        const outline = element("ol", "report-outline");
+        model.outline.forEach((item) =>
+          outline.append(element("li", undefined, item)),
+        );
+        introduction.append(outline);
+        units.push(introduction);
 
-        const sections = report.querySelector<HTMLElement>(
-          "[data-report-sections]",
+        model.sections.forEach((section) =>
+          units.push(...renderSectionUnits(section)),
         );
-        if (sections) {
-          const fragment = document.createDocumentFragment();
-          model.sections.forEach((section) =>
-            fragment.append(renderSection(section)),
-          );
-          sections.append(fragment);
-        }
+
+        const disclaimer = element(
+          "footer",
+          "report-disclaimer report-block report-flow-unit",
+        );
+        disclaimer.append(
+          element("p", "report-overline", "Aviso del prototipo"),
+          element("p", undefined, model.disclaimer),
+        );
+        units.push(disclaimer);
 
         report.hidden = false;
+        report.classList.add("report-document--paginating");
+        await document.fonts.ready;
+        await new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        );
+        paginateFlowUnits(pages, units);
+        report.classList.remove("report-document--paginating");
         if (loading) loading.hidden = true;
         if (downloadButton) downloadButton.disabled = false;
       };
@@ -222,31 +446,54 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
 
         try {
           await document.fonts.ready;
+          report.classList.add("report-document--pdf");
+          await new Promise<void>((resolve) =>
+            requestAnimationFrame(() => resolve()),
+          );
           const { default: html2pdf } = await import("html2pdf.js");
+          const { jsPDF } = await import("jspdf");
           const mobile = window.matchMedia("(max-width: 700px)").matches;
-          const options = {
-            filename: "informe-planificacion-llc.pdf",
-            margin: 0,
+          const captureOptions = {
             image: { type: "jpeg" as const, quality: 0.96 },
             html2canvas: {
               scale: mobile ? 1.25 : 2,
               useCORS: true,
               backgroundColor: "#ffffff",
               logging: false,
-              windowWidth: 816,
-            },
-            jsPDF: {
-              unit: "in",
-              format: "letter",
-              orientation: "portrait" as const,
-            },
-            pagebreak: {
-              mode: ["css", "legacy"],
-              avoid: [".report-block", ".report-data-row"],
+              windowWidth: 794,
+              onclone: sanitizePdfClone,
             },
           };
 
-          await html2pdf().set(options).from(report).save();
+          const pages = [
+            ...report.querySelectorAll<HTMLElement>(".report-page"),
+          ];
+          const pdf = new jsPDF({
+            unit: "mm",
+            format: "a4",
+            orientation: "portrait",
+          });
+
+          for (const [index, page] of pages.entries()) {
+            const worker = html2pdf()
+              .set(captureOptions)
+              .from(page)
+              .toCanvas();
+            const canvas = await worker.get("canvas");
+            if (index > 0) pdf.addPage("a4", "portrait");
+            pdf.addImage(
+              canvas.toDataURL("image/jpeg", 0.96),
+              "JPEG",
+              0,
+              0,
+              210,
+              297,
+              undefined,
+              "FAST",
+            );
+          }
+
+          pdf.save("informe-planificacion-llc.pdf");
           if (downloadMessage) {
             downloadMessage.textContent = "PDF descargado correctamente.";
           }
@@ -258,12 +505,13 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
               "No se pudo generar el PDF. Intenta nuevamente desde este navegador.";
           }
         } finally {
+          report.classList.remove("report-document--pdf");
           downloadButton.disabled = false;
           downloadButton.textContent = "Descargar PDF";
         }
       });
 
-      initializeReport();
+      void initializeReport();
     </script>
   </body>
 </html>
