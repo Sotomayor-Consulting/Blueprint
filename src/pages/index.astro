@@ -40,7 +40,6 @@ const steps: StepperStep[] = [
   { id: "Administracion", title: "Administración", description: ""},
   { id: "Contabilidad", title: "Método contable", description: ""},
   { id: "Actividad", title: "Actividad económica", description: ""},
-  { id: "review", title: "Final", description: ""},
 ];
 
 ---
@@ -72,40 +71,6 @@ const steps: StepperStep[] = [
         <StepNine slot="Contabilidad" />
         <StepTen slot="Actividad" />
 
-        <div slot="review">
-          <FieldGroup>
-            <div class="text-muted-foreground space-y-2 text-sm">
-              <p class="text-foreground font-medium">Listo para confirmar.</p>
-              <p>
-                Revisa los pasos anteriores y acepta las condiciones para
-                finalizar.
-              </p>
-            </div>
-
-            <Field name="terms" orientation="horizontal">
-              <FieldItem>
-                <Checkbox
-                  id="terms"
-                  name="terms"
-                  value="accepted"
-                  aria-label="Aceptar los términos y condiciones"
-                  required
-                />
-                <FieldContent>
-                  <FieldLabel for="terms"
-                    >Acepto los términos y condiciones</FieldLabel
-                  >
-                  <FieldDescription>
-                    Este checkbox es obligatorio para completar el stepper.
-                  </FieldDescription>
-                </FieldContent>
-              </FieldItem>
-              <FieldError match="valueMissing">
-                Debes aceptar los términos para continuar.
-              </FieldError>
-            </Field>
-          </FieldGroup>
-        </div>
       </Stepper>
     </Form>
 
@@ -137,6 +102,7 @@ const steps: StepperStep[] = [
         operaciones: "operaciones-group",
         hasUsSourceIncome: "tributacion-model-group",
         llcTaxTreatment: "llc-tax-treatment-group",
+        AmericanResident: "american-resident-group",
         EstructureClassLevel: "EstructureClass-level-group",
         singleMemberOwnerType: "TypeOfSinglemember-level-group",
         numberOfMembers: "NumberOfPartnership-level-group",
@@ -227,6 +193,11 @@ const steps: StepperStep[] = [
             errorId: "NumberOfPartnership-level-error",
             kind: "radio",
             rootId: "NumberOfPartnership-level-group",
+          },
+          {
+            errorId: "american-resident-error",
+            kind: "radio",
+            rootId: "american-resident-group",
           },
         ],
         Administracion: [
@@ -543,18 +514,6 @@ const steps: StepperStep[] = [
             });
         };
 
-        const restoreBooleanCheckbox = (
-          draft: FormDraft,
-          fieldName: "AmericanResident",
-          selector: string,
-        ) => {
-          const value = draftString(draft, fieldName);
-          const root = form.querySelector<HTMLElement>(selector);
-          if (!root || (value !== "true" && value !== "false")) return;
-
-          createCheckbox(root).setChecked(value === "true", { emit: true });
-        };
-
         const restoreSwitches = (
           draft: FormDraft,
           fieldName: "operationalIndicators",
@@ -644,11 +603,6 @@ const steps: StepperStep[] = [
             restoreSwitches(draft, "operationalIndicators");
           }
 
-          restoreBooleanCheckbox(
-            draft,
-            "AmericanResident",
-            "[data-american-resident-checkbox]",
-          );
           restoreRadioGroup(draft, "EstructureClassLevel");
           await nextFrame();
           const structure = draftString(draft, "EstructureClassLevel");
@@ -657,6 +611,7 @@ const steps: StepperStep[] = [
           } else if (structure === "Partnership") {
             restoreRadioGroup(draft, "numberOfMembers");
           }
+          restoreRadioGroup(draft, "AmericanResident");
 
           restoreRadioGroup(draft, "sistemModel");
           restoreRadioGroup(draft, "cashModel");

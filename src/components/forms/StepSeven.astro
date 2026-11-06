@@ -8,7 +8,6 @@ import Parcialimg from "@/assets/images/parcial.webp";
 import Totalimg from "@/assets/images/total.webp";
 import { Image } from "astro:assets";
 import { Badge } from "@/components/starwind/badge";
-import { Checkbox } from "@/components/starwind/checkbox";
 import { Separator } from "@/components/starwind/separator";
 import {
   Card,
@@ -95,6 +94,19 @@ const NumberOfPartnership = [
   },
 ];
 
+const AmericanResidency = [
+  {
+    id: "american-resident-yes",
+    value: "true",
+    name: "El propietario sí es residente americano",
+  },
+  {
+    id: "american-resident-other",
+    value: "false",
+    name: "Otro",
+  },
+];
+
 const defaultSingleMemberType = TypeOfSinglemember[0];
 const defaultPartnershipCount = NumberOfPartnership[0];
 const defaultLevel = Estructura[0];
@@ -121,25 +133,6 @@ const defaultLevel = Estructura[0];
 
   <CardContent class="mt-5">
     <FieldGroup>
-      <FieldSet>
-        <FieldLegend>Residencia del propietario</FieldLegend>
-        <div class="rounded-xl border p-4">
-          <Checkbox
-            id="american-resident"
-            name="AmericanResident"
-            value="true"
-            uncheckedValue="false"
-            label="Sí, el propietario de la LLC es residente estadounidense."
-            variant="primary"
-            data-american-resident-checkbox
-          />
-          <p class="text-muted-foreground mt-2 text-sm">
-            Esta información se utilizará para determinar los formularios
-            federales previstos para una LLC de miembro único.
-          </p>
-        </div>
-      </FieldSet>
-
       <FieldSet>
         <FieldLegend>Selecciona la estructura de participación</FieldLegend>
         <div>
@@ -402,6 +395,63 @@ const defaultLevel = Estructura[0];
         
       </FieldGroup>
     </div>
+
+    <Separator class="my-5" />
+
+    <FieldGroup>
+      <FieldSet>
+        <FieldLegend>Residencia del propietario</FieldLegend>
+        <p class="text-muted-foreground text-sm">
+          Esta información se utilizará para determinar los formularios
+          federales previstos para una LLC de miembro único.
+        </p>
+        <div>
+          <RadioGroup
+            id="american-resident-group"
+            name="AmericanResident"
+            legend="Residencia del propietario"
+            required
+            aria-describedby="american-resident-error"
+            class="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2"
+          >
+            {
+              AmericanResidency.map((option) => (
+                <div
+                  data-value={option.value}
+                  data-label={option.name}
+                  class="group/model focus-within:ring-outline/50 has-data-checked:ring-primary relative block cursor-pointer rounded-xl transition-shadow duration-200 focus-within:ring-3 has-data-checked:ring-3 motion-reduce:transition-none"
+                >
+                  <RadioGroupItem
+                    id={option.id}
+                    value={option.value}
+                    aria-label={option.name}
+                    variant="primary"
+                    nativeButton
+                    wrapperClass="absolute inset-0 z-20 size-full group-data-[size=sm]/radio-group:size-full group-data-[size=md]/radio-group:size-full group-data-[size=lg]/radio-group:size-full"
+                    rootClass="rounded-xl"
+                    class="inset-auto top-4 right-4 size-5 bg-background/90 shadow-sm backdrop-blur-sm"
+                  />
+                  <Card class="h-full gap-0 overflow-hidden py-0 transition-shadow group-hover/model:shadow-lg">
+                    <CardHeader class="grid h-full py-5 pr-12">
+                      <CardTitle class="text-base">{option.name}</CardTitle>
+                    </CardHeader>
+                  </Card>
+                </div>
+              ))
+            }
+          </RadioGroup>
+
+          <p
+            id="american-resident-error"
+            class="text-error text-sm"
+            role="alert"
+            hidden
+          >
+            Selecciona una opción de residencia para continuar.
+          </p>
+        </div>
+      </FieldSet>
+    </FieldGroup>
   </CardContent>
 </Card>
 

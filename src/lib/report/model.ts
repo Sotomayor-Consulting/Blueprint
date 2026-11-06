@@ -25,7 +25,7 @@ export type ReportBlock =
   | { kind: "table"; table: ReportTable }
   | { kind: "list"; items: string[] }
   | { kind: "selected"; label: string; value: string }
-  | { kind: "note"; text: string };
+  | { kind: "note"; text: string; title?: string };
 
 export interface ReportSubsection {
   id: string;
@@ -355,6 +355,7 @@ export const buildReportModel = (
             { kind: "paragraph", text: federalFiling.rationale },
             {
               kind: "note",
+              title: "Nota",
               text: "Los formularios indicados corresponden a las obligaciones previstas según la estructura diseñada. Dependiendo de las operaciones realizadas durante el ejercicio fiscal, podrían generarse requerimientos adicionales de cumplimiento tributario.",
             },
           ],

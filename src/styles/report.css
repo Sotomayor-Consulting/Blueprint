@@ -473,6 +473,18 @@ a {
   line-height: 1.55;
 }
 
+.report-note__title {
+  display: block;
+  margin-bottom: 0.08in;
+  color: #473b12;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.report-note__text {
+  margin: 0;
+}
+
 .report-disclaimer {
   margin-top: 0.55in;
   border-top: 1px solid #ccd3df;

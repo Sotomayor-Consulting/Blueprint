@@ -169,7 +169,12 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
         }
 
         if (block.kind === "note") {
-          return element("aside", "report-note report-block", block.text);
+          const note = element("aside", "report-note report-block");
+          if (block.title) {
+            note.append(element("strong", "report-note__title", block.title));
+          }
+          note.append(element("p", "report-note__text", block.text));
+          return note;
         }
 
         const paragraph = element("p", "report-paragraph");
