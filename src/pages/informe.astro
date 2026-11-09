@@ -38,6 +38,13 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
         >
           Descargar PDF
         </button>
+        <button
+          class="report-button report-button--complete"
+          type="button"
+          data-complete-report
+        >
+          Completar
+        </button>
       </nav>
     </header>
 
@@ -70,7 +77,10 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
     </main>
 
     <script>
-      import { readFormDraft } from "@/components/forms/form-draft";
+      import {
+        clearFormDraft,
+        readFormDraft,
+      } from "@/components/forms/form-draft";
       import { deriveReportFacts } from "@/lib/report/facts";
       import {
         buildReportModel,
@@ -88,6 +98,9 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
       const empty = document.querySelector<HTMLElement>("[data-report-empty]");
       const downloadButton = document.querySelector<HTMLButtonElement>(
         "[data-download-report]",
+      );
+      const completeButton = document.querySelector<HTMLButtonElement>(
+        "[data-complete-report]",
       );
       const downloadMessage = document.querySelector<HTMLElement>(
         "[data-download-message]",
@@ -514,6 +527,12 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
           downloadButton.disabled = false;
           downloadButton.textContent = "Descargar PDF";
         }
+      });
+
+      completeButton?.addEventListener("click", () => {
+        clearFormDraft();
+        const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+        window.location.assign(baseUrl);
       });
 
       void initializeReport();

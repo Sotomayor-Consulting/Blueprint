@@ -533,6 +533,10 @@ a {
     font-size: 0.86rem;
   }
 
+  .report-button--complete {
+    grid-column: 1 / -1;
+  }
+
   .report-page-shell {
     padding-inline: 0;
   }
