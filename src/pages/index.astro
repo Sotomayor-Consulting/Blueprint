@@ -1,23 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Stepper, { type StepperStep } from "@/components/blocks/stepper.astro";
-import { Checkbox } from "@/components/starwind/checkbox";
 import { Form } from "@/components/starwind/form";
-import {
-  Field,
-  FieldContent,
-  FieldControl,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldItem,
-  FieldLabel,
-} from "@/components/starwind/field";
-
 import StepOne from "@components/forms/StepOne.astro";
 import StepTwo from "@components/forms/StepTwo.astro";
 import StepTree from "@components/forms/Steptree.astro";
-import StepFour from "@components/forms/StepFour.astro"
+import StepFour from "@components/forms/StepFour.astro";
 import StepFive from "@components/forms/StepFive.astro";
 import StepSix from "@components/forms/StepSix.astro";
 import StepSeven from "@components/forms/StepSeven.astro";
@@ -33,15 +21,14 @@ const steps: StepperStep[] = [
     description: "",
   },
   { id: "Operacion", title: "Confirmación", description: "" },
-  { id: "Confidencialidad", title: "Confidencialidad", description: ""},
+  { id: "Confidencialidad", title: "Confidencialidad", description: "" },
   { id: "Estado", title: "Estado", description: "" },
-  { id: "Tributacion", title: "Tributación", description: ""},
-  { id: "Estructura", title: "Estructura", description: ""},
-  { id: "Administracion", title: "Administración", description: ""},
-  { id: "Contabilidad", title: "Método contable", description: ""},
-  { id: "Actividad", title: "Actividad económica", description: ""},
+  { id: "Tributacion", title: "Tributación", description: "" },
+  { id: "Estructura", title: "Estructura", description: "" },
+  { id: "Administracion", title: "Administración", description: "" },
+  { id: "Contabilidad", title: "Método contable", description: "" },
+  { id: "Actividad", title: "Actividad económica", description: "" },
 ];
-
 ---
 
 <Layout>
@@ -60,8 +47,8 @@ const steps: StepperStep[] = [
         nextLabel="Siguiente"
         finishLabel="Finalizar"
       >
-        <StepOne slot="Correo"/>
-        <StepTwo slot="Modelo"/>
+        <StepOne slot="Correo" />
+        <StepTwo slot="Modelo" />
         <StepTree slot="Operacion" />
         <StepFour slot="Confidencialidad" />
         <StepFive slot="Estado" />
@@ -70,7 +57,6 @@ const steps: StepperStep[] = [
         <StepEight slot="Administracion" />
         <StepNine slot="Contabilidad" />
         <StepTen slot="Actividad" />
-
       </Stepper>
     </Form>
 
@@ -440,7 +426,9 @@ const steps: StepperStep[] = [
         });
 
         const nextFrame = () =>
-          new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() => resolve()),
+          );
 
         const draftString = (
           draft: FormDraft,
@@ -507,10 +495,9 @@ const steps: StepperStep[] = [
                 `input[name="${fieldName}"]`,
               );
               if (!input) return;
-              createCheckbox(root).setChecked(
-                selectedValues.has(input.value),
-                { emit: true },
-              );
+              createCheckbox(root).setChecked(selectedValues.has(input.value), {
+                emit: true,
+              });
             });
         };
 
@@ -523,7 +510,8 @@ const steps: StepperStep[] = [
           form
             .querySelectorAll<HTMLElement>('[data-slot="switch-button"]')
             .forEach((root) => {
-              if (root.dataset.name !== fieldName || !root.dataset.value) return;
+              if (root.dataset.name !== fieldName || !root.dataset.value)
+                return;
               createSwitch(root).setChecked(
                 selectedValues.has(root.dataset.value),
                 { emit: true },
@@ -581,11 +569,11 @@ const steps: StepperStep[] = [
           await nextFrame();
 
           restoreNativeField(draft, "clientName", "#client-name");
-          restoreNativeField(draft, "email", '#email');
+          restoreNativeField(draft, "email", "#email");
           restoreNativeField(
             draft,
             "operationDescription",
-            '#operation-description',
+            "#operation-description",
           );
           restoreRadioGroup(draft, "businessModel");
           restoreCheckboxes(draft, "clientMarkets");
@@ -729,7 +717,10 @@ const steps: StepperStep[] = [
           queueMicrotask(() => {
             (standaloneGroups[stepId] ?? []).forEach((group) => {
               const root = form.querySelector<HTMLElement>(`#${group.rootId}`);
-              if (root?.contains(event.target as Node) && isStandaloneGroupValid(group)) {
+              if (
+                root?.contains(event.target as Node) &&
+                isStandaloneGroupValid(group)
+              ) {
                 setStandaloneGroupValidity(group, true);
               }
             });
@@ -747,16 +738,24 @@ const steps: StepperStep[] = [
           if (previous >= 0) goTo(previous, true);
         });
         nextButton.addEventListener("click", () => void advance());
-        list.addEventListener("click", (event) => {
-          if (!busy) return;
-          event.preventDefault();
-          event.stopImmediatePropagation();
-        }, true);
-        list.addEventListener("keydown", (event) => {
-          if (!busy) return;
-          event.preventDefault();
-          event.stopImmediatePropagation();
-        }, true);
+        list.addEventListener(
+          "click",
+          (event) => {
+            if (!busy) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          },
+          true,
+        );
+        list.addEventListener(
+          "keydown",
+          (event) => {
+            if (!busy) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          },
+          true,
+        );
 
         form.addEventListener("input", handleFormMutation);
         form.addEventListener("change", handleFormMutation);

@@ -297,7 +297,7 @@ a {
 .report-chapter__introduction {
   margin: 0 0 0.13in;
   color: #465269;
-  font-size: 0.82rem;
+  font-size: 1rem;
   line-height: 1.65;
   text-align: justify;
 }
@@ -309,7 +309,7 @@ a {
   border-radius: 0.08in;
   color: #283650;
   background: #f7f9fc;
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 700;
   line-height: 1.65;
 }
@@ -323,7 +323,7 @@ a {
 }
 
 .report-chapter h2 {
-  margin: 0;
+  margin: 0 0 0.12in;
   font-family: "Blinker", ui-sans-serif, system-ui, sans-serif;
   font-weight: 800;
   color: #172033;
@@ -377,21 +377,22 @@ a {
   overflow-wrap: anywhere;
   vertical-align: top;
   text-align: left;
-  font-size: 0.73rem;
+  font-size: 1rem;
   line-height: 1.45;
 }
 
 .report-table th {
   color: #fff;
   background: #294f9d;
-  font-size: 0.67rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.025em;
   text-transform: uppercase;
 }
 
 .report-table tr:last-child td {
   border-bottom: 0;
+  font-size: 1rem;
 }
 
 .report-table tbody tr:nth-child(even) {
@@ -401,7 +402,8 @@ a {
 .report-table__label {
   width: 34%;
   color: #263652;
-  font-weight: 800;
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .report-table-list {
@@ -411,6 +413,7 @@ a {
 
 .report-table-list li {
   margin: 0.12rem 0;
+  font-size: 1rem;
   break-inside: avoid;
   page-break-inside: avoid;
 }
@@ -437,25 +440,27 @@ a {
   border-radius: 0.04in;
   padding: 0.13in 0.16in;
   background: #f3f6fc;
-  font-size: 0.76rem;
+  font-size: 0.85rem;
   line-height: 1.45;
 }
 
 .report-selected__label {
   color: #657087;
-  font-weight: 800;
+  font-weight: 00;
+  font-size: 1rem;
 }
 
 .report-selected__value {
   color: #172033;
   overflow-wrap: anywhere;
+  font-size: 1rem;
 }
 
 .report-list {
   margin: 0.12in 0 0.18in;
   padding-left: 0.25in;
   color: #465269;
-  font-size: 0.78rem;
+  font-size: 1rem;
   line-height: 1.6;
 }
 
@@ -477,12 +482,13 @@ a {
   display: block;
   margin-bottom: 0.08in;
   color: #473b12;
-  font-size: 0.76rem;
+  font-size: 0.85rem;
   font-weight: 800;
 }
 
 .report-note__text {
   margin: 0;
+  font-size: 0.80rem;
 }
 
 .report-disclaimer {
