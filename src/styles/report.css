@@ -280,8 +280,7 @@ a {
   padding: 16mm;
 }
 
-.report-block,
-.report-disclaimer {
+.report-block {
   break-inside: avoid;
   page-break-inside: avoid;
 }
@@ -489,19 +488,6 @@ a {
 .report-note__text {
   margin: 0;
   font-size: 0.80rem;
-}
-
-.report-disclaimer {
-  margin-top: 0.55in;
-  border-top: 1px solid #ccd3df;
-  padding-top: 0.22in;
-}
-
-.report-disclaimer p:last-child {
-  margin: 0;
-  color: #657087;
-  font-size: 0.68rem;
-  line-height: 1.55;
 }
 
 .report-download-message {

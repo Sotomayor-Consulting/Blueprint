@@ -429,16 +429,6 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
           units.push(...renderSectionUnits(section)),
         );
 
-        const disclaimer = element(
-          "footer",
-          "report-disclaimer report-block report-flow-unit",
-        );
-        disclaimer.append(
-          element("p", "report-overline", "Aviso del prototipo"),
-          element("p", undefined, model.disclaimer),
-        );
-        units.push(disclaimer);
-
         report.hidden = false;
         report.classList.add("report-document--paginating");
         await document.fonts.ready;

@@ -51,7 +51,6 @@ export interface ReportModel {
   introduction: string[];
   outline: string[];
   sections: ReportSection[];
-  disclaimer: string;
 }
 
 type StateInfo = {
@@ -433,7 +432,5 @@ export const buildReportModel = (
       "Condiciones finales",
     ],
     sections,
-    disclaimer:
-      "Este informe es un prototipo informativo generado a partir de las respuestas proporcionadas. No constituye asesoría legal, fiscal o contable definitiva ni sustituye la revisión de un profesional habilitado.",
   };
 };
