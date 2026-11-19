@@ -1,0 +1,5 @@
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-publishable-or-anon-key
+SUPABASE_SECRET_KEY=your-sb-secret-key
+SESSION_SECRET=replace-with-at-least-32-random-characters
+ADMIN_EMAILS=admin@example.com

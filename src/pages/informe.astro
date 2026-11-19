@@ -26,7 +26,7 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
     <header class="report-toolbar" data-report-toolbar>
       <div class="report-toolbar__copy">
         <strong>Vista previa del informe</strong>
-        <span>Prototipo generado en este navegador</span>
+        <span>Informe generado desde el expediente administrativo</span>
       </div>
       <nav class="report-toolbar__actions" aria-label="Acciones del informe">
         <a class="report-button" href={homeUrl}>Editar respuestas</a>
@@ -80,11 +80,14 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
       import {
         clearFormDraft,
         readFormDraft,
+        writeFormDraft,
+        type FormDraftAnswers,
       } from "@/components/forms/form-draft";
       import { deriveReportFacts } from "@/lib/report/facts";
       import {
         buildReportModel,
         type ReportBlock,
+        type ReportModel,
         type ReportSection,
         type ReportSubsection,
         type ReportTable,
@@ -105,6 +108,29 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
       const downloadMessage = document.querySelector<HTMLElement>(
         "[data-download-message]",
       );
+      let remoteReportId: string | null = null;
+      let remoteDraftToken: string | null = null;
+      const reportStepIds = [
+        "Correo",
+        "Modelo",
+        "Operacion",
+        "Confidencialidad",
+        "Estado",
+        "Tributacion",
+        "Estructura",
+        "Administracion",
+        "Contabilidad",
+        "Actividad",
+      ];
+
+      const cacheRemoteAnswers = (answers: FormDraftAnswers | undefined) => {
+        if (!answers) return;
+        writeFormDraft(answers, {
+          currentStep: "Correo",
+          highestUnlockedStep: "Actividad",
+          completedSteps: reportStepIds,
+        });
+      };
 
       const setText = (selector: string, value: string) => {
         const target = report?.querySelector<HTMLElement>(selector);
@@ -386,19 +412,89 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
           });
       };
 
-      const initializeReport = async () => {
+      const loadReportModel = async (): Promise<ReportModel | null> => {
+        const reportId = new URLSearchParams(window.location.search).get("id");
+        if (reportId) {
+          const response = await fetch(
+            `/api/admin/reports/${encodeURIComponent(reportId)}`,
+            {
+              credentials: "same-origin",
+              headers: { Accept: "application/json" },
+            },
+          );
+          const result = (await response.json().catch(() => ({}))) as {
+            error?: string;
+            report?: {
+              id: string;
+              official?: {
+                answers?: FormDraftAnswers;
+                reportModel?: ReportModel;
+              } | null;
+              pending?: {
+                answers?: FormDraftAnswers;
+                reportModel?: ReportModel;
+                draftToken?: string;
+              } | null;
+            };
+          };
+          if (!response.ok || !result.report) {
+            throw new Error(
+              result.error ?? "No se pudo cargar el expediente.",
+            );
+          }
+
+          remoteReportId = result.report.id;
+          if (
+            result.report.pending?.reportModel &&
+            result.report.pending.draftToken
+          ) {
+            remoteDraftToken = result.report.pending.draftToken;
+            cacheRemoteAnswers(result.report.pending.answers);
+            return result.report.pending.reportModel;
+          }
+          if (result.report.official?.reportModel) {
+            cacheRemoteAnswers(result.report.official.answers);
+            if (completeButton) {
+              completeButton.disabled = true;
+              completeButton.textContent = "Completado";
+            }
+            return result.report.official.reportModel;
+          }
+          return null;
+        }
+
         const draft = readFormDraft();
         const hasAnswers = draft && Object.keys(draft.answers).length > 0;
+        if (!draft || !hasAnswers) return null;
+        const answers = normalizeAnswers(draft.answers);
+        const facts = deriveReportFacts(answers);
+        return buildReportModel(answers, facts);
+      };
 
-        if (!report || !draft || !hasAnswers) {
+      const initializeReport = async () => {
+        if (!report) {
           if (loading) loading.hidden = true;
           if (empty) empty.hidden = false;
           return;
         }
 
-        const answers = normalizeAnswers(draft.answers);
-        const facts = deriveReportFacts(answers);
-        const model = buildReportModel(answers, facts);
+        let model: ReportModel | null = null;
+        try {
+          model = await loadReportModel();
+        } catch (error) {
+          if (loading) {
+            loading.textContent =
+              error instanceof Error
+                ? error.message
+                : "No se pudo cargar el expediente.";
+          }
+          return;
+        }
+        if (!model) {
+          if (loading) loading.hidden = true;
+          if (empty) empty.hidden = false;
+          return;
+        }
 
         setText("[data-report-title]", model.title);
         setText("[data-report-subtitle]", model.subtitle);
@@ -519,10 +615,53 @@ const homeUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
         }
       });
 
-      completeButton?.addEventListener("click", () => {
-        clearFormDraft();
-        const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
-        window.location.assign(baseUrl);
+      completeButton?.addEventListener("click", async () => {
+        if (!completeButton || completeButton.disabled) return;
+        completeButton.disabled = true;
+        completeButton.textContent = "Completando…";
+        if (downloadMessage) {
+          downloadMessage.dataset.error = "false";
+          downloadMessage.textContent = "";
+        }
+
+        try {
+          if (remoteReportId && remoteDraftToken) {
+            const response = await fetch(
+              `/api/admin/reports/${encodeURIComponent(remoteReportId)}/complete`,
+              {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                },
+                body: JSON.stringify({ draftToken: remoteDraftToken }),
+              },
+            );
+            const result = (await response.json().catch(() => ({}))) as {
+              error?: string;
+            };
+            if (!response.ok) {
+              throw new Error(
+                result.error ?? "No se pudo completar el informe.",
+              );
+            }
+          }
+
+          clearFormDraft();
+          const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+          window.location.assign(baseUrl);
+        } catch (error) {
+          if (downloadMessage) {
+            downloadMessage.dataset.error = "true";
+            downloadMessage.textContent =
+              error instanceof Error
+                ? error.message
+                : "No se pudo completar el informe.";
+          }
+          completeButton.disabled = false;
+          completeButton.textContent = "Completar";
+        }
       });
 
       void initializeReport();

@@ -59,6 +59,12 @@ const steps: StepperStep[] = [
         <StepTen slot="Actividad" />
       </Stepper>
     </Form>
+    <p
+      class="text-error mx-auto mt-4 min-h-5 max-w-3xl text-center text-sm"
+      data-form-submit-message
+      role="alert"
+      aria-live="polite"
+    ></p>
 
     <script>
       import { createForm } from "@starwind-ui/astro/form";
@@ -76,6 +82,9 @@ const steps: StepperStep[] = [
         type FormDraftProgress,
         type PersistedFieldName,
       } from "@/components/forms/form-draft";
+      import { deriveReportFacts } from "@/lib/report/facts";
+      import { buildReportModel } from "@/lib/report/model";
+      import { normalizeAnswers } from "@/lib/report/normalize";
 
       const multipleDraftFields = new Set<PersistedFieldName>([
         "clientMarkets",
@@ -227,6 +236,15 @@ const steps: StepperStep[] = [
         const finishLabel = stepperRoot?.querySelector<HTMLElement>(
           "[data-stepper-finish-label]",
         );
+        const lookupMessage = form.querySelector<HTMLElement>(
+          "[data-report-lookup-message]",
+        );
+        const lookupChoices = form.querySelector<HTMLElement>(
+          "[data-report-lookup-choices]",
+        );
+        const submitMessage = document.querySelector<HTMLElement>(
+          "[data-form-submit-message]",
+        );
 
         if (
           !stepperRoot ||
@@ -245,6 +263,8 @@ const steps: StepperStep[] = [
         let persistenceSuspended = true;
         let draftDirty = false;
         let draftSaveTimer: number | undefined;
+        let pendingLookupAnswers: FormDraftAnswers | null = null;
+        let officialLookupAnswers: FormDraftAnswers | null = null;
 
         const activeIndex = () => {
           const index = triggers.findIndex(
@@ -374,6 +394,116 @@ const steps: StepperStep[] = [
             .map((index) => triggers[index]?.dataset.value)
             .filter((value): value is string => Boolean(value)),
         });
+
+        const loadRemoteAnswers = (
+          answers: FormDraftAnswers,
+          source: "borrador" | "informe",
+        ) => {
+          persistenceSuspended = true;
+          draftDirty = false;
+          if (draftSaveTimer !== undefined) {
+            window.clearTimeout(draftSaveTimer);
+            draftSaveTimer = undefined;
+          }
+          const stepIds = triggers
+            .map((trigger) => trigger.dataset.value)
+            .filter((value): value is string => Boolean(value));
+          writeFormDraft(answers, {
+            currentStep: "Correo",
+            highestUnlockedStep: stepIds.at(-1) ?? "Correo",
+            completedSteps: stepIds,
+          });
+          if (lookupMessage) {
+            lookupMessage.textContent = `Cargando ${source} guardado…`;
+          }
+          window.location.reload();
+        };
+
+        const clearLookupResult = () => {
+          pendingLookupAnswers = null;
+          officialLookupAnswers = null;
+          lookupChoices?.classList.add("hidden");
+        };
+
+        const lookupReport = async () => {
+          const emailInput = form.querySelector<HTMLInputElement>("#email");
+          const currentLookupButton = form.querySelector<HTMLButtonElement>(
+            "[data-report-lookup]",
+          );
+          if (!currentLookupButton || !emailInput) return;
+          clearLookupResult();
+
+          if (!emailInput.reportValidity()) return;
+          currentLookupButton.disabled = true;
+          currentLookupButton.textContent = "Buscando…";
+          if (lookupMessage) lookupMessage.textContent = "";
+
+          try {
+            const response = await fetch(
+              `/api/admin/reports/lookup?email=${encodeURIComponent(emailInput.value)}`,
+              {
+                credentials: "same-origin",
+                headers: { Accept: "application/json" },
+              },
+            );
+            const result = (await response.json().catch(() => ({}))) as {
+              error?: string;
+              found?: boolean;
+              report?: {
+                official?: { answers?: FormDraftAnswers } | null;
+                pending?: { answers?: FormDraftAnswers } | null;
+              } | null;
+            };
+
+            if (!response.ok) {
+              throw new Error(
+                result.error ?? "No se pudo consultar el expediente.",
+              );
+            }
+            if (!result.found || !result.report) {
+              if (lookupMessage) {
+                lookupMessage.textContent =
+                  "No existe un expediente para este correo.";
+              }
+              return;
+            }
+
+            pendingLookupAnswers = result.report.pending?.answers ?? null;
+            officialLookupAnswers = result.report.official?.answers ?? null;
+
+            if (pendingLookupAnswers && officialLookupAnswers) {
+              lookupChoices?.classList.remove("hidden");
+              if (lookupMessage) {
+                lookupMessage.textContent =
+                  "Expediente encontrado. Elige una versión.";
+              }
+              return;
+            }
+            if (pendingLookupAnswers) {
+              loadRemoteAnswers(pendingLookupAnswers, "borrador");
+              return;
+            }
+            if (officialLookupAnswers) {
+              loadRemoteAnswers(officialLookupAnswers, "informe");
+              return;
+            }
+
+            if (lookupMessage) {
+              lookupMessage.textContent =
+                "El expediente no contiene respuestas recuperables.";
+            }
+          } catch (error) {
+            if (lookupMessage) {
+              lookupMessage.textContent =
+                error instanceof Error
+                  ? error.message
+                  : "No se pudo consultar el expediente.";
+            }
+          } finally {
+            currentLookupButton.disabled = false;
+            currentLookupButton.textContent = "Buscar expediente";
+          }
+        };
 
         const saveDraft = (force = false) => {
           if (persistenceSuspended || (!force && !draftDirty)) return;
@@ -737,6 +867,30 @@ const steps: StepperStep[] = [
           const previous = nextAvailableIndex(activeIndex(), -1);
           if (previous >= 0) goTo(previous, true);
         });
+        form.addEventListener(
+          "click",
+          (event) => {
+            if (!(event.target instanceof Element)) return;
+            if (event.target.closest("[data-report-lookup]")) {
+              void lookupReport();
+              return;
+            }
+            if (
+              event.target.closest("[data-load-pending-report]") &&
+              pendingLookupAnswers
+            ) {
+              loadRemoteAnswers(pendingLookupAnswers, "borrador");
+              return;
+            }
+            if (
+              event.target.closest("[data-load-official-report]") &&
+              officialLookupAnswers
+            ) {
+              loadRemoteAnswers(officialLookupAnswers, "informe");
+            }
+          },
+          true,
+        );
         nextButton.addEventListener("click", () => void advance());
         list.addEventListener(
           "click",
@@ -762,8 +916,51 @@ const steps: StepperStep[] = [
         form.addEventListener("starwind:value-change", handleFormMutation);
         form.addEventListener("starwind:checked-change", handleFormMutation);
         form.addEventListener("llc-form:submit", () => {
-          const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
-          window.location.assign(`${baseUrl}informe/`);
+          if (busy) return;
+          busy = true;
+          sync();
+          if (submitMessage) submitMessage.textContent = "";
+
+          void (async () => {
+            try {
+              const answers = collectDraftAnswers();
+              const normalized = normalizeAnswers(answers);
+              const facts = deriveReportFacts(normalized);
+              const reportModel = buildReportModel(normalized, facts);
+              const response = await fetch("/api/admin/reports/draft", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                },
+                body: JSON.stringify({ answers, reportModel }),
+              });
+              const result = (await response.json().catch(() => ({}))) as {
+                error?: string;
+                report?: { id?: string };
+              };
+              if (!response.ok || !result.report?.id) {
+                throw new Error(
+                  result.error ?? "No se pudo guardar el borrador del informe.",
+                );
+              }
+
+              const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+              window.location.assign(
+                `${baseUrl}informe/?id=${encodeURIComponent(result.report.id)}`,
+              );
+            } catch (error) {
+              if (submitMessage) {
+                submitMessage.textContent =
+                  error instanceof Error
+                    ? error.message
+                    : "No se pudo guardar el borrador del informe.";
+              }
+              busy = false;
+              sync();
+            }
+          })();
         });
         stepperRoot.addEventListener("starwind:value-change", (event) => {
           if (event.target !== stepperRoot) return;

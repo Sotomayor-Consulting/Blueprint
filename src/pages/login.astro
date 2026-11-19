@@ -1,0 +1,163 @@
+---
+import { Button } from "@/components/starwind/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/starwind/card";
+import {
+  Field,
+  FieldControl,
+  FieldLabel,
+} from "@/components/starwind/field";
+import "@/styles/starwind.css";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const homeUrl = `${base}/`;
+const panelUrl = `${base}/panel/`;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <title>Acceso administrativo | Sotomayor Consulting</title>
+  </head>
+  <body class="bg-muted/30 min-h-screen">
+    <main class="container mx-auto flex min-h-screen items-center justify-center px-4 py-16">
+      <Card class="w-full max-w-[400px] shadow-xl">
+        <CardHeader>
+          <CardTitle>Acceso administrativo</CardTitle>
+          <CardDescription>
+            Inicia sesión para acceder al panel privado.
+          </CardDescription>
+        </CardHeader>
+
+        <form
+          id="admin-login-form"
+          name="admin-login"
+          data-panel-url={panelUrl}
+        >
+          <CardContent class="flex flex-col gap-4">
+            <Field name="email">
+              <FieldLabel for="admin-login-email">
+                Correo electrónico
+              </FieldLabel>
+              <FieldControl
+                type="email"
+                id="admin-login-email"
+                name="email"
+                autocomplete="email"
+                placeholder="admin@ejemplo.com"
+                required
+              />
+            </Field>
+
+            <Field name="password">
+              <FieldLabel for="admin-login-password">Contraseña</FieldLabel>
+              <FieldControl
+                type="password"
+                id="admin-login-password"
+                name="password"
+                autocomplete="current-password"
+                placeholder="Ingresa tu contraseña"
+                required
+              />
+            </Field>
+
+            <p
+              class="text-error min-h-5 text-sm"
+              data-login-message
+              role="alert"
+              aria-live="polite"
+            ></p>
+          </CardContent>
+
+          <CardFooter class="mt-4 justify-between border-t-0 bg-transparent">
+            <Button type="button" variant="outline" href={homeUrl}>
+              Volver
+            </Button>
+            <Button type="submit" data-login-submit>
+              Iniciar sesión
+            </Button>
+          </CardFooter>
+        </form>
+      </Card>
+    </main>
+
+    <script>
+      const setupLogin = () => {
+        const form = document.querySelector<HTMLFormElement>(
+          "#admin-login-form",
+        );
+        if (!form || form.dataset.ready === "true") return;
+        form.dataset.ready = "true";
+
+        const submit = form.querySelector<HTMLButtonElement>(
+          "[data-login-submit]",
+        );
+        const message = form.querySelector<HTMLElement>("[data-login-message]");
+        const requestedRoute = new URLSearchParams(window.location.search).get(
+          "next",
+        );
+        const safeRedirect =
+          requestedRoute?.startsWith("/") &&
+          !requestedRoute.startsWith("//") &&
+          !requestedRoute.startsWith("/login")
+            ? requestedRoute
+            : undefined;
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          if (!submit) return;
+
+          submit.disabled = true;
+          submit.textContent = "Verificando…";
+          if (message) message.textContent = "";
+
+          try {
+            const values = Object.fromEntries(new FormData(form).entries());
+            const response = await fetch("/api/auth/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "same-origin",
+              body: JSON.stringify(values),
+            });
+            const result = (await response.json().catch(() => ({}))) as {
+              error?: string;
+            };
+
+            if (!response.ok) {
+              if (message) {
+                message.textContent =
+                  result.error ?? "No se pudo iniciar sesión.";
+              }
+              return;
+            }
+
+            window.location.assign(
+              safeRedirect ?? form.dataset.panelUrl ?? "/panel/",
+            );
+          } catch {
+            if (message) {
+              message.textContent =
+                "No se pudo conectar con el servidor. Intenta nuevamente.";
+            }
+          } finally {
+            submit.disabled = false;
+            submit.textContent = "Iniciar sesión";
+          }
+        });
+      };
+
+      setupLogin();
+      document.addEventListener("astro:page-load", setupLogin);
+    </script>
+  </body>
+</html>

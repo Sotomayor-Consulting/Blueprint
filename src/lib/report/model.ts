@@ -421,7 +421,7 @@ export const buildReportModel = (
     generatedAt: formatGeneratedAt(generatedAt),
     clientName: answers.clientName,
     clientEmail: answers.email,
-    version: "Prototipo · Plantilla 1.0",
+    version: answers.clientName,
     introduction: [
       `El presente informe tiene por objeto documentar los principales criterios, definiciones y lineamientos acordados durante la sesión de planificación legal y tributaria para la incorporación de la LLC en Estados Unidos de ${answers.clientName}. Su finalidad es servir como guía para la adecuada implementación y gestión de la estructura societaria.`,
       "Para efectos de claridad y organización, el contenido se encuentra estructurado en tres secciones principales:",

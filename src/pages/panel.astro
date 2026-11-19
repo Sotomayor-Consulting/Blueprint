@@ -1,0 +1,199 @@
+---
+import { Button } from "@/components/starwind/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/starwind/card";
+import "@/styles/starwind.css";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const loginUrl = `${base}/login/`;
+const homeUrl = `${base}/`;
+const reportUrl = `${base}/informe/`;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <title>Panel administrativo | Sotomayor Consulting</title>
+  </head>
+  <body class="bg-muted/30 min-h-screen">
+    <header class="border-border bg-background border-b">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
+        <div>
+          <p class="text-sm font-semibold">Sotomayor Consulting International</p>
+          <p class="text-muted-foreground text-xs" data-session-email>
+            Verificando sesión…
+          </p>
+        </div>
+        <Button type="button" variant="outline" data-logout>
+          Cerrar sesión
+        </Button>
+      </div>
+    </header>
+
+    <main class="mx-auto w-full max-w-6xl px-4 py-10">
+      <Card>
+        <CardHeader class="flex-row items-start justify-between gap-4">
+          <div>
+            <CardTitle>Expedientes LLC</CardTitle>
+          <CardDescription>
+              Informes completados y borradores pendientes guardados en
+              Supabase.
+          </CardDescription>
+          </div>
+          <Button href={homeUrl}>Nuevo informe</Button>
+        </CardHeader>
+        <CardContent>
+          <p
+            class="text-muted-foreground py-6 text-center text-sm"
+            data-report-list-status
+            role="status"
+          >
+            Cargando expedientes…
+          </p>
+          <div class="overflow-x-auto" data-report-list hidden>
+            <table class="w-full min-w-[720px] text-left text-sm">
+              <thead class="border-border border-b">
+                <tr>
+                  <th class="px-3 py-3 font-semibold">Cliente</th>
+                  <th class="px-3 py-3 font-semibold">Correo</th>
+                  <th class="px-3 py-3 font-semibold">Estado</th>
+                  <th class="px-3 py-3 font-semibold">Actualizado</th>
+                  <th class="px-3 py-3 text-right font-semibold">Acción</th>
+                </tr>
+              </thead>
+              <tbody data-report-list-body></tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+    </main>
+
+    <script define:vars={{ loginUrl, reportUrl }}>
+      const email = document.querySelector("[data-session-email]");
+      const logout = document.querySelector("[data-logout]");
+      const list = document.querySelector("[data-report-list]");
+      const listBody = document.querySelector("[data-report-list-body]");
+      const listStatus = document.querySelector("[data-report-list-status]");
+
+      const redirectToLogin = () => window.location.assign(loginUrl);
+
+      const loadSession = async () => {
+        try {
+          const response = await fetch("/api/auth/session", {
+            credentials: "same-origin",
+            headers: { Accept: "application/json" },
+          });
+          if (!response.ok) {
+            redirectToLogin();
+            return;
+          }
+
+          const session = await response.json();
+          if (email) email.textContent = session.email;
+        } catch {
+          redirectToLogin();
+        }
+      };
+
+      const cell = (text, className = "px-3 py-3") => {
+        const element = document.createElement("td");
+        element.className = className;
+        element.textContent = text;
+        return element;
+      };
+
+      const formatDate = (value) =>
+        value
+          ? new Intl.DateTimeFormat("es", {
+              dateStyle: "medium",
+              timeStyle: "short",
+            }).format(new Date(value))
+          : "Sin completar";
+
+      const loadReports = async () => {
+        try {
+          const response = await fetch("/api/admin/reports/", {
+            credentials: "same-origin",
+            headers: { Accept: "application/json" },
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            throw new Error(
+              result.error ?? "No se pudieron cargar los expedientes.",
+            );
+          }
+
+          const reports = Array.isArray(result.reports) ? result.reports : [];
+          if (reports.length === 0) {
+            if (listStatus) {
+              listStatus.textContent = "Todavía no hay expedientes guardados.";
+            }
+            return;
+          }
+
+          reports.forEach((report) => {
+            const row = document.createElement("tr");
+            row.className = "border-border border-b last:border-0";
+            row.append(
+              cell(report.clientName ?? "Sin nombre"),
+              cell(report.email ?? ""),
+              cell(
+                report.hasPending
+                  ? report.completedAt
+                    ? "Borrador pendiente"
+                    : "Borrador"
+                  : "Completado",
+              ),
+              cell(formatDate(report.pendingUpdatedAt ?? report.updatedAt)),
+            );
+
+            const actionCell = document.createElement("td");
+            actionCell.className = "px-3 py-3 text-right";
+            const action = document.createElement("a");
+            action.className =
+              "text-primary font-semibold underline-offset-4 hover:underline";
+            action.href = `${reportUrl}?id=${encodeURIComponent(report.id)}`;
+            action.textContent = "Abrir";
+            actionCell.append(action);
+            row.append(actionCell);
+            listBody?.append(row);
+          });
+
+          if (listStatus) listStatus.hidden = true;
+          if (list) list.hidden = false;
+        } catch (error) {
+          if (listStatus) {
+            listStatus.textContent =
+              error instanceof Error
+                ? error.message
+                : "No se pudieron cargar los expedientes.";
+          }
+        }
+      };
+
+      logout?.addEventListener("click", async () => {
+        logout.disabled = true;
+        try {
+          await fetch("/api/auth/logout", {
+            method: "POST",
+            credentials: "same-origin",
+          });
+        } finally {
+          redirectToLogin();
+        }
+      });
+
+      void loadSession();
+      void loadReports();
+    </script>
+  </body>
+</html>

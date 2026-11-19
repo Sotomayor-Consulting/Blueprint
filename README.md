@@ -231,8 +231,78 @@ Configuración actual de Astro:
 
 ```js
 site: "https://sotomayor-consulting.github.io",
-base: "/Blueprint",
+base: "/",
 ```
+
+## Panel administrativo en Cloudflare Pages
+
+El proyecto incluye un acceso administrativo preparado para Cloudflare Pages:
+
+- `/login/`: formulario de acceso con correo y contraseña.
+- `/panel/`: shell privado del panel administrativo.
+- `/api/auth/login`: valida credenciales con Supabase Auth.
+- `/api/auth/session`: devuelve la sesión administrativa activa.
+- `/api/auth/logout`: elimina la cookie de sesión.
+- `functions/_middleware.ts`: impide servir el formulario, el informe,
+  `/panel/*` y `/api/admin/*` sin una sesión válida.
+
+La sesión se almacena en una cookie firmada `HttpOnly`, `SameSite=Strict` y
+`Secure` en producción. El navegador nunca recibe una clave administrativa de
+Supabase.
+
+### Configuración de Supabase
+
+1. Crear el usuario administrativo desde **Authentication → Users** en el
+   dashboard de Supabase.
+2. No habilitar un formulario público de registro para administradores.
+3. Copiar la URL del proyecto y la clave pública `publishable` o `anon`.
+
+### Secrets de Cloudflare
+
+Configurar estas variables para los entornos **Production** y **Preview** desde
+**Workers & Pages → proyecto → Settings → Variables and Secrets**:
+
+```text
+SUPABASE_URL
+SUPABASE_PUBLISHABLE_KEY
+SUPABASE_SECRET_KEY
+SESSION_SECRET
+ADMIN_EMAILS
+```
+
+También puede utilizarse `SUPABASE_ANON_KEY` en lugar de
+`SUPABASE_PUBLISHABLE_KEY`, y la clave legacy
+`SUPABASE_SERVICE_ROLE_KEY` en lugar de `SUPABASE_SECRET_KEY`.
+`SESSION_SECRET` debe contener al menos 32 caracteres aleatorios.
+`ADMIN_EMAILS` admite varios correos separados por comas.
+
+`SUPABASE_SECRET_KEY` debe configurarse exclusivamente como secret de
+Cloudflare. Solo se utiliza dentro de Pages Functions bajo `/api/admin/*` y
+nunca debe declararse con prefijo `PUBLIC_`.
+
+### Persistencia de expedientes
+
+Ejecutar una vez el archivo [`supabase/llc_reports.sql`](supabase/llc_reports.sql)
+completo desde **Supabase → SQL Editor**. El script crea:
+
+- una fila única por correo de cliente;
+- una versión oficial y un borrador pendiente;
+- RLS sin acceso para clientes públicos;
+- las funciones transaccionales para guardar y completar informes.
+
+Al pulsar **Finalizar**, las respuestas y el modelo del informe se almacenan
+como borrador pendiente. El informe oficial anterior no cambia. Al pulsar
+**Completar**, Supabase promueve ese borrador a versión oficial y limpia los
+campos pendientes. El botón **Buscar expediente** recupera por correo el
+borrador, la versión oficial o permite elegir entre ambos.
+
+Para pruebas locales con Wrangler, copiar `.dev.vars.example` como
+`.dev.vars` y completar sus valores. `.dev.vars` está excluido de Git.
+
+> [!IMPORTANT]
+> `astro dev` permite revisar la interfaz, pero no ejecuta Pages Functions. La
+> protección efectiva de `/panel/` se aplica al desplegar en Cloudflare Pages o
+> al ejecutar el build con Wrangler Pages.
 
 ## Añadir o modificar un paso
 
@@ -251,7 +321,6 @@ Al incorporar una nueva etapa se deben revisar los siguientes puntos:
 
 - Migración a Astro SSR con adapter de Node.js.
 - Despliegue de la aplicación mediante Coolify.
-- Persistencia de solicitudes en Supabase Postgres.
 - Almacenamiento privado de documentos en Supabase Storage.
 - Sustitución de la generación cliente por PDF condicional mediante Gotenberg.
 - Descarga privada de documentos mediante enlaces temporales.
@@ -260,8 +329,7 @@ Al incorporar una nueva etapa se deben revisar los siguientes puntos:
 
 ## Limitaciones actuales
 
-- El envío solo genera un evento en el navegador.
-- No existe autenticación de usuarios.
-- No existe almacenamiento de solicitudes en servidor.
-- El PDF cliente no tiene trazabilidad, firma, almacenamiento ni garantía de reproducción idéntica.
-- El borrador se almacena únicamente en el navegador actual.
+- El PDF cliente no tiene firma ni almacenamiento de archivo; se regenera desde
+  el modelo guardado.
+- El borrador también se conserva en el navegador para tolerar interrupciones
+  antes de finalizar.

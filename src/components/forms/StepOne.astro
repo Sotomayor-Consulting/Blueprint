@@ -20,6 +20,7 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/starwind/alert";
+import { Button } from "@/components/starwind/button";
 
 import CardRotate from "@components/blocks/Card.astro";
 import IconPalette from "@tabler/icons/outline/user-search.svg";
@@ -105,13 +106,55 @@ import Bolt from "@tabler/icons/filled/bolt.svg";
             >
             <FieldError match="typeMismatch">Usa un correo válido.</FieldError>
           </Field>
-          
+
+          <div class="flex flex-wrap items-center gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              data-report-lookup
+            >
+              Buscar expediente
+            </Button>
+            <p
+              class="text-muted-foreground text-sm"
+              data-report-lookup-message
+              role="status"
+              aria-live="polite"
+            ></p>
+          </div>
+
+          <div
+            class="border-border bg-muted/40 hidden rounded-lg border p-3"
+            data-report-lookup-choices
+          >
+            <p class="mb-3 text-sm font-medium">
+              Este correo tiene un informe completado y un borrador pendiente.
+              Selecciona cuál deseas cargar.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <Button
+                type="button"
+                size="sm"
+                data-load-pending-report
+              >
+                Continuar borrador
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                data-load-official-report
+              >
+                Cargar completado
+              </Button>
+            </div>
+          </div>
         </FieldGroup>
         <Alert variant="info">
           <AlertTitle class="text-sm">¡Tip!</AlertTitle>
           <AlertDescription class="text-xs">
-            Si el correo ingresado no está registrado en el sistema, no te
-            preocupes: se añadirá automáticamente un nuevo contacto en Odoo.
+            Si el correo no está registrado, se creará un expediente pendiente
+            al finalizar el formulario.
           </AlertDescription>
         </Alert>
       </div>
